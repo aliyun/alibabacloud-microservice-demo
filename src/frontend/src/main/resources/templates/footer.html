@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<footer th:fragment="pageFooter" class="py-5 px-5">
+    <div class="container">
+        <p>
+            &copy; 2019 Alibaba Cloud
+            <span class="text-muted">
+                <a href="https://github.com/aliyun/alibabacloud-microservice-demo">(Source Code)</a>
+            </span>
+        </p>
+        <p>
+            <small class="text-muted">
+                This website is hosted for demo purposes only. It is not an actual shop.
+            </small>
+        </p>
+<!--        <small class="text-muted">-->
+<!--            {{ if $.session_id }}session-id: {{ $.session_id }}</br>{{end}}-->
+<!--            {{ if $.request_id }}request-id: {{ $.request_id }}</br>{{end}}-->
+<!--        </small>-->
+    </div>
+</footer>
+
+<script th:fragment="footerScript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous">
+</script>
+
+</html>
