@@ -13,6 +13,17 @@ import java.util.List;
 @Service
 public class ProductDAO {
 
+    public Product getProductById(String id) {
+        Product p1 = new Product();
+        p1.setId("1");
+        p1.setName("Vintage Typewriter");
+        p1.setDescription("xxx");
+        p1.setPicture("/img/products/typewriter.jpg");
+        p1.setPrice(12);
+        p1.setCategories(Arrays.asList("vintage"));
+        return p1;
+    }
+
     public List<Product> getProductList() {
         List<Product> products = new ArrayList<>();
         Product p1 = new Product();
