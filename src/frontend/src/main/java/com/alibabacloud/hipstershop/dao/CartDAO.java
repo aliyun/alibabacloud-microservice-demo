@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class CartDAO {
 
-    @Reference(version = "1.0.0", url = "dubbo://127.0.0.1:12345")
+    @Reference(version = "1.0.0")
     private CartService cartService;
 
     public List<CartItem> viewCart(String userID) {
