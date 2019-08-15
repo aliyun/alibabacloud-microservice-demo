@@ -1,5 +1,7 @@
 package com.alibabacloud.hipstershop.web;
 
+import com.alibabacloud.hipstershop.CartItem;
+import com.alibabacloud.hipstershop.dao.CartDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * @author wangtao 2019-08-12 15:41
@@ -18,8 +23,14 @@ public class AppController {
     @Autowired
     private ProductDAO productDAO;
 
+    @Autowired
+    private CartDAO cartDAO;
+
+    private String userID = "Test User";
+
     @GetMapping("/")
     public String index(Model model) {
+
         model.addAttribute("cartSize", 1);
         model.addAttribute("products", productDAO.getProductList());
         return "index.html";
@@ -37,6 +48,27 @@ public class AppController {
         model.addAttribute("cartSize", 1);
         model.addAttribute("product", p);
         return "product.html";
+    }
+
+    @GetMapping("/cart")
+    public String viewCart(Model model) {
+        List<CartItem> items = cartDAO.viewCart(userID);
+        for (CartItem item: items) {
+            Product p = productDAO.getProductById(item.productID);
+            item.productName = p.getName();
+            item.price = p.getPrice();
+            item.productPicture = p.getPicture();
+        }
+        model.addAttribute("items", items);
+        return "cart.html";
+    }
+
+    @PostMapping("/cart")
+    public String addToCart(@RequestParam(name="product_id") String productID,
+                            @RequestParam(name="quantity") int quantity,
+                            Model model) {
+        cartDAO.addToCart(userID, productID, quantity);
+        return viewCart(model);
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,19 +14,9 @@ import java.util.List;
 @Service
 public class ProductDAO {
 
-    public Product getProductById(String id) {
-        Product p1 = new Product();
-        p1.setId("1");
-        p1.setName("Vintage Typewriter");
-        p1.setDescription("xxx");
-        p1.setPicture("/img/products/typewriter.jpg");
-        p1.setPrice(12);
-        p1.setCategories(Arrays.asList("vintage"));
-        return p1;
-    }
+    private List<Product> products = new ArrayList<>();
 
-    public List<Product> getProductList() {
-        List<Product> products = new ArrayList<>();
+    public ProductDAO() {
         Product p1 = new Product();
         p1.setId("1");
         p1.setName("Vintage Typewriter");
@@ -43,6 +34,19 @@ public class ProductDAO {
         p2.setPrice(123);
         p2.setCategories(Arrays.asList("vintage", "photography"));
         products.add(p2);
-        return products;
+    }
+
+    public Product getProductById(String id) {
+        for (Product p: products) {
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
+        // TODO: avoid null value
+        return null;
+    }
+
+    public List<Product> getProductList() {
+        return Collections.unmodifiableList(products);
     }
 }
