@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -30,8 +32,6 @@ public class AppController {
 
     @GetMapping("/")
     public String index(Model model) {
-
-        model.addAttribute("cartSize", 1);
         model.addAttribute("products", productDAO.getProductList());
         return "index.html";
     }
@@ -45,7 +45,6 @@ public class AppController {
     @GetMapping("/product/{id}")
     public String product(@PathVariable(name="id") String id, Model model) {
         Product p = productDAO.getProductById(id);
-        model.addAttribute("cartSize", 1);
         model.addAttribute("product", p);
         return "product.html";
     }
@@ -64,11 +63,15 @@ public class AppController {
     }
 
     @PostMapping("/cart")
-    public String addToCart(@RequestParam(name="product_id") String productID,
-                            @RequestParam(name="quantity") int quantity,
-                            Model model) {
+    public RedirectView addToCart(@RequestParam(name="product_id") String productID,
+                                  @RequestParam(name="quantity") int quantity) {
         cartDAO.addToCart(userID, productID, quantity);
-        return viewCart(model);
+        return new RedirectView("/cart");
+    }
+
+    @ModelAttribute("cartSize")
+    public int getCartSize() {
+        return cartDAO.viewCart(userID).size();
     }
 
 }
