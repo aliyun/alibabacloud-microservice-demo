@@ -6,6 +6,10 @@ cartservice:
   name: cartservice
   image: cartservice:1.0.0-SNAPSHOT
 
+productservice:
+  name: productservice
+  image: productservice:1.0.0-SNAPSHOT
+
 nacos:
   name: nacos-standalone
   image: nacos/nacos-server:latest

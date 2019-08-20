@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.productservice.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.productservice.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.productservice.name }}
+    spec:
+      containers:
+        - name: {{ .Values.productservice.name }}
+          image: {{ .Values.productservice.image }}
+          env:
+          - name: spring.cloud.nacos.discovery.server-addr
+            value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
