@@ -14,6 +14,7 @@ services:
     container_name: frontend
     environment:
     - dubbo.registry.address=nacos://nacos:8848
+    - spring.cloud.nacos.discovery.server-addr=nacos:8848
     ports:
     - "8080:8080"
     depends_on:
@@ -23,5 +24,12 @@ services:
     container_name: cartservice
     environment:
     - dubbo.registry.address=nacos://nacos:8848
+    depends_on:
+      - "nacos"
+  productservice:
+    image: productservice:1.0.0-SNAPSHOT
+    container_name: productservice
+    environment:
+    - spring.cloud.nacos.discovery.server-addr=nacos:8848
     depends_on:
       - "nacos"
