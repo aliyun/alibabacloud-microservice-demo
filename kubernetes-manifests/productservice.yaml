@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productservice
+spec:
+  selector:
+    matchLabels:
+      app: productservice
+  template:
+    metadata:
+      labels:
+        app: productservice
+    spec:
+      containers:
+        - name: productservice
+          image: productservice:1.0.0-SNAPSHOT
+          env:
+          - name: spring.cloud.nacos.discovery.server-addr
+            value: "nacos:8848"
