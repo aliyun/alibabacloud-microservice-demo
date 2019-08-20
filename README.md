@@ -43,12 +43,12 @@ If you want to undeploy, use the following command
 docker-compose -f docker-compose.yaml down
 ```
 
-#### Deploy to kuberates cluster
+#### Deploy to Kubernetes cluster
 
-This project can be deployed to kubernates cluster with the following command:
+This project can be deployed to Kubernetes cluster with the following command:
 
 ```sh
-cd kubernates-manifests/
+cd kubernetes-manifests/
 for i in *.yaml; do kubectl apply -f $i; done
 ```
 
@@ -60,7 +60,7 @@ for i in *.yaml; do kubectl delete -f $i; done
 
 #### Deploy with helm
 
-This project can be deployed to kubernates cluster with helm chart:
+This project can be deployed to Kubernetes cluster with helm chart:
 
 ```sh
 helm install ./helm-chart  --name  microservice-demo
