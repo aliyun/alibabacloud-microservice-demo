@@ -17,6 +17,14 @@ This demo is powered by the following projects and products:
 
 You can visit http://47.93.130.78:8080 for an live demo, which is hosted on Alibaba Cloud [SAE](https://www.aliyun.com/product/sae).
 
+### Architecture
+
+This project contains the following applications (more applications are ong the way):
+
+* frontend: A Java application with SpringMVC and thymeleaf as template engine.
+* cartservices: A Java application that  provides basic operations to add products to shopping carts, which is powered by [Apache Dubbo](https://github.com/apache/dubbo).
+* productservice: A Java application that provies basic operations to list all the products and query product by ID, which is powered by [Spring Cloud Alibaba](https://github.com/alibaba/spring-cloud-alibaba).
+
 ### Build
 
 #### Build docker image
