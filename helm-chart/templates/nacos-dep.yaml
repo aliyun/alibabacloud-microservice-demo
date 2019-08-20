@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nacos.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.nacos.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.nacos.name }}
+    spec:
+      containers:
+        - name: {{ .Values.nacos.name }}
+          image: {{ .Values.nacos.image }}
+          ports:
+          - containerPort: {{ .Values.nacos.port }}
+          env:
+          - name: PREFER_HOST_MODE
+            value: "hostname"
+          - name: MODE
+            value: "standalone"

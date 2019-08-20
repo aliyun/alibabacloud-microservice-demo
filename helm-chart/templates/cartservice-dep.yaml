@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.cartservice.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.cartservice.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.cartservice.name }}
+    spec:
+      containers:
+        - name: {{ .Values.cartservice.name }}
+          image: {{ .Values.cartservice.image }}
+          env:
+          - name: dubbo.registry.address
+            value: "nacos://{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
