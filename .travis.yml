@@ -17,4 +17,4 @@ env:
 
 before_install:
 #  - openssl aes-256-cbc -k "$TRAVIS_PASSWORD" -in src/frontend/sae_profile.yaml.enc -out src/frontend/sae_profile.yaml -d
-  - echo $TRAVIS_PASSWORD | gpg --passphrase-fd 0 src/frontend/sae_profile.yaml.gpg
+  - echo $TRAVIS_PASSWORD && gpg --version && echo $TRAVIS_PASSWORD | gpg --passphrase-fd 0 src/frontend/sae_profile.yaml.gpg
