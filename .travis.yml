@@ -1,12 +1,16 @@
 language: java
 sudo: false
 jdk:
-- openjdk8
+  - openjdk8
 cache:
   directories:
   - "$HOME/.m2"
 script:
-- sh travis-build.sh
+  - sh travis-build.sh
+
+after_success:
+  - cd src/frontend && mvn --batch-mode toolkit:deploy -Dtoolkit_profile=sae_profile.yaml -Dtoolkit_package=sae_package.yaml -Dtoolkit_deploy=sae_deploy.yaml 
+
 env:
   global:
     secure: ojd2WSqBylAFJ57wgVS+fVnZ/Jzh/hc1ZcejF+NyX0x/oEv9AzsmfmtTyC4zrxwzh4rqryjm8TWX6i3EsdvwswhYu0WVoSD7aT8ORxKOhinEmd0P71QSl11jFDqW93cxDX17cYUtFZHyr/jmuO24zkaCUBDaX1FzuEusbSyn6yYwLCTrPe2ISWg0vOhtGE9tzxFR68WOcr44ku1iy9pdN9zltAJU9Ev/sFkSooXMOh1CvwVZGUndjZzG24zM64gZ9EWYEHhO41/nQaNixLhk2msu3+AEC9SamCmx58Jlj5PA6Z/cwYBF6fEWRyqe09VqFzkDLbaslEjUZFDWIEgdh+115XGi3opaeRiv0uEkuCW5/OF/KhSYpsvIN+qmFJRMeVv+mH3v28MEQ2a1xPtbBONj0xHzAXvbEeLWrKFsgY5dIrl9JeuoFp/MUTeFmMDRg9M+JDXG/r7RJ7fotnfy9jwahwc6oC8dvoraznyj/KKPyhFxO/PeMmlYLIl7mxF7mwi06iE3N4a+4zfSZ8wmQO7ztcHYUelRsqtWklFucx49Xn+FTGGch7Su+Q7sY3mfq6snoBB4+tiv+0xS8i0/t3dBOrJkBvpQfTh0idqeMuQfo+J3i5jYxP1/7jUif/UCc/TkALDconSrJKZ3Px/BpGhRlYlGhE637QgbqUDmZIs=
