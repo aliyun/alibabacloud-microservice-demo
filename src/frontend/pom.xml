@@ -143,6 +143,11 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>toolkit-maven-plugin</artifactId>
+                <version>1.0.4</version>
+            </plugin>
         </plugins>
     </build>
 

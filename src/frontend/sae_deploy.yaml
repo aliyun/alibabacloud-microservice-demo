@@ -1,0 +1,8 @@
+apiVersion: V1
+kind: AppDeployment
+spec:
+  type: serverless
+  target:
+    appId:        e6d04127-9eb0-4f72-b3c5-298873660580
+    namespaceId:  cn-beijing
+    appName:      microservice-demo-frontend

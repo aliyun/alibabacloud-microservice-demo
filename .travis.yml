@@ -1,14 +1,15 @@
 language: java
-sudo: false # faster builds
-
+sudo: false
 jdk:
   - openjdk8
-
 cache:
   directories:
-    - $HOME/.m2
-
+  - "$HOME/.m2"
 script:
   - sh travis-build.sh
 
+after_success:
+  - cd src/frontend && mvn --batch-mode package toolkit:deploy -Dtoolkit_profile=sae_profile.yaml -Dtoolkit_package=sae_package.yaml -Dtoolkit_deploy=sae_deploy.yaml
 
+before_install:
+  - openssl aes-256-cbc -k "$TRAVIS_PASSWORD" -in src/frontend/sae_profile.yaml.enc -out src/frontend/sae_profile.yaml -d
