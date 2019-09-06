@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <artifactId>microservices-doc-demo</artifactId>
-    <groupId>org.apache.dubbo</groupId>
+    <groupId>com.alibaba.edas</groupId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
@@ -31,7 +31,8 @@
         <module>dubbo-samples-xml</module>
         <module>dubbo-samples-api</module>
         <module>dubbo-samples-annotation</module>
-        <module>dubbo-jmeter-benchmark</module>
+        <module>spring-cloud-simplest-demo</module>
+        <module>spring-cloud-config-example</module>
     </modules>
 
 
