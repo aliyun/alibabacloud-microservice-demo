@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-boot-dubbo-provider</artifactId>
+    <artifactId>dubbo-spring-boot-provider</artifactId>
     <groupId>com.alibaba.edas</groupId>
     <version>1.0</version>
 

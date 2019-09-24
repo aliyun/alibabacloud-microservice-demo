@@ -7,7 +7,7 @@
 
     <dubbo:application name="demo-consumer"/>
 
-    <dubbo:registry address="nacos://127.0.0.1:8848"/>
+    <dubbo:registry protocol="nacos" address="39.107.32.17:80,39.107.14.50:80,39.96.83.116:80"/>
 
     <dubbo:reference id="demoService" check="true" interface="com.alibaba.edas.xml.DemoService"/>
 

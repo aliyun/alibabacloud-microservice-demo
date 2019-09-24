@@ -12,8 +12,12 @@ public class DubboConsumer {
         DemoService demoService = (DemoService) context.getBean("demoService");
 
         while (true){
-            String hello = demoService.sayHello("world");
-            System.out.println(hello);
+            try{
+                String hello = demoService.sayHello("world");
+                System.out.println(hello);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             try {
                 Thread.sleep(1000);
