@@ -9,6 +9,6 @@
 
     <dubbo:registry protocol="nacos" address="39.107.32.17:80,39.107.14.50:80,39.96.83.116:80"/>
 
-    <dubbo:reference id="demoService" check="true" interface="com.alibaba.edas.xml.DemoService"/>
+    <dubbo:reference id="demoService" check="true" interface="com.alibaba.edas.xml.DemoService" group="DUBBO" version="1.0.0" />
 
 </beans>

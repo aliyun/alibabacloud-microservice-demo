@@ -13,6 +13,6 @@
 
     <bean id="demoService" class="com.alibaba.edas.xml.provider.DemoServiceImpl"/>
 
-    <dubbo:service interface="com.alibaba.edas.xml.DemoService" ref="demoService"/>
+    <dubbo:service interface="com.alibaba.edas.xml.DemoService" group="DUBBO" version="1.0.0" ref="demoService"/>
 
 </beans>
