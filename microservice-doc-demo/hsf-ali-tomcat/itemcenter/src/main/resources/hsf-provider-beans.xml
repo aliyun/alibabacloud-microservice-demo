@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hsf="http://www.taobao.com/hsf"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.taobao.com/hsf
+       http://www.taobao.com/hsf/hsf.xsd" default-autowire="byName">
+
+    <bean id="itemService" class="com.alibaba.edas.carshop.itemcenter.ItemServiceImpl" />
+
+    <!-- 提供一个服务示例 -->
+
+    <hsf:provider id="itemServiceProvider"
+                  interface="com.alibaba.edas.carshop.itemcenter.ItemService"
+                  ref="itemService"
+                  version="1.0.0">
+    </hsf:provider>
+</beans>

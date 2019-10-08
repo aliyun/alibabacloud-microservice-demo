@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+    <!-- 消费一个服务示例 -->
+
+    <context:component-scan base-package="com.alibaba.edas" />
+
+    <dubbo:application name="dubbo-demo-consumer"/>
+
+    <dubbo:registry address="zookeeper://127.0.0.1:8080"/>
+
+    <dubbo:protocol name="dubbo" port="20880"
+                    threads="100"></dubbo:protocol>
+
+    <dubbo:reference id="item"
+                     interface="com.alibaba.edas.carshop.itemcenter.ItemService"
+                     group="HSF"
+                     version="1.0.0"
+    />
+
+
+
+</beans>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.alibaba.edas.test</groupId>
+    <artifactId>edas-demo-carshop</artifactId>
+    <version>1.0</version>
+    <name>Edas-Demo-Carshop</name>
+    <modules>
+        <!-- consumer -->
+        <module>detail</module>
+        <module>detail-dubbo</module>
+        <!-- provider -->
+        <module>itemcenter</module>
+        <module>itemcenter-api</module>
+
+        <!-- cart, itemcenter, ordercenter -->
+        <module>dubbo-migration/itemcenter-dubbo</module>
+        <module>dubbo-migration/cart-gateway-dubbo</module>
+        <module>dubbo-migration/ordercenter-dubbo</module>
+    </modules>
+    <packaging>pom</packaging>
+
+</project>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dubbo 客户端</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/ractive"></script>
+<link rel="stylesheet" href="/css/edas-demo.css"/>
+<body>
+
+<div id="welcome-page">
+
+    <div class="detection-result"></div>
+    <script id="detection" type="text/reactive">
+    您好，这是 EDAS <b>Dubbo 客户端</b> 的样例程序页面.<br>
+
+    {{#if loading}}
+    <p>
+        正在检查服务端的健康状态，请稍后 ....
+    </p>
+    {{else}}
+
+    {{#if serviceExisted}}
+    <div>
+        已发现您的 <b>Dubbo服务端</b> 已部署成功， 您可以填入一些值，
+        <input name="echo" value="{{ echoString }}" /> 然后<a on-click='@.rpcEchoString(echoString)'>点击此处</a> 去发起一个远程接口调用。
+
+        <h2>点击之后的调用时序图如下：</h2>
+        <br/>
+        <img width="600px" src="http://edas-hz.oss-cn-hangzhou.aliyuncs.com/demo/static/images/consumer-demo.jpg" />
+        
+        {{#if respondedString}}
+        <h2>调用之后数据返回：</h2>
+            <div class="responded">
+            
+            <pre>{{respondedString}}</pre>
+            </div>
+        {{/if}}
+    </div>
+    {{else}}
+    <p>
+        没有发现您将 <b>Dubbo 服务端</b> 部署成功，需按照以下步骤搭建额外的服务端程序。<br>
+        <b><a target="_blank" href="https://edas.console.aliyun.com/#/createAppNew?regionNo=cn-shanghai">
+        登录 EDAS 控制台并创建应用</a></b> ->
+            选择与此<b>应用相同</b>的<span style="color: red">'区域'、'集群类型'和'应用运行环境'</span>  ->
+            下一步 在 '官方 Demo' 处选择 <b>Dubbo服务端</b> 后完成应用创建，待应用创建成功后，重试远程调用测试。
+    </p>
+    {{/if}}
+
+    {{/if}}
+
+    </script>
+</br>
+<div>
+    <h2>官方文档：</h2>
+    <div class="docs-container"></div>
+</div>
+
+<script id="docs" type="text/reactive">
+    <ol>
+    {{#each docs}}
+        <li><a target="_blank" href="{{link}}">{{title}}</a></li>
+    {{/each}}
+    </ol>
+
+</script>
+
+<script src="/javascript/edas-demo.js"></script>
+</body>
+</html>

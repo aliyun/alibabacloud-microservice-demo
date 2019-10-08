@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hsf="http://www.taobao.com/hsf"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.taobao.com/hsf
+       http://www.taobao.com/hsf/hsf.xsd" default-autowire="byName"> 
+    <!-- 消费一个服务示例 -->
+    <hsf:consumer id="item"
+                  interface="com.alibaba.edas.carshop.itemcenter.ItemService"
+                  version="1.0.0">
+    </hsf:consumer>
+
+
+
+</beans>
