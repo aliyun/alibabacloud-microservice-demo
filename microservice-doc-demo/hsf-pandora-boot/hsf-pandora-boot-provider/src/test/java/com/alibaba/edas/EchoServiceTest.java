@@ -18,32 +18,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(PandoraBootRunner.class)
 @DelegateTo(SpringJUnit4ClassRunner.class)
 // 加载测试需要的类，一定要加入 Spring Boot 的启动类，其次需要加入本类。
-@SpringBootTest(classes = {HSFProviderApplication.class, HelloServiceTest.class })
+@SpringBootTest(classes = {HSFProviderApplication.class, EchoServiceTest.class })
 @Component
-public class HelloServiceTest {
+public class EchoServiceTest {
 
     /**
      * 当使用 @HSFConsumer 时，一定要在 @SpringBootTest 类加载中，加载本类，通过本类来注入对象，否则当做泛化时，会出现类转换异常。
      */
     @HSFConsumer(generic = true)
-    HelloService helloService;
+    EchoService echoService;
 
     //普通的调用
     @Test
     public void testInvoke() {
-        TestCase.assertEquals("hello world", helloService.echo("hello world"));
+        TestCase.assertEquals("hello world", echoService.echo("hello world"));
     }
     //泛化调用
     @Test
     public void testGenericInvoke() {
-        GenericService service = (GenericService) helloService;
+        GenericService service = (GenericService) echoService;
         Object result = service.$invoke("echo", new String[] {"java.lang.String"}, new Object[] {"hello world"});
         TestCase.assertEquals("hello world", result);
     }
     //返回值 Mock
     @Test
     public void testMock() {
-        HelloService mock = Mockito.mock(HelloService.class, AdditionalAnswers.delegatesTo(helloService));
+        EchoService mock = Mockito.mock(EchoService.class, AdditionalAnswers.delegatesTo(echoService));
         Mockito.when(mock.echo("")).thenReturn("beta");
         TestCase.assertEquals("beta", mock.echo(""));
     }

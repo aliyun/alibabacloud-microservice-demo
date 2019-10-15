@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.alibaba.edas.test</groupId>
-    <artifactId>edas-demo-carshop</artifactId>
+    <artifactId>hsf-ali-tomcat</artifactId>
     <version>1.0</version>
-    <name>Edas-Demo-Carshop</name>
+    <name>hsf-ali-tomcat-demo</name>
     <modules>
         <!-- consumer -->
         <module>detail</module>
@@ -16,10 +16,7 @@
         <module>itemcenter</module>
         <module>itemcenter-api</module>
 
-        <!-- cart, itemcenter, ordercenter -->
-        <module>dubbo-migration/itemcenter-dubbo</module>
-        <module>dubbo-migration/cart-gateway-dubbo</module>
-        <module>dubbo-migration/ordercenter-dubbo</module>
+
     </modules>
     <packaging>pom</packaging>
 

@@ -1,4 +1,4 @@
-package com.alibaba.edas.boot;
+package com.alibaba.edas.war;
 
 public interface EchoService {
     String echo(String name);
