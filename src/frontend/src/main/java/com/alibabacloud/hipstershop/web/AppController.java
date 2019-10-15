@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author wangtao 2019-08-12 15:41
@@ -28,6 +29,8 @@ public class AppController {
     @Autowired
     private CartDAO cartDAO;
 
+    private Random random = new Random(System.currentTimeMillis());
+
     private String userID = "Test User";
 
     @GetMapping("/")
@@ -40,6 +43,16 @@ public class AppController {
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
         return "home";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout() {
+
+        if(random.nextBoolean()){
+            throw new RuntimeException();
+        }
+
+        return "not support yet";
     }
 
     @GetMapping("/product/{id}")

@@ -5,7 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import java.util.concurrent.TimeUnit;
 
 @Service(timeout = 5000)
-public class IEchoService implements EchoService {
+public class EchoServiceImpl implements EchoService {
 
     @Override
     public String echo(String name) {
