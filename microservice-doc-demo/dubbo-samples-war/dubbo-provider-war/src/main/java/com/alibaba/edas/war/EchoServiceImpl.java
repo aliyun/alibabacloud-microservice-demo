@@ -1,8 +1,8 @@
-package com.alibaba.edas.boot;
+package com.alibaba.edas.war;
+
+import org.apache.dubbo.config.annotation.Service;
 
 import java.util.concurrent.TimeUnit;
-
-import com.alibaba.dubbo.config.annotation.Service;
 
 @Service(timeout = 5000)
 public class EchoServiceImpl implements EchoService {
