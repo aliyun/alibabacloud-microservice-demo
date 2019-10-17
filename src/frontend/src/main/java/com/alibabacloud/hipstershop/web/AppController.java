@@ -45,6 +45,20 @@ public class AppController {
         return "home";
     }
 
+
+    @GetMapping("/exception")
+    public String exception() {
+
+        throw new RuntimeException();
+    }
+
+    @GetMapping("/exception2")
+    public String excpetion2(){
+
+        int i = 20 / 0;
+        return "hello";
+    }
+
     @GetMapping("/checkout")
     public String checkout() {
 
