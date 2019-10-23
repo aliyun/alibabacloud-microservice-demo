@@ -1,6 +1,6 @@
 package com.alibaba.edas;
 
 
-public interface EchoService {
+public interface HelloService {
     String echo(String string);
 }
