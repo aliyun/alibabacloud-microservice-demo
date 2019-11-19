@@ -1,0 +1,15 @@
+
+body {
+    font-size: 12px;
+}
+
+a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#welcome-page {
+    margin-left: 100px;
+    margin-top: 50px;
+}
