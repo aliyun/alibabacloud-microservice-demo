@@ -11,6 +11,8 @@
 
     <dubbo:metadata-report address="nacos://127.0.0.1:8848" />
 
+    <dubbo:config-center address="nacos://127.0.0.1:8848" />
+
     <dubbo:reference id="demoService" check="true" interface="com.alibaba.edas.xml.DemoService" group="DUBBO" version="1.0.0" />
 
 </beans>
