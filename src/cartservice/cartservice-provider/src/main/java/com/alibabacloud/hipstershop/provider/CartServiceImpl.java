@@ -5,12 +5,17 @@ import org.apache.dubbo.config.annotation.Service;
 import com.alibabacloud.hipstershop.CartService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+@RefreshScope
 @Service(version = "1.0.0")
 public class CartServiceImpl implements CartService {
 
@@ -18,8 +23,16 @@ public class CartServiceImpl implements CartService {
 
     private ConcurrentHashMap<String, List<CartItem>> cartStore = new ConcurrentHashMap<>();
 
+    @Value("${exception.ip}")
+    private String exceptionIp;
+
     @Override
     public List<CartItem> viewCart(String userID) {
+
+        if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
+            throw new RuntimeException("运行时异常");
+        }
+
         return cartStore.getOrDefault(userID, Collections.emptyList());
     }
 
@@ -34,5 +47,18 @@ public class CartServiceImpl implements CartService {
         }
         itemList.add(new CartItem(productID, quantity));
         return true;
+    }
+
+    private String getLocalIp(){
+        InetAddress inetAddress= null;
+        try {
+            inetAddress = InetAddress.getLocalHost();
+            if (inetAddress != null) {
+                String ip = inetAddress.getHostAddress();//获得本机Ip
+                return ip;
+            }
+        } catch (UnknownHostException e) {
+        }
+        return null;
     }
 }
