@@ -49,13 +49,12 @@ public class CartServiceImpl implements CartService {
         return true;
     }
 
-    private String getLocalIp(){
+    private String getLocalIp() {
         InetAddress inetAddress= null;
         try {
             inetAddress = InetAddress.getLocalHost();
             if (inetAddress != null) {
-                String ip = inetAddress.getHostAddress();//获得本机Ip
-                return ip;
+                return inetAddress.getHostAddress();//获得本机Ip;
             }
         } catch (UnknownHostException e) {
         }

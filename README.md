@@ -15,7 +15,7 @@ This demo is powered by the following projects and products:
 
 ### Live Demo
 
-You can visit http://47.93.130.78:8080 for an live demo, which is hosted on Alibaba Cloud [SAE](https://www.aliyun.com/product/sae).
+You can visit http://123.56.245.71:8080 for an live demo, which is hosted on Alibaba Cloud [SAE](https://www.aliyun.com/product/sae).
 
 ### Architecture
 

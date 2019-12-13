@@ -3,6 +3,6 @@ kind: AppDeployment
 spec:
   type: serverless
   target:
-    appId:        e6d04127-9eb0-4f72-b3c5-298873660580
+    appId:        bf6a4728-3182-47dc-8e45-4fd3d65b0a58
     namespaceId:  cn-beijing
-    appName:      microservice-demo-frontend
+    appName:      ms-demo-frontend
