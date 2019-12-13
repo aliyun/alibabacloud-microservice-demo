@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.alibabacloud.hipstershop</groupId>
             <artifactId>cartservice-interface</artifactId>
             <version>1.0.0-SNAPSHOT</version>
