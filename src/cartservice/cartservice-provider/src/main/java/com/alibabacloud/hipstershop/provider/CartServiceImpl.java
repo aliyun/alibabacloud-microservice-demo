@@ -23,14 +23,14 @@ public class CartServiceImpl implements CartService {
 
     private ConcurrentHashMap<String, List<CartItem>> cartStore = new ConcurrentHashMap<>();
 
-    @Value("${exception.ip}")
+    @Value("${exception.ip:''}")
     private String exceptionIp;
 
     @Override
     public List<CartItem> viewCart(String userID) {
 
         if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
-            throw new RuntimeException("运行时异常");
+            throw new RuntimeException("runtime exception");
         }
 
         return cartStore.getOrDefault(userID, Collections.emptyList());
