@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -23,13 +24,23 @@ public class CartServiceImpl implements CartService {
 
     private ConcurrentHashMap<String, List<CartItem>> cartStore = new ConcurrentHashMap<>();
 
-    @Value("${exception.ip:''}")
-    private String exceptionIp;
+    @Value("${exception.enable:false}")
+    private String exceptionEnable;
+
+    private String localIp = getLocalIp();
 
     @Override
     public List<CartItem> viewCart(String userID) {
 
-        if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
+        int code = 0;
+
+        if (StringUtils.endsWithIgnoreCase("true", exceptionEnable)) {
+            if (!StringUtils.isEmpty(localIp)) {
+                code = localIp.hashCode();
+            }
+        }
+
+        if (code % 2 == 1) {
             throw new RuntimeException("runtime exception");
         }
 
@@ -39,7 +50,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean addItemToCart(String userID, String productID, int quantity) {
         List<CartItem> itemList = cartStore.computeIfAbsent(userID, k -> new ArrayList<>());
-        for (CartItem item: itemList) {
+        for (CartItem item : itemList) {
             if (item.productID.equals(productID)) {
                 item.quantity++;
                 return true;
@@ -50,7 +61,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private String getLocalIp() {
-        InetAddress inetAddress= null;
+        InetAddress inetAddress = null;
         try {
             inetAddress = InetAddress.getLocalHost();
             if (inetAddress != null) {
