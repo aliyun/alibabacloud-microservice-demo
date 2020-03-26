@@ -1,13 +1,10 @@
 package com.alibaba.edas.carshop.detail;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.alibaba.edas.carshop.itemcenter.ItemService;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 
 /**

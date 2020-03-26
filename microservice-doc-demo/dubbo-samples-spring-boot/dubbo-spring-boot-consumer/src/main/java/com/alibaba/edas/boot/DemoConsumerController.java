@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoConsumerController {
 
-    @Reference(check = false)
+    @Reference(check = false, version = "1.0.0", group = "DUBBO")
     private EchoService demoService;
 
     @RequestMapping(value = "/ping", method = RequestMethod.GET)

@@ -7,9 +7,13 @@
 
     <context:property-placeholder/>
 
-    <dubbo:application name="demo-provider"/>
+    <dubbo:application name="dubbo-xml-provider"/>
 
-    <dubbo:registry protocol="nacos" address="127.0.0.1:8848"/>
+    <dubbo:registry address="nacos://127.0.0.1:8848"/>
+
+    <dubbo:metadata-report address="nacos://127.0.0.1:8848" />
+
+    <dubbo:config-center address="nacos://127.0.0.1:8848" />
 
     <bean id="demoService" class="com.alibaba.edas.xml.provider.DemoServiceImpl"/>
 
