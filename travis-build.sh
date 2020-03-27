@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 cd src/frontend
 mvn --batch-mode clean install
