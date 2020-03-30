@@ -127,7 +127,7 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
@@ -135,7 +135,7 @@
             <groupId>com.alibaba.csp</groupId>
             <artifactId>spring-boot-starter-ahas-sentinel-client</artifactId>
             <version>1.5.1</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
 
