@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend:1.0.0-SNAPSHOT
+          image: registry.cn-beijing.aliyuncs.com/microservice-demo/frontend:1.0.1
           ports:
           - containerPort: 8080
           env:

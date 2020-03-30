@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: productservice
-          image: productservice:1.0.0-SNAPSHOT
+          image: registry.cn-beijing.aliyuncs.com/microservice-demo/productservice:1.0.0
           env:
           - name: spring.cloud.nacos.discovery.server-addr
             value: "nacos:8848"
