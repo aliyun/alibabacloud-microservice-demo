@@ -24,24 +24,24 @@ public class CartServiceImpl implements CartService {
 
     private ConcurrentHashMap<String, List<CartItem>> cartStore = new ConcurrentHashMap<>();
 
-    @Value("${exception.enable:false}")
-    private String exceptionEnable;
+    @Value("${exception.ip:''}")
+    private String exceptionIp;
 
-    private String localIp = getLocalIp();
+    @Value("${slow.call.ip:''}")
+    private String slowCallIp;
 
     @Override
     public List<CartItem> viewCart(String userID) {
-
-        int code = 0;
-
-        if (StringUtils.endsWithIgnoreCase("true", exceptionEnable)) {
-            if (!StringUtils.isEmpty(localIp)) {
-                code = localIp.hashCode();
-            }
-        }
-
-        if (code % 2 == 1) {
+        // 模拟运行时异常
+        if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
             throw new RuntimeException("runtime exception");
+        }
+        // 模拟慢调用
+        if (slowCallIp != null && slowCallIp.equals(getLocalIp())) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+            }
         }
 
         return cartStore.getOrDefault(userID, Collections.emptyList());
