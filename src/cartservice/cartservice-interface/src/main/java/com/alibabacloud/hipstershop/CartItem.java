@@ -17,4 +17,15 @@ public class CartItem implements Serializable {
         this.productID = productID;
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+            "productID='" + productID + '\'' +
+            ", quantity=" + quantity +
+            ", productName='" + productName + '\'' +
+            ", productPicture='" + productPicture + '\'' +
+            ", price=" + price +
+            '}';
+    }
 }

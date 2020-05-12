@@ -45,6 +45,12 @@ public class AppController {
         return "home";
     }
 
+    @GetMapping("/setUser/{userId}")
+    public String user(@PathVariable(name="userId") String userId, Model model) {
+        userID = userId;
+        return userID;
+    }
+
 
     @GetMapping("/exception")
     public String exception() {
@@ -81,7 +87,7 @@ public class AppController {
         List<CartItem> items = cartDAO.viewCart(userID);
         for (CartItem item: items) {
             Product p = productDAO.getProductById(item.productID);
-            item.productName = p.getName();
+            item.productName = p.getName() + item.productName;
             item.price = p.getPrice();
             item.productPicture = p.getPicture();
         }

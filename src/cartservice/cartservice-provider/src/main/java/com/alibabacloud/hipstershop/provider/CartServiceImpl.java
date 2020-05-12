@@ -44,7 +44,21 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        return cartStore.getOrDefault(userID, Collections.emptyList());
+        List<CartItem> res = cartStore.getOrDefault(userID, Collections.emptyList());
+        String ip = getLocalIp();
+        List<CartItem> newRes = new ArrayList<>();
+        if (res != null) {
+            for (CartItem cartItem : res) {
+                CartItem newCart = new CartItem(cartItem.productID, cartItem.quantity);
+                newCart.productName = " from userId: " + userID + "; ip: " + ip;
+                newCart.productPicture = cartItem.productPicture;
+                newCart.price = cartItem.price;
+                newRes.add(newCart);
+                System.out.println(newCart);
+            }
+        }
+
+        return newRes;
     }
 
     @Override
