@@ -45,10 +45,10 @@ public class AppController {
         return "home";
     }
 
-    @GetMapping("/setUser/{userId}")
-    public String user(@PathVariable(name="userId") String userId, Model model) {
+    @GetMapping("/setUser")
+    public String user(@RequestParam(name="userId", required=false) String userId, Model model) {
         userID = userId;
-        return userID;
+        return "index.html";
     }
 
 
