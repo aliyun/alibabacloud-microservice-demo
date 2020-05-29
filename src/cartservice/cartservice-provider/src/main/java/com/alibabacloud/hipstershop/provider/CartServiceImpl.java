@@ -74,6 +74,11 @@ public class CartServiceImpl implements CartService {
         return true;
     }
 
+    @Override
+    public String getProviderIp(String name, int age) {
+        return getLocalIp();
+    }
+
     private String getLocalIp() {
         InetAddress inetAddress = null;
         try {

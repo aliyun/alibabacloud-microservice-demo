@@ -8,4 +8,6 @@ public interface CartService {
 
     boolean addItemToCart(String userID, String productID, int quantity);
 
+    String getProviderIp(String name, int age);
+
 }

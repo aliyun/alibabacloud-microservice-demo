@@ -23,4 +23,8 @@ public class CartDAO {
     public boolean addToCart(String userID, String productID, int quantity) {
         return cartService.addItemToCart(userID, productID, quantity);
     }
+
+    public String getRemoteIp(String name, int age) {
+        return cartService.getProviderIp(name, age);
+    }
 }
