@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+        <h1>流量控制</h1>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href="@{/router/begin}">
+                    <button type="button" class="btn">开启流量调用</button>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/router/stop}">
+                    <button type="button" class="btn">停止流量调用</button>
+                </a>
+            </div>
+
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Spring Cloud 调用结果</h1>
+                <p><span th:text=" '  用户名 :  ' + ${spring_cloud_name}"></span></p>
+                <p><span th:text=" '  年龄 :  '  + ${spring_cloud_age}"></span></p>
+
+                <div th:each="resultNode: ${spring_cloud_router_result}" class="col-md-6">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${resultNode.ip}"></h5>
+                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+                <h1>更新调用参数</h1>
+                <form action="/router/update/springcloud?name={name}&age={age}" method="get">
+                    <div class="form-group mb-6">
+                        <label for="spring-cloud-name">用户名</label>
+                        <input type="text" class="form-control col-md-4" id="spring-cloud-name" placeholder="name"
+                               name="name">
+                    </div>
+                    <div class="form-group mb-6">
+                        <label for="spring-cloud-age">年龄</label>
+                        <input type="text" class="form-control col-md-4" id="spring-cloud-age" placeholder="age"
+                               name="age">
+                    </div>
+                    <button type="submit" class="btn btn-default">更新</button>
+                </form>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <h1>Dubbo 调用结果</h1>
+                <p><span th:text=" '  用户名 :  ' + ${dubbo_name}"></span></p>
+                <p><span th:text=" '  年龄 :  '  + ${dubbo_age}"></span></p>
+                <div th:each="resultNode: ${dubbo_router_result}" class="col-md-6">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${resultNode.ip}"></h5>
+                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+                <h1>更新调用参数</h1>
+                <form action="/router/update/dubbo?name={name}&age={age}" method="get">
+                    <div class="form-group mb-6">
+                        <label for="dubbo-name">用户名</label>
+                        <input type="text" class="form-control col-md-4" id="dubbo-name" placeholder="name" name="name">
+                    </div>
+                    <div class="form-group mb-6">
+                        <label for="dubbo-age">年龄</label>
+                        <input type="text" class="form-control col-md-4" id="dubbo-age" placeholder="age" name="age">
+                    </div>
+                    <button type="submit" class="btn btn-default">更新</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>
