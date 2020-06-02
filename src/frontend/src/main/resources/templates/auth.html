@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+
+
+
+
+        <p></p>
+        <p>此页面为演示服务鉴权功能使用，调用结果显示最近对可指定黑（白）名单的，路径（接口）的 10 次调用中，可得到状态码分别返回了多少次</p>
+        <p>点击"开启流量调用"后，frontend 应用将不停地调用 以下路径/接口</p>
+        <p>点击"停止流量调用"后，流量调用被停止，同时清空数据</p>
+
+        <h1>流量开关</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href="@{/auth/begin}">
+                    <button type="button" class="btn">开启流量调用</button>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/auth/stop}">
+                    <button type="button" class="btn">停止流量调用</button>
+                </a>
+            </div>
+
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-6">
+
+                <h1>Spring Cloud 调用结果</h1>
+
+                <p>调用结果</p>
+                <p>格式：标题为Path</p>
+                <p>点击“开始调用”后，第一行为状态码，第二行为调用次数</p>
+                <div class="col-md-6">
+                    <div>
+                        <p>/product/OLJCESPC7Z</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode0: ${product0}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode0.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode0.times}"></h5>
+                            </div>
+
+                        </div>
+                        <p></p>
+                        <p>/product/66VCHSJNUP</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode1: ${product1}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode1.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode1.times}"></h5>
+                            </div>
+                        </div>
+                        <p></p>
+                        <p>/product/1YMWWN1N4O</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode2: ${product2}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode2.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode2.times}"></h5>
+                            </div>
+                        </div>
+                        <p></p>
+                        <p>/product/L9ECAV7KIM</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode3: ${product3}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode3.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode3.times}"></h5>
+                            </div>
+                        </div>
+                        <p></p>
+                        <p>/product/2ZYFJ3GM2N</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode4: ${product4}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode4.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode4.times}"></h5>
+                            </div>
+                        </div>
+                        <p></p>
+                        <p>/product/0PUK6V6EV0</p>
+                        <div class="card mb-6 box-shadow">
+                            <div th:each="resultNode5: ${product5}" class="card-body">
+                                <h5 class="card-title" th:text="${resultNode5.result}"></h5>
+                                <h5 class="card-title" th:text="${resultNode5.times}"></h5>
+                            </div>
+                        </div>
+                        <p></p>
+                    </div>
+
+                </div>
+
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <h1>Dubbo 调用结果</h1>
+
+                <p>调用结果</p>
+                <p>格式：标题为接口</p>
+                <p>点击“开始调用”后，第一行为状态码，第二行为调用次数</p>
+                <p>com.alibabacloud.hipstershop.CartService: viewCart()</p>
+                <div th:each="resultNode: ${dubbo_auth_result}" class="col-md-6">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${resultNode.result}"></h5>
+                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>
