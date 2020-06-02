@@ -46,14 +46,26 @@ public class AccessCountUtil {
 
     // 模拟对某uri持续的访问，queue中存放状态码
     public static void uriAccess(String uri, Object lock, Queue<String> queue) {
+        long t1 = System.currentTimeMillis();
+
+        int minutes = 1;
+
         while (AUTH_ENABLE.get()) {
             try {
+                long t2 = System.currentTimeMillis();
                 HttpUriRequest request = new HttpGet(uri);
                 CloseableHttpResponse response = HttpClients.createDefault().execute(request);
                 int code = response.getStatusLine().getStatusCode();
                 String result = Integer.toString(code);
                 synchronized (lock) {
                     queue.add(result);
+                }
+                if (t2 - t1 > minutes * 60 * 1000) {
+                    AUTH_BEGIN.set(false);
+                    synchronized (lock) {
+                        queue.clear();
+                    }
+                    break;
                 }
             } catch (Exception ignore) {}
         }
