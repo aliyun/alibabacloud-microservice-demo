@@ -86,7 +86,11 @@ public class RouterTestController {
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
                         .readLine();
                     synchronized (DUBBO_LOCK) {
-                        DUBBO_RESULT_QUEUE.add(result);
+                        if (result.length() < 20) {
+                            DUBBO_RESULT_QUEUE.add(result);
+                        } else {
+                            DUBBO_RESULT_QUEUE.add("出错了");
+                        }
                     }
                 } catch (Exception ignore) {}
 
@@ -97,12 +101,17 @@ public class RouterTestController {
             while (INVOKER_ENABLE.get()) {
                 try {
                     HttpUriRequest request = new HttpGet(
-                        "http://127.0.0.1:" + port + "/router/springcloud?name=" + dubbo_name + "&age=" + dubbo_age);
+                        "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
+                            + spring_cloud_age);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
                         .readLine();
                     synchronized (SPRING_CLOUD_LOCK) {
-                        SPRING_CLOUD_RESULT_QUEUE.add(result);
+                        if (result.length() < 20) {
+                            SPRING_CLOUD_RESULT_QUEUE.add(result);
+                        } else {
+                            SPRING_CLOUD_RESULT_QUEUE.add("出错了");
+                        }
                     }
                 } catch (Exception ignore) {}
 
@@ -127,8 +136,6 @@ public class RouterTestController {
         synchronized (SPRING_CLOUD_LOCK) {
             SPRING_CLOUD_RESULT_QUEUE.clear();
         }
-
-
 
         return "router test stop success";
     }
