@@ -24,6 +24,10 @@ public class CartDAO {
         return cartService.addItemToCart(userID, productID, quantity);
     }
 
+    public String setExceptionByIp(String ip) {
+        return cartService.setExceptionByIp(ip);
+    }
+
     public String getRemoteIp(String name, int age) {
         return cartService.getProviderIp(name, age);
     }
