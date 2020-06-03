@@ -27,4 +27,8 @@ public class CartDAO {
     public String setExceptionByIp(String ip) {
         return cartService.setExceptionByIp(ip);
     }
+
+    public String getRemoteIp(String name, int age) {
+        return cartService.getProviderIp(name, age);
+    }
 }

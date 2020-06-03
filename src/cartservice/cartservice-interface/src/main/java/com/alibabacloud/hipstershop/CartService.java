@@ -10,4 +10,6 @@ public interface CartService {
 
     String setExceptionByIp(String ip);
 
+    String getProviderIp(String name, int age);
+
 }
