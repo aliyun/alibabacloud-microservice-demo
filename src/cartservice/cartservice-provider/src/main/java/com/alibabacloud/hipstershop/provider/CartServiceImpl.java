@@ -85,4 +85,14 @@ public class CartServiceImpl implements CartService {
         }
         return null;
     }
+
+    @Override
+    public String setExceptionByIp(String ip) {
+        String localIp = getLocalIp();
+        if (localIp.equals(ip)) {
+            throw new RuntimeException();
+        }
+
+        return localIp;
+    }
 }
