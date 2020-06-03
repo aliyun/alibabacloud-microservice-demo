@@ -43,6 +43,12 @@
                 <p><span th:text=" '  allNum :  ' + ${all_num}"></span></p>
                 <p><span th:text=" '  errorNum :  '  + ${exception_num}"></span></p>
 
+                <div class="col-md-3">
+                    <a th:href="@{/outlier/clear}">
+                        <button type="button" class="btn">清空数据</button>
+                    </a>
+                </div>
+
                 <p></p>
                 <p></p>
                 <p></p>
@@ -57,6 +63,16 @@
                     <p><span th:text=" '  当前设置异常的ip :  ' + ${exception_ip}"></span></p>
                     <button type="submit" class="btn btn-default">设置</button>
                 </form>
+                <form action="/outlier/time?time={time}" method="get">
+                    <div class="form-group mb-6">
+                        <label for="time">Sleep time</label>
+                        <input type="text" class="form-control col-md-4" id="time" placeholder="time"
+                               name="time">
+                    </div>
+                    <p><span th:text=" '  当前调用等待时长 :  ' + ${sleep_time}"></span></p>
+                    <button type="submit" class="btn btn-default">设置</button>
+                </form>
+
 
             </div>
         </div>

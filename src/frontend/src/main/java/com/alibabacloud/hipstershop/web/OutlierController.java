@@ -20,6 +20,7 @@ public class OutlierController {
     public static long exceptionNum = 0;
     public static long allNum = 0;
     private static String exceptionIp = "";
+    private int sleepTime = 100;
 
     @Autowired
     private CartDAO cartDAO;
@@ -37,15 +38,15 @@ public class OutlierController {
             }
         });
 
-
     @RequestMapping(value = "/outlier/begin", method = RequestMethod.GET)
-    public String begin() {
+    public String begin(Model model) {
         begin.set(true);
+
         REFRESH_EXECUTOR.submit((Runnable)() -> {
             while (begin.get()) {
                 try {
                     allNum++;
-                    Thread.sleep(100);
+                    Thread.sleep(sleepTime);
 
                     cartDAO.setExceptionByIp(exceptionIp);
                 } catch (Exception exception) {
@@ -53,30 +54,50 @@ public class OutlierController {
                 }
             }
         });
+
+        show(model);
         return "outlier.html";
     }
 
     @RequestMapping(value = "/outlier/stop", method = RequestMethod.GET)
     public String stop(Model model) {
         begin.set(false);
-        model.addAttribute("all_num",allNum);
-        model.addAttribute("exception_num",exceptionNum);
+        show(model);
+        return "outlier.html";
+    }
+
+    @RequestMapping(value = "/outlier/time", method = RequestMethod.GET)
+    public String time(Model model, int time) {
+        sleepTime = time;
+        show(model);
         return "outlier.html";
     }
 
     @RequestMapping(value = "/outlier/setException", method = RequestMethod.GET)
     public String setException(Model model, String ip) {
         exceptionIp = ip;
-        model.addAttribute("exception_ip",exceptionIp);
+        show(model);
         return "outlier.html";
     }
 
-
     @RequestMapping(value = "/outlier/result", method = RequestMethod.GET)
     public String outlierResult(Model model) {
-        begin.set(false);
-        model.addAttribute("all_num",allNum);
-        model.addAttribute("exception_num",exceptionNum);
+        show(model);
         return "outlier.html";
+    }
+
+    @RequestMapping(value = "/outlier/clear", method = RequestMethod.GET)
+    public String clear(Model model) {
+        allNum = 0;
+        exceptionNum = 0;
+        show(model);
+        return "outlier.html";
+    }
+
+    private void show(Model model) {
+        model.addAttribute("all_num", allNum);
+        model.addAttribute("exception_ip", exceptionIp);
+        model.addAttribute("exception_num", exceptionNum);
+        model.addAttribute("sleep_time", sleepTime);
     }
 }
