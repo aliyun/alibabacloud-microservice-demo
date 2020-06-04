@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+
+        <!--<p></p>-->
+        <!--<p>说明，此页面为演示标签路由/金丝雀发布功能使用，调用结果显示最近的 1000 次调用中，分别被路由到了服务提供者的哪些 IP</p>-->
+        <!--<p>点击"开启流量调用"后，frontend 应用将不停地调用 cartservice 和 productservice</p>-->
+        <!--<p>点击"停止流量调用"后，流量调用被停止，同时清空数据</p>-->
+        <!--<p>调用参数分别表示传递的参数</p>-->
+        <!--<p>    其中 Spring Cloud 调用对应的是 productservice 的 /getIp 这个 URL，用户名和年龄分别为 name 和 age 。</p>-->
+        <!--<p>    其中 Dubbo 调用对应的是 cartservice 的 CartDAO 接口的 String getRemoteIp(String name, int age) 方法，用户名和年龄分别为 name 和 age 。</p>-->
+
+        <!--<h1>流量开关</h1>-->
+
+        <div class="col-md-6"></div>
+
+        <div class="row">
+            <div class="offset-md-3 col-md-3">
+                <a th:href="@{/outlier/begin}">
+                    <button type="button" class="btn">开启流量调用</button>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/outlier/stop}">
+                    <button type="button" class="btn">停止流量调用</button>
+                </a>
+            </div>
+
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="offset-md-3 col-md-6">
+                <h1>离群摘除测试的调用结果</h1>
+                <p><span th:text=" '  allNum :  ' + ${all_num}"></span></p>
+                <p><span th:text=" '  errorNum :  '  + ${exception_num}"></span></p>
+
+                <div class="col-md-3">
+                    <a th:href="@{/outlier/clear}">
+                        <button type="button" class="btn">清空数据</button>
+                    </a>
+                </div>
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+                <h1>更新调用参数</h1>
+                <form action="/outlier/setException?ip={ip}" method="get">
+                    <div class="form-group mb-6">
+                        <label for="exception-ip">Exception Ip</label>
+                        <input type="text" class="form-control col-md-4" id="exception-ip" placeholder="ip"
+                               name="ip">
+                    </div>
+                    <p><span th:text=" '  当前设置异常的ip :  ' + ${exception_ip}"></span></p>
+                    <button type="submit" class="btn btn-default">设置</button>
+                </form>
+                <form action="/outlier/time?time={time}" method="get">
+                    <div class="form-group mb-6">
+                        <label for="time">Sleep time</label>
+                        <input type="text" class="form-control col-md-4" id="time" placeholder="time"
+                               name="time">
+                    </div>
+                    <p><span th:text=" '  当前调用等待时长 :  ' + ${sleep_time}"></span></p>
+                    <button type="submit" class="btn btn-default">设置</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

@@ -86,13 +86,17 @@ public class RouterTestController {
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
                         .readLine();
                     synchronized (DUBBO_LOCK) {
-                        if (result.length() < 20) {
-                            DUBBO_RESULT_QUEUE.add(result);
-                        } else {
-                            DUBBO_RESULT_QUEUE.add("出错了");
+                        if(INVOKER_ENABLE.get()) {
+                            if (result.length() < 20) {
+                                DUBBO_RESULT_QUEUE.add(result);
+                            } else {
+                                DUBBO_RESULT_QUEUE.add("出错了");
+                            }
                         }
                     }
-                } catch (Exception ignore) {}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -107,13 +111,17 @@ public class RouterTestController {
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
                         .readLine();
                     synchronized (SPRING_CLOUD_LOCK) {
-                        if (result.length() < 20) {
-                            SPRING_CLOUD_RESULT_QUEUE.add(result);
-                        } else {
-                            SPRING_CLOUD_RESULT_QUEUE.add("出错了");
+                        if(INVOKER_ENABLE.get()) {
+                            if (result.length() < 20) {
+                                SPRING_CLOUD_RESULT_QUEUE.add(result);
+                            } else {
+                                SPRING_CLOUD_RESULT_QUEUE.add("出错了");
+                            }
                         }
                     }
-                } catch (Exception ignore) {}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
