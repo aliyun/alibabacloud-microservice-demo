@@ -20,16 +20,21 @@
         <p>    其中 Dubbo 调用对应的是 cartservice 的 CartDAO 接口的 String getRemoteIp(String name, int age) 方法，用户名和年龄分别为 name 和 age 。</p>
 
         <h1>流量开关</h1>
+        <p></p>
+        <p></p>
+        <p></p>
         <div class="row">
             <div class="col-md-6">
                 <a th:href="@{/router/begin}">
                     <button type="button" class="btn">开启流量调用</button>
                 </a>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
             </div>
             <div class="col-md-6">
                 <a th:href="@{/router/stop}">
                     <button type="button" class="btn">停止流量调用</button>
                 </a>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
             </div>
 
         </div>

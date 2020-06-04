@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+
+        <p></p>
+        <p>说明，此页面为演示无损下线功能使用，调用结果显示最近的 1000 次调用中，正常的调用次数和出错的调用次数</p>
+        <p>点击"开启流量调用"后，frontend 应用将不停地调用 cartservice 和 productservice</p>
+        <p>点击"停止流量调用"后，流量调用被停止，同时清空数据</p>
+
+        <h1>流量开关</h1>
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href="@{/shutdown/begin}">
+                    <button type="button" class="btn">开启流量调用</button>
+                </a>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/shutdown/stop}">
+                    <button type="button" class="btn">停止流量调用</button>
+                </a>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1>product service 调用结果</h1>
+
+
+                <div th:each="resultNode: ${productservice}" class="col-md-6">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${resultNode.ip}"></h5>
+                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <h1>cart service 调用结果</h1>
+
+                <div th:each="resultNode: ${cartservice}" class="col-md-6">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${resultNode.ip}"></h5>
+                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+                <p></p>
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

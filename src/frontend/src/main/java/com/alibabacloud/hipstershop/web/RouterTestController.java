@@ -2,8 +2,8 @@ package com.alibabacloud.hipstershop.web;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
-import com.alibabacloud.hipstershop.common.CommonUtil;
 import com.alibabacloud.hipstershop.dao.CartDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 
@@ -69,17 +71,39 @@ public class RouterTestController {
     }
 
     @RequestMapping(value = "/begin", method = RequestMethod.GET)
-    public String begin() {
+    public RedirectView begin(RedirectAttributes redirectAttributes) {
 
         if (ROUTER_BEGIN.get()) {
-            return "router test already began";
+            redirectAttributes.addFlashAttribute("message", "已开启");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            return new RedirectView("/router/result");
         }
 
+        startInvoke(port);
+
+        redirectAttributes.addFlashAttribute("message", "已开启");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        return new RedirectView("/router/result");
+
+    }
+
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    public RedirectView stop(RedirectAttributes redirectAttributes) {
+
+        stopInvoker();
+
+        redirectAttributes.addFlashAttribute("message2", "已停止");
+        redirectAttributes.addFlashAttribute("alertClass2", "alert-success");
+        return new RedirectView("/router/result");
+    }
+
+    public static void startInvoke(String port){
         INVOKER_ENABLE.set(true);
 
         EXECUTOR_SERVICE.submit((Runnable)() -> {
             while (INVOKER_ENABLE.get()) {
                 try {
+                    TimeUnit.MICROSECONDS.sleep(10);
                     HttpUriRequest request = new HttpGet(
                         "http://127.0.0.1:" + port + "/router/dubbo?name=" + dubbo_name + "&age=" + dubbo_age);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
@@ -104,6 +128,7 @@ public class RouterTestController {
         EXECUTOR_SERVICE.submit((Runnable)() -> {
             while (INVOKER_ENABLE.get()) {
                 try {
+                    TimeUnit.MICROSECONDS.sleep(10);
                     HttpUriRequest request = new HttpGet(
                         "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
                             + spring_cloud_age);
@@ -127,13 +152,10 @@ public class RouterTestController {
         });
 
         ROUTER_BEGIN.set(true);
-        return "begin now";
-
     }
 
-    @RequestMapping(value = "/stop", method = RequestMethod.GET)
-    public String stop() {
 
+    public static void stopInvoker(){
         INVOKER_ENABLE.set(false);
         ROUTER_BEGIN.set(false);
 
@@ -144,8 +166,5 @@ public class RouterTestController {
         synchronized (SPRING_CLOUD_LOCK) {
             SPRING_CLOUD_RESULT_QUEUE.clear();
         }
-
-        return "router test stop success";
     }
-
 }

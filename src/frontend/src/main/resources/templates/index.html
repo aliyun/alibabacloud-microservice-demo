@@ -56,15 +56,20 @@
         <div class="container bg-light py-3 px-lg-5 py-lg-5">
             <div class="row">
                 <div class="btn-group">
-                    <a th:href="@{/router/result}">
+
+                    <a th:href="@{/shutdown/result}">
+                        <button type="button" class="btn">无损下线演示</button>
+                    </a>
+                    <a th:href="@{/outlier/result}" style="padding-left: 40px">
+                        <button type="button" class="btn">离群摘除演示</button>
+                    </a>
+                    <a th:href="@{/router/result}" style="padding-left: 40px">
                         <button type="button" class="btn">标签路由演示</button>
                     </a>
                     <a th:href="@{/auth/result}" style="padding-left: 40px">
                         <button type="button" class="btn">服务鉴权演示</button>
                     </a>
-                    <a th:href="@{/outlier/result}" style="padding-left: 40px">
-                        <button type="button" class="btn">离群摘除演示</button>
-                    </a>
+
                 </div>
             </div>
         </div>
