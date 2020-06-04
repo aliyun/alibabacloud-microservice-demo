@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 
 
@@ -58,7 +60,12 @@ public class AuthTestController {
 
         AUTH_BEGIN.set(true);
 
-        redirectAttributes.addFlashAttribute("message", "开启中，请再次点击按钮查看结果");
+        try {
+            //TimeUnit.SECONDS.sleep(1);
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (Exception ignore) {}
+
+        redirectAttributes.addFlashAttribute("message", "开启成功，点击按钮可查最新结果");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         return new RedirectView("/auth/result");
     }
