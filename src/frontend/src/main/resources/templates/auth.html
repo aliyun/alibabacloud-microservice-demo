@@ -23,11 +23,13 @@
                 <a th:href="@{/auth/begin}">
                     <button type="button" class="btn">开启流量调用</button>
                 </a>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
             </div>
             <div class="col-md-6">
                 <a th:href="@{/auth/stop}">
                     <button type="button" class="btn">停止流量调用</button>
                 </a>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
             </div>
 
         </div>
@@ -40,16 +42,17 @@
 
                 <h1>Spring Cloud 调用结果</h1>
 
-                <p>调用结果</p>
                 <p>格式：标题为Path</p>
-                <p>点击“开始调用”后，第一行为状态码，第二行为调用次数</p>
+                <p>点击“开始调用”，刷新后返回状态码，200为正常</p>
+                <p>若最近10次调用返回同一状态码，在状态码下方将不显示调用次数</p>
                 <div class="col-md-6">
                     <div>
                         <p>/product/OLJCESPC7Z</p>
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode0: ${product0}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode0.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode0.times}"></h5>
+
+                                <h5 th:if="${resultNode0.display}" th:text="${resultNode0.times}"></h5>
                             </div>
 
                         </div>
@@ -58,7 +61,7 @@
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode1: ${product1}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode1.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode1.times}"></h5>
+                                <h5 th:if="${resultNode1.display}" th:text="${resultNode1.times}"></h5>
                             </div>
                         </div>
                         <p></p>
@@ -66,7 +69,7 @@
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode2: ${product2}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode2.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode2.times}"></h5>
+                                <h5 th:if="${resultNode2.display}" th:text="${resultNode2.times}"></h5>
                             </div>
                         </div>
                         <p></p>
@@ -74,7 +77,7 @@
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode3: ${product3}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode3.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode3.times}"></h5>
+                                <h5 th:if="${resultNode3.display}" th:text="${resultNode3.times}"></h5>
                             </div>
                         </div>
                         <p></p>
@@ -82,7 +85,7 @@
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode4: ${product4}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode4.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode4.times}"></h5>
+                                <h5 th:if="${resultNode4.display}" th:text="${resultNode4.times}"></h5>
                             </div>
                         </div>
                         <p></p>
@@ -90,7 +93,7 @@
                         <div class="card mb-6 box-shadow">
                             <div th:each="resultNode5: ${product5}" class="card-body">
                                 <h5 class="card-title" th:text="${resultNode5.result}"></h5>
-                                <h5 class="card-title" th:text="${resultNode5.times}"></h5>
+                                <h5 th:if="${resultNode5.display}" th:text="${resultNode5.times}"></h5>
                             </div>
                         </div>
                         <p></p>
@@ -110,16 +113,16 @@
 
                 <h1>Dubbo 调用结果</h1>
 
-                <p>调用结果</p>
                 <p>格式：标题为接口</p>
-                <p>点击“开始调用”后，第一行为状态码，第二行为调用次数</p>
+                <p>点击“开始调用”，刷新后返回状态码，200为正常</p>
+                <p>若最近10次调用返回同一状态码，在状态码下方将不显示调用次数</p>
                 <p>com.alibabacloud.hipstershop.CartService: viewCart()</p>
                 <div th:each="resultNode: ${dubbo_auth_result}" class="col-md-6">
                     <div class="card mb-6 box-shadow">
 
                         <div class="card-body">
                             <h5 class="card-title" th:text="${resultNode.result}"></h5>
-                            <h5 class="card-title" th:text="${resultNode.times}"></h5>
+                            <h5 th:if="${resultNode.display}" th:text="${resultNode.times}"></h5>
                         </div>
                     </div>
                     <p></p>

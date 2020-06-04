@@ -60,8 +60,11 @@ public class AccessCountUtil {
                 synchronized (lock) {
                     queue.add(result);
                 }
-                if (t2 - t1 > minutes * 60 * 1000) {
-                    AUTH_BEGIN.set(false);
+
+                // 超时或用户手动停止
+                if (t2 - t1 > minutes * 60 * 1000 || !AUTH_ENABLE.get()) {
+                    AUTH_BEGIN.compareAndSet(true, false);
+
                     synchronized (lock) {
                         queue.clear();
                     }
@@ -72,7 +75,7 @@ public class AccessCountUtil {
     }
 
     // 从queue中取出字符串，并放入map中计数
-    public static void putResult(Object lock, List<ResultNode> list, Map<String, Integer> map, Queue<String> queue) {
+    public static void putResult(Object lock, List<ResultNode> list, Map<String, Integer> map, Queue<String> queue, boolean display) {
 
         synchronized (lock) {
 
@@ -90,7 +93,11 @@ public class AccessCountUtil {
             }
 
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                list.add(new ResultNode(entry.getKey(), entry.getValue()));
+                ResultNode resultNode = new ResultNode(entry.getKey(), entry.getValue(), display);
+                if (!display && entry.getValue() == 10) {
+                    resultNode.setDisplay(false);
+                }
+                list.add(resultNode);
             }
 
         }
@@ -100,6 +107,7 @@ public class AccessCountUtil {
 
         private String result;
         private int times;
+        private boolean display; // 是否显示times
 
         public String getResult() { return result; }
 
@@ -109,9 +117,14 @@ public class AccessCountUtil {
 
         public void setTimes(int times) { this.times = times;}
 
-        public ResultNode(String result, int times) {
+        public boolean getDisplay() { return display; }
+
+        public void setDisplay(boolean display) { this.display = display;}
+
+        public ResultNode(String result, int times, boolean display) {
             this.result = result;
             this.times = times;
+            this.display = display;
         }
     }
 }

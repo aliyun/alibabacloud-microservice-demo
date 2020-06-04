@@ -29,7 +29,10 @@ public class AuthDemoController {
     @GetMapping("/auth/result")
     public String authResult(Model model) {
 
-        AccessCountUtil.putResult(DUBBO_AUTH_LOCK, DUBBO_RESULT_LIST, DUBBO_RESULT_MAP, DUBBO_AUTH_RESULT_QUEUE);
+        // 设置当queue中的访问都是同一个时，不显示次数
+        boolean display = false;
+
+        AccessCountUtil.putResult(DUBBO_AUTH_LOCK, DUBBO_RESULT_LIST, DUBBO_RESULT_MAP, DUBBO_AUTH_RESULT_QUEUE, display);
 
         model.addAttribute("dubbo_auth_result", DUBBO_RESULT_LIST);
 
@@ -44,30 +47,11 @@ public class AuthDemoController {
                 SPRING_CLOUD_RESULT_MAP[i] = new ConcurrentHashMap<>();
             }
 
-            AccessCountUtil.putResult(PRODUCT_LOCK[i], SPRING_CLOUD_RESULT_LIST[i], SPRING_CLOUD_RESULT_MAP[i], SPRING_CLOUD_AUTH_RESULT_QUEUE[i]);
+            AccessCountUtil.putResult(PRODUCT_LOCK[i], SPRING_CLOUD_RESULT_LIST[i], SPRING_CLOUD_RESULT_MAP[i], SPRING_CLOUD_AUTH_RESULT_QUEUE[i], display);
 
             model.addAttribute("product"+i, SPRING_CLOUD_RESULT_LIST[i]);
         }
         return "auth.html";
-    }
-
-    public static class ResultNode {
-
-        private String result;
-        private int times;
-
-        public String getResult() { return result; }
-
-        public void setResult(String result) { this.result = result; }
-
-        public int getTimes() { return times; }
-
-        public void setTimes(int times) { this.times = times;}
-
-        public ResultNode(String result, int times) {
-            this.result = result;
-            this.times = times;
-        }
     }
 
 }

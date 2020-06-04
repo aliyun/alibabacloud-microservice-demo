@@ -5,9 +5,12 @@ import com.alibabacloud.hipstershop.dao.CartDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 
@@ -16,7 +19,7 @@ import static com.alibabacloud.hipstershop.common.CommonUtil.*;
  * @author meisheng.lym
  */
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthTestController {
 
@@ -29,9 +32,11 @@ public class AuthTestController {
     private String port;
 
     @RequestMapping(value = "/begin", method = RequestMethod.GET)
-    public String begin() {
+    public RedirectView begin(RedirectAttributes redirectAttributes) {
         if (AUTH_BEGIN.get()) {
-            return "auth test already began";
+            redirectAttributes.addFlashAttribute("message", "已开启");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            return new RedirectView("/auth/result");
         }
 
         AUTH_ENABLE.set(true);
@@ -53,11 +58,19 @@ public class AuthTestController {
 
         AUTH_BEGIN.set(true);
 
-        return "begin now";
+        redirectAttributes.addFlashAttribute("message", "开启中，请再次点击按钮查看结果");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        return new RedirectView("/auth/result");
     }
 
     @RequestMapping(value = "/stop", method = RequestMethod.GET)
-    public String stop() {
+    public RedirectView stop(RedirectAttributes redirectAttributes) {
+        if (!AUTH_BEGIN.get()) {
+            redirectAttributes.addFlashAttribute("message2", "已停止");
+            redirectAttributes.addFlashAttribute("alertClass2", "alert-success");
+            return new RedirectView("/auth/result");
+        }
+
         AUTH_ENABLE.set(false);
         AUTH_BEGIN.set(false);
 
@@ -71,6 +84,8 @@ public class AuthTestController {
             }
         }
 
-        return "auth test stop success";
+        redirectAttributes.addFlashAttribute("message2", "停止成功");
+        redirectAttributes.addFlashAttribute("alertClass2", "alert-success");
+        return new RedirectView("/auth/result");
     }
 }
