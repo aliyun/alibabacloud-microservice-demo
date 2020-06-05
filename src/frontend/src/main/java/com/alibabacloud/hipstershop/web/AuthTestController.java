@@ -1,14 +1,12 @@
 package com.alibabacloud.hipstershop.web;
 
 import com.alibabacloud.hipstershop.common.AccessCountUtil;
-import com.alibabacloud.hipstershop.dao.CartDAO;
-import com.alibabacloud.hipstershop.dao.ProductDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,12 +23,7 @@ import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 @RequestMapping("/auth")
 public class AuthTestController {
 
-    @Autowired
-    private ProductDAO productDAO;
-    @Autowired
-    private CartDAO cartDAO;
-
-    @Value("8080")
+    @Value("${server.port}")
     private String port;
 
     @RequestMapping(value = "/begin", method = RequestMethod.GET)
@@ -61,7 +54,6 @@ public class AuthTestController {
         AUTH_BEGIN.set(true);
 
         try {
-            //TimeUnit.SECONDS.sleep(1);
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (Exception ignore) {}
 
