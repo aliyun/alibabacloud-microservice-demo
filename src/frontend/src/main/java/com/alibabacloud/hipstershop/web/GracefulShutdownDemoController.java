@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static com.alibabacloud.hipstershop.common.CommonUtil.DUBBO_INVOKER_TIMES;
+import static com.alibabacloud.hipstershop.common.CommonUtil.SPRING_CLOUD_INVOKER_TIMES;
 import static com.alibabacloud.hipstershop.common.CommonUtil.DUBBO_LOCK;
 import static com.alibabacloud.hipstershop.common.CommonUtil.DUBBO_RESULT_QUEUE;
 import static com.alibabacloud.hipstershop.common.CommonUtil.SPRING_CLOUD_LOCK;
@@ -55,6 +57,7 @@ public class GracefulShutdownDemoController {
                 SPRING_CLOUD_RESULT_LIST.add(new ResultNode(entry.getKey(), entry.getValue()));
             }
 
+
             model.addAttribute("productservice", SPRING_CLOUD_RESULT_LIST);
         }
         synchronized (DUBBO_LOCK) {
@@ -82,9 +85,12 @@ public class GracefulShutdownDemoController {
                 DUBBO_RESULT_LIST.add(new ResultNode(entry.getKey(), entry.getValue()));
             }
 
+
             model.addAttribute("cartservice", DUBBO_RESULT_LIST);
         }
 
+        model.addAttribute("dubbo_invoker_times",DUBBO_INVOKER_TIMES.get());
+        model.addAttribute("spring_cloud_invoker_times",SPRING_CLOUD_INVOKER_TIMES.get());
         return "shutdown.html";
     }
 

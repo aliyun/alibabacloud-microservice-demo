@@ -104,6 +104,7 @@ public class RouterTestController {
             while (INVOKER_ENABLE.get()) {
                 try {
                     TimeUnit.MICROSECONDS.sleep(10);
+                    DUBBO_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
                         "http://127.0.0.1:" + port + "/router/dubbo?name=" + dubbo_name + "&age=" + dubbo_age);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
@@ -129,6 +130,7 @@ public class RouterTestController {
             while (INVOKER_ENABLE.get()) {
                 try {
                     TimeUnit.MICROSECONDS.sleep(10);
+                    SPRING_CLOUD_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
                         "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
                             + spring_cloud_age);
@@ -158,6 +160,9 @@ public class RouterTestController {
     public static void stopInvoker(){
         INVOKER_ENABLE.set(false);
         ROUTER_BEGIN.set(false);
+
+        SPRING_CLOUD_INVOKER_TIMES.set(0);
+        DUBBO_INVOKER_TIMES.set(0);
 
         synchronized (DUBBO_LOCK) {
             DUBBO_RESULT_QUEUE.clear();

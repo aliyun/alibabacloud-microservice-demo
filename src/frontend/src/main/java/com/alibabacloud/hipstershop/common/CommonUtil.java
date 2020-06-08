@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.collect.EvictingQueue;
 
@@ -32,6 +33,9 @@ public class CommonUtil {
     public static Queue<String> DUBBO_RESULT_QUEUE = EvictingQueue.create(1000);
 
     public static Queue<String> SPRING_CLOUD_RESULT_QUEUE = EvictingQueue.create(1000);
+
+    public static AtomicLong DUBBO_INVOKER_TIMES = new AtomicLong(0);
+    public static AtomicLong SPRING_CLOUD_INVOKER_TIMES = new AtomicLong(0);
 
     public static Queue<String> DUBBO_AUTH_RESULT_QUEUE = EvictingQueue.create(10);
     public static Queue<String>[] SPRING_CLOUD_AUTH_RESULT_QUEUE = new EvictingQueue[PRODUCT_NUM];

@@ -40,7 +40,11 @@
             <div class="col-md-6">
                 <h1>product service 调用结果</h1>
 
-
+                <p></p>
+                <h4><span th:text=" '  总调用次数 :  ' + ${spring_cloud_invoker_times}"></span></h4>
+                <p></p>
+                <h4>最近 1000 次调用结果统计</h4>
+                <p></p>
                 <div th:each="resultNode: ${productservice}" class="col-md-6">
                     <div class="card mb-6 box-shadow">
 
@@ -59,6 +63,11 @@
 
                 <h1>cart service 调用结果</h1>
 
+                <p></p>
+                <h4><span th:text=" '  总调用次数 :  ' + ${dubbo_invoker_times}"></span></h4>
+                <p></p>
+                <h4>最近 1000 次调用结果统计</h4>
+                <p></p>
                 <div th:each="resultNode: ${cartservice}" class="col-md-6">
                     <div class="card mb-6 box-shadow">
 
