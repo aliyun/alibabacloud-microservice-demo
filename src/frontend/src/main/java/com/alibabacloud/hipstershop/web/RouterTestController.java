@@ -116,6 +116,7 @@ public class RouterTestController {
                                 DUBBO_RESULT_QUEUE.add(result);
                             } else {
                                 DUBBO_RESULT_QUEUE.add("出错了");
+                                DUBBO_ERROR_TIMES.getAndIncrement();
                             }
                         }
                     }
@@ -143,6 +144,7 @@ public class RouterTestController {
                                 SPRING_CLOUD_RESULT_QUEUE.add(result);
                             } else {
                                 SPRING_CLOUD_RESULT_QUEUE.add("出错了");
+                                SPRING_CLOUD_ERROR_TIMES.getAndIncrement();
                             }
                         }
                     }
@@ -163,6 +165,9 @@ public class RouterTestController {
 
         SPRING_CLOUD_INVOKER_TIMES.set(0);
         DUBBO_INVOKER_TIMES.set(0);
+
+        SPRING_CLOUD_ERROR_TIMES.set(0);
+        DUBBO_ERROR_TIMES.set(0);
 
         synchronized (DUBBO_LOCK) {
             DUBBO_RESULT_QUEUE.clear();

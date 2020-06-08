@@ -43,6 +43,8 @@
                 <p></p>
                 <h4><span th:text=" '  总调用次数 :  ' + ${spring_cloud_invoker_times}"></span></h4>
                 <p></p>
+                <h4><span th:text=" '  总错误次数 :  ' + ${spring_cloud_error_times}"></span></h4>
+                <p></p>
                 <h4>最近 1000 次调用结果统计</h4>
                 <p></p>
                 <div th:each="resultNode: ${productservice}" class="col-md-6">
@@ -65,6 +67,8 @@
 
                 <p></p>
                 <h4><span th:text=" '  总调用次数 :  ' + ${dubbo_invoker_times}"></span></h4>
+                <p></p>
+                <h4><span th:text=" '  总错误次数 :  ' + ${dubbo_error_times}"></span></h4>
                 <p></p>
                 <h4>最近 1000 次调用结果统计</h4>
                 <p></p>

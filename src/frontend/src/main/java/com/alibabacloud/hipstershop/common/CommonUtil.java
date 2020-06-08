@@ -36,6 +36,8 @@ public class CommonUtil {
 
     public static AtomicLong DUBBO_INVOKER_TIMES = new AtomicLong(0);
     public static AtomicLong SPRING_CLOUD_INVOKER_TIMES = new AtomicLong(0);
+    public static AtomicLong DUBBO_ERROR_TIMES = new AtomicLong(0);
+    public static AtomicLong SPRING_CLOUD_ERROR_TIMES = new AtomicLong(0);
 
     public static Queue<String> DUBBO_AUTH_RESULT_QUEUE = EvictingQueue.create(10);
     public static Queue<String>[] SPRING_CLOUD_AUTH_RESULT_QUEUE = new EvictingQueue[PRODUCT_NUM];
