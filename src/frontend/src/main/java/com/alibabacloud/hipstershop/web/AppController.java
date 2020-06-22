@@ -39,6 +39,19 @@ public class AppController {
         return "index.html";
     }
 
+    @GetMapping("/setExceptionByIp")
+    public String setExceptionByIp(@RequestParam(name="ip", required=false, defaultValue="") String ip, Model model) {
+        try {
+            OutlierController.allNum++;
+            productDAO.setExceptionByIp(ip);
+        } catch (Exception e) {
+            OutlierController.exceptionNum++;
+            throw e;
+        }
+        model.addAttribute("products", productDAO.getProductList());
+        return "index.html";
+    }
+
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);

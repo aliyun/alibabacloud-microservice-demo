@@ -31,6 +31,10 @@ public class ProductDAO {
         return restTemplate.getForObject("http://productservice/getIp?name=" + name + "&age=" + age, String.class);
     }
 
+    public String setExceptionByIp(String ip) {
+        return restTemplate.getForObject("http://productservice/setExceptionByIp?ip=" + ip, String.class);
+    }
+
     @FeignClient(name = "productservice")
     public interface ProductService {
 

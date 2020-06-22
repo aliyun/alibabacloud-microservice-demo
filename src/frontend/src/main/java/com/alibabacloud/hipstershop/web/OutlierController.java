@@ -1,11 +1,16 @@
 package com.alibabacloud.hipstershop.web;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.alibabacloud.hipstershop.dao.CartDAO;
+import com.alibabacloud.hipstershop.dao.ProductDAO;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,9 +26,6 @@ public class OutlierController {
     public static long allNum = 0;
     private static String exceptionIp = "";
     private int sleepTime = 100;
-
-    @Autowired
-    private CartDAO cartDAO;
 
     @Value("${server.port}")
     private String port;
@@ -45,12 +47,19 @@ public class OutlierController {
         REFRESH_EXECUTOR.submit((Runnable)() -> {
             while (begin.get()) {
                 try {
-                    allNum++;
                     Thread.sleep(sleepTime);
-
-                    cartDAO.setExceptionByIp(exceptionIp);
+                    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+                    // 创建Get请求
+                    HttpGet httpGet = new HttpGet("http://localhost:8080/setExceptionByIp?ip=" + exceptionIp);
+                    try {
+                        httpClient.execute(httpGet);
+                    } finally {
+                        try {
+                            httpClient.close();
+                        } catch (Exception e) {
+                        }
+                    }
                 } catch (Exception exception) {
-                    exceptionNum++;
                 }
             }
         });
