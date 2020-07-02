@@ -16,5 +16,9 @@ spec:
         - name: productservice
           image: productservice:1.0.0-SNAPSHOT
           env:
-          - name: spring.cloud.nacos.discovery.server-addr
-            value: "nacos:8848"
+            - name: dubbo.registry.address
+              value: "nacos://nacos:8848"
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: "nacos:8848"
+            - name: spring.cloud.nacos.config.server-addr
+              value: "nacos:8848"

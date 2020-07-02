@@ -1,7 +1,9 @@
 package com.alibabacloud.hipstershop.web;
 
 import com.alibabacloud.hipstershop.CartItem;
+import com.alibabacloud.hipstershop.checkoutserviceapi.domain.Order;
 import com.alibabacloud.hipstershop.dao.CartDAO;
+import com.alibabacloud.hipstershop.dao.OrderDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class AppController {
 
     @Autowired
     private CartDAO cartDAO;
+
+    @Autowired
+    private OrderDAO orderDAO;
 
     private Random random = new Random(System.currentTimeMillis());
 
@@ -78,14 +83,26 @@ public class AppController {
         return "hello";
     }
 
-    @GetMapping("/checkout")
-    public String checkout() {
+    @PostMapping("/checkout")
+    public RedirectView checkout(@RequestParam(name="email") String email,
+                           @RequestParam(name="street_address") String streetAddress,
+                           @RequestParam(name="zip_code") String zipCode,
+                           @RequestParam(name="city") String city,
+                           @RequestParam(name="state") String state,
+                           @RequestParam(name="credit_card_number") String creditCardNumber,
+                           @RequestParam(name="credit_card_expiration_month") int creditCardExpirationMonth,
+                           @RequestParam(name="credit_card_cvv") String creditCardCvv,
+                           Model model) {
+        String orderId = orderDAO.checkout(email, streetAddress, zipCode, city, state, creditCardNumber,
+                creditCardExpirationMonth, creditCardCvv, userID);
+        return new RedirectView("/checkout/" + orderId);
+    }
 
-        if(random.nextBoolean()){
-            throw new RuntimeException();
-        }
-
-        return "not support yet";
+    @GetMapping("/checkout/{orderId}")
+    public String checkout(@PathVariable(name="orderId") String orderId, Model model){
+        Order order = orderDAO.getOrder(orderId, userID);
+        model.addAttribute("order", order);
+        return "checkout.html";
     }
 
     @GetMapping("/product/{id}")
@@ -99,10 +116,10 @@ public class AppController {
     public String viewCart(Model model) {
         List<CartItem> items = cartDAO.viewCart(userID);
         for (CartItem item: items) {
-            Product p = productDAO.getProductById(item.productID);
-            item.productName = p.getName() + item.productName;
-            item.price = p.getPrice();
-            item.productPicture = p.getPicture();
+            Product p = productDAO.getProductById(item.getProductID());
+            item.setProductName(p.getName() + item.getProductName());
+            item.setPrice(p.getPrice());
+            item.setProductPicture(p.getPicture());
         }
         model.addAttribute("items", items);
         return "cart.html";

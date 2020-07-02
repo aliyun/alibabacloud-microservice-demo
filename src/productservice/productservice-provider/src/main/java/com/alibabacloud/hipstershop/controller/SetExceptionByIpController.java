@@ -1,4 +1,4 @@
-package com.alibabacloud.hipstershop;
+package com.alibabacloud.hipstershop.controller;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

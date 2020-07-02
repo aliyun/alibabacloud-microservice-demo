@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkoutservice
+spec:
+  selector:
+    matchLabels:
+      app: checkoutservice
+  template:
+    metadata:
+      labels:
+        app: checkoutservice
+    spec:
+      containers:
+        - name: checkoutservice
+          image: checkoutservice:1.0.0-SNAPSHOT
+          env:
+          - name: dubbo.registry.address
+            value: "nacos://nacos:8848"
+          - name: spring.cloud.nacos.discovery.server-addr
+            value: "nacos:8848"
+          - name: spring.cloud.nacos.config.server-addr
+            value: "nacos:8848"

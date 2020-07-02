@@ -3,11 +3,11 @@ package com.alibabacloud.hipstershop.provider;
 import com.alibabacloud.hipstershop.CartItem;
 import org.apache.dubbo.config.annotation.Service;
 import com.alibabacloud.hipstershop.CartService;
+import org.apache.dubbo.config.spring.context.annotation.DubboComponentScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+@DubboComponentScan
 @RefreshScope
 @Service(version = "1.0.0")
 public class CartServiceImpl implements CartService {
@@ -49,10 +50,10 @@ public class CartServiceImpl implements CartService {
         List<CartItem> newRes = new ArrayList<>();
         if (res != null) {
             for (CartItem cartItem : res) {
-                CartItem newCart = new CartItem(cartItem.productID, cartItem.quantity);
-                newCart.productName = " from userId: " + userID + "; ip: " + ip;
-                newCart.productPicture = cartItem.productPicture;
-                newCart.price = cartItem.price;
+                CartItem newCart = new CartItem(cartItem.getProductID(), cartItem.getQuantity());
+                newCart.setProductName(" from userId: " + userID + "; ip: " + ip);
+                newCart.setProductPicture(cartItem.getProductPicture());
+                newCart.setPrice(cartItem.getPrice());
                 newRes.add(newCart);
                 System.out.println(newCart);
             }
@@ -65,13 +66,20 @@ public class CartServiceImpl implements CartService {
     public boolean addItemToCart(String userID, String productID, int quantity) {
         List<CartItem> itemList = cartStore.computeIfAbsent(userID, k -> new ArrayList<>());
         for (CartItem item : itemList) {
-            if (item.productID.equals(productID)) {
-                item.quantity++;
+            if (item.getProductID().equals(productID)) {
+                item.setQuantity(item.getQuantity() + 1);
                 return true;
             }
         }
         itemList.add(new CartItem(productID, quantity));
         return true;
+    }
+
+    @Override
+    public List<CartItem> cleanCartItems(String userID) {
+        List<CartItem> items = viewCart(userID);
+        cartStore.remove(userID);
+        return items;
     }
 
     @Override

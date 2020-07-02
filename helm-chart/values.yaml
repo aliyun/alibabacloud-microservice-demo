@@ -20,3 +20,7 @@ frontend:
   name: frontend
   image: frontend:1.0.0-SNAPSHOT
   port: 8080
+
+checkoutservice:
+  name: checkoutservice
+  image: checkoutservice:1.0.0-SNAPSHOT

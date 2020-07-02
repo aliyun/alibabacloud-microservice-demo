@@ -1,0 +1,41 @@
+.idea
+target
+*.iml
+.DS_Store
+src/frontend/sae_profile.yaml
+
+
+# maven ignore
+target/
+*.jar
+!.mvn/wrapper/*
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+*.orig
+
+# flatten ignore
+.flattened-pom.xml
