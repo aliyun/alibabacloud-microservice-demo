@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.alibabacloud.hipstershop.common.MyRule;
+import com.netflix.loadbalancer.IRule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -47,10 +49,15 @@ public class Application {
                         } catch (Throwable ignore) {}
                     }
                 }
-                SERVICE_TAG = properties.getProperty("alicloud.service.tag").replace("\"","");
-            }else {
+                SERVICE_TAG = properties.getProperty("alicloud.service.tag").replace("\"", "");
+            } else {
                 SERVICE_TAG = "nil";
             }
         } catch (Throwable ignore) {}
+    }
+
+    @Bean
+    public IRule iRule(){
+        return new MyRule();
     }
 }
