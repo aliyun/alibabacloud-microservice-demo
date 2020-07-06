@@ -21,3 +21,5 @@ spec:
             value: "nacos://{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
           - name: spring.cloud.nacos.discovery.server-addr
             value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+          - name: spring.cloud.nacos.config.server-addr
+            value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"

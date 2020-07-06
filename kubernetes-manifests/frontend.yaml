@@ -21,6 +21,8 @@ spec:
             value: "nacos://nacos:8848"
           - name: spring.cloud.nacos.discovery.server-addr
             value: "nacos:8848"
+          - name: spring.cloud.nacos.config.server-addr
+            value: "nacos:8848"
           # resources:
           #   requests:
           #     cpu: 100m

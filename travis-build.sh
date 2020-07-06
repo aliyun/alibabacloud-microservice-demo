@@ -8,3 +8,6 @@ mvn --batch-mode clean install
 
 cd ../productservice
 mvn --batch-mode clean install
+
+cd ../checkoutservice
+mvn --batch-mode clean install

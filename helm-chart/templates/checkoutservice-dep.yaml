@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.checkoutservice.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.checkoutservice.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.checkoutservice.name }}
+    spec:
+      containers:
+        - name: {{ .Values.checkoutservice.name }}
+          image: {{ .Values.checkoutservice.image }}
+          env:
+            - name: dubbo.registry.address
+              value: "nacos://{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+            - name: spring.cloud.nacos.config.server-addr
+              value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"

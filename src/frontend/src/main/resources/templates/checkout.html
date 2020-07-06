@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="py-5">
+        <div class="container bg-light py-3 px-lg-5 py-lg-5">
+            <h2 class="col align-middle text-center">
+                Your order is complete!
+            </h2>
+            <div class="col align-middle text-center pt-4">
+                Order ID:
+                <strong th:text="${order.orderId}"></strong>
+            </div>
+            <div class="col align-middle text-center pt-2">
+                Shipping ID:
+                <strong th:text="${order.shipId}"></strong>
+            </div>
+            <div class="col align-middle text-center pt-2">
+                Ship Cost:
+                <strong th:text="${order.shipCost}"></strong>
+            </div>
+            <div class="col align-middle text-center pt-2">
+                Product Cost:
+                <strong th:text="${order.productCost} "></strong>
+            </div>
+            <div class="col align-middle text-center pt-2">
+                Total Cost:
+                <strong th:text="${order.totalCost}"></strong>
+            </div>
+
+            <div class="col align-middle pt-4 text-center">
+                <a href="\" class="btn btn-info btn-lg" role="button">Keep Browsing</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

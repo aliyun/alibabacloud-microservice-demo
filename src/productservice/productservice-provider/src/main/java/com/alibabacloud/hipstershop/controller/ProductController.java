@@ -1,4 +1,4 @@
-package com.alibabacloud.hipstershop;
+package com.alibabacloud.hipstershop.controller;
 
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.web.bind.annotation.GetMapping;

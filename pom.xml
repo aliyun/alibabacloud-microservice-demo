@@ -11,6 +11,13 @@
         <module>src/cartservice</module>
         <module>src/productservice</module>
         <module>src/frontend</module>
+        <module>src/paymentservice</module>
+        <module>src/adservice</module>
+        <module>src/checkoutservice</module>
+        <module>src/currencyservice</module>
+        <module>src/emailservice</module>
+        <module>src/recomendationservice</module>
+        <module>src/shippingservice</module>
     </modules>
 
     <packaging>pom</packaging>
