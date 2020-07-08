@@ -1,19 +1,22 @@
-package com.alibabacloud.hipstershop.provider;
+package com.alibabacloud.hipstershop.provider.service;
 
 import com.alibabacloud.hipstershop.CartItem;
+import com.alibabacloud.hipstershop.provider.repository.RedisRepository;
+import com.alibabacloud.hipstershop.provider.utils.Constant;
 import org.apache.dubbo.config.annotation.Service;
 import com.alibabacloud.hipstershop.CartService;
 import org.apache.dubbo.config.spring.context.annotation.DubboComponentScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @DubboComponentScan
@@ -23,7 +26,8 @@ public class CartServiceImpl implements CartService {
 
     private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
-    private ConcurrentHashMap<String, List<CartItem>> cartStore = new ConcurrentHashMap<>();
+    @Resource
+    private RedisRepository redisRepository;
 
     @Value("${exception.ip:''}")
     private String exceptionIp;
@@ -32,7 +36,7 @@ public class CartServiceImpl implements CartService {
     private String slowCallIp;
 
     @Override
-    public List<CartItem> viewCart(String userID) {
+    public List<CartItem> viewCart(String userId) {
         // 模拟运行时异常
         if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
             throw new RuntimeException("runtime exception");
@@ -45,13 +49,13 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        List<CartItem> res = cartStore.getOrDefault(userID, Collections.emptyList());
+        List<CartItem> res = redisRepository.getUserCartItems(userId);
         String ip = getLocalIp();
         List<CartItem> newRes = new ArrayList<>();
         if (res != null) {
             for (CartItem cartItem : res) {
                 CartItem newCart = new CartItem(cartItem.getProductID(), cartItem.getQuantity());
-                newCart.setProductName(" from userId: " + userID + "; ip: " + ip);
+                newCart.setProductName(" from userId: " + userId + "; ip: " + ip);
                 newCart.setProductPicture(cartItem.getProductPicture());
                 newCart.setPrice(cartItem.getPrice());
                 newRes.add(newCart);
@@ -63,22 +67,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addItemToCart(String userID, String productID, int quantity) {
-        List<CartItem> itemList = cartStore.computeIfAbsent(userID, k -> new ArrayList<>());
-        for (CartItem item : itemList) {
-            if (item.getProductID().equals(productID)) {
-                item.setQuantity(item.getQuantity() + 1);
-                return true;
-            }
-        }
-        itemList.add(new CartItem(productID, quantity));
-        return true;
+    public boolean addItemToCart(String userId, String productId, int quantity) {
+        return redisRepository.save(new CartItem(productId, quantity), userId);
     }
 
     @Override
-    public List<CartItem> cleanCartItems(String userID) {
-        List<CartItem> items = viewCart(userID);
-        cartStore.remove(userID);
+    public List<CartItem> cleanCartItems(String userId) {
+        List<CartItem> items = viewCart(userId);
+        redisRepository.removeUserCartItems(userId);
         return items;
     }
 
@@ -92,9 +88,10 @@ public class CartServiceImpl implements CartService {
         try {
             inetAddress = InetAddress.getLocalHost();
             if (inetAddress != null) {
-                return inetAddress.getHostAddress();//获得本机Ip;
+                //获得本机Ip;
+                return inetAddress.getHostAddress();
             }
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException ignored) {
         }
         return null;
     }

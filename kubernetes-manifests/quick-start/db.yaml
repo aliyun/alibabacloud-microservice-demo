@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-redis
+spec:
+  selector:
+    matchLabels:
+      app: cart-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cart-redis
+    spec:
+      containers:
+        - name: cart-redis
+          image: redis
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-mysql
+spec:
+  selector:
+    matchLabels:
+      app: checkout-mysql
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: checkout-mysql
+    spec:
+      containers:
+        - args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_DATABASE
+              value: checkout
+            - name: MYSQL_ROOT_PASSWORD
+              value: checkoutservice
+          image: mysql:5.6
+          name: checkout-mysql
+          ports:
+            - containerPort: 3306
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-mysql
+spec:
+  selector:
+    matchLabels:
+      app: product-mysql
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: product-mysql
+    spec:
+      containers:
+        - args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_DATABASE
+              value: product
+            - name: MYSQL_ROOT_PASSWORD
+              value: productservice
+          image: mysql:5.6
+          name: product-mysql
+          ports:
+            - containerPort: 3306
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cart-redis
+  name: cart-redis
+spec:
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    app: cart-redis
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: checkout-mysql
+  name: checkout-mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: checkout-mysql
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: product-mysql
+  name: product-mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: product-mysql

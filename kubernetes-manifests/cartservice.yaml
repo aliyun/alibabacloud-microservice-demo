@@ -21,3 +21,26 @@ spec:
             value: "nacos:8848"
           - name: spring.cloud.nacos.config.server-addr
             value: "nacos:8848"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-redis
+spec:
+  selector:
+    matchLabels:
+      app: cart-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cart-redis
+    spec:
+      containers:
+        - name: cart-redis
+          image: redis
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379

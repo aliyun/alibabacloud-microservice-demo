@@ -1,6 +1,7 @@
 package com.alibabacloud.hipstershop;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author wangtao 2019-08-14 16:35
@@ -66,5 +67,18 @@ public class CartItem implements Serializable {
             ", productPicture='" + productPicture + '\'' +
             ", price=" + price +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem item = (CartItem) o;
+        return productID.equals(item.productID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productID);
     }
 }
