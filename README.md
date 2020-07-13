@@ -27,7 +27,15 @@ This project contains the following applications (more applications are ong the 
 
 ### Build
 
-#### Build docker image
+#### Build docker image using docker-compose
+
+You can use docker-compose to build docker images:
+
+```sh
+docker-compose build
+```
+
+#### Build docker image using scripts
 
 You need to go to the `src` directory, for each sub module, there is a `build.sh`  file, just run it to build the docker image for each module.
 
