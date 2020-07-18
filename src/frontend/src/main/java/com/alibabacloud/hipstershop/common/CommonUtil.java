@@ -1,5 +1,8 @@
 package com.alibabacloud.hipstershop.common;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,5 +61,10 @@ public class CommonUtil {
 
     public static int dubbo_age = 0;
     public static int spring_cloud_age = 0;
+
+    public static String getLocalIp() throws UnknownHostException {
+        InetAddress address = Inet4Address.getLocalHost();
+        return address.getHostAddress();
+    }
 
 }

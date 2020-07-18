@@ -3,82 +3,81 @@
 <head th:replace="header.html :: commonHead"></head>
 
 <body>
-    <header th:replace="header.html :: pageHeader"></header>
-    <main role="main">
-        <section class="jumbotron text-center mb-0">
-            <!-- The background color is used for canary deployement -->
-<!--                 {{ with $.banner_color }}-->
-<!--                 style="background-color: {{.}};"-->
-<!--                 {{ end }}-->
-            <div class="container">
-                <h1 class="jumbotron-heading">
-                    听说男孩子都喜欢鞋子跟玩具？enjoy it！
-                </h1>
-                <p class="lead text-muted">
-                    厌倦了主流时尚理念、流行趋势和社会规范？这一系列潮流产品将有助于你赶上了时尚潮流，表达了你的个人风格。
-                </p>
-            </div>
-        </section>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <section class="jumbotron text-center mb-0">
+        <!-- The background color is used for canary deployement -->
+        <!--                 {{ with $.banner_color }}-->
+        <!--                 style="background-color: {{.}};"-->
+        <!--                 {{ end }}-->
+        <div class="container">
+            <h1 class="jumbotron-heading">
+                听说男孩子都喜欢鞋子跟玩具？enjoy it！
+            </h1>
+            <p class="lead text-muted">
+                厌倦了主流时尚理念、流行趋势和社会规范？这一系列潮流产品将有助于你赶上了时尚潮流，表达了你的个人风格。
+            </p>
+        </div>
+    </section>
 
-        <div class="py-5 bg-light">
-            <div class="container">
-                <div class="row">
-                    <div th:each="product: ${products}" class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <a th:href="@{'/product/' + ${product.id}}">
-                                <img class="card-img-top" alt =""
-                                     style="width: 100%; height: auto;"
-                                     th:src="${product.picture}">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${product.name}"></h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a th:href="@{'/product/' + ${product.id}}">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
-                                        </a>
-                                    </div>
-                                    <small class="text-muted" th:text="'CNY ' + ${product.price}">
-                                    </small>
+    <div class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div th:each="product: ${products}" class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <a th:href="@{'/product/' + ${product.id}}">
+                            <img class="card-img-top" alt=""
+                                 style="width: 100%; height: auto;"
+                                 th:src="${product.picture}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.name}"></h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="@{'/product/' + ${product.id}}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                                    </a>
                                 </div>
+                                <small class="text-muted" th:text="'CNY ' + ${product.price}">
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
-<!--                <div class="row">-->
-<!--                    {{ with $.ad }}{{ template "text_ad" . }}{{ end}}-->
-<!--                </div>-->
+            </div>
+            <!--                <div class="row">-->
+            <!--                    {{ with $.ad }}{{ template "text_ad" . }}{{ end}}-->
+            <!--                </div>-->
+        </div>
+    </div>
+
+    <p></p>
+    <p></p>
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+        <div class="row">
+            <div class="btn-group">
+
+                <a th:href="@{/shutdown/result}">
+                    <button type="button" class="btn">无损下线演示</button>
+                </a>
+                <a th:href="@{/outlier/result}" style="padding-left: 40px">
+                    <button type="button" class="btn">离群摘除演示</button>
+                </a>
+                <a th:href="@{/router/result}" style="padding-left: 40px">
+                    <button type="button" class="btn">标签路由演示</button>
+                </a>
+                <a th:href="@{/auth/result}" style="padding-left: 40px">
+                    <button type="button" class="btn">服务鉴权演示</button>
+                </a>
+
             </div>
         </div>
+    </div>
 
-        <p></p>
-        <p></p>
-        <div class="container bg-light py-3 px-lg-5 py-lg-5">
-            <div class="row">
-                <div class="btn-group">
-
-                    <a th:href="@{/shutdown/result}">
-                        <button type="button" class="btn">无损下线演示</button>
-                    </a>
-                    <a th:href="@{/outlier/result}" style="padding-left: 40px">
-                        <button type="button" class="btn">离群摘除演示</button>
-                    </a>
-                    <a th:href="@{/router/result}" style="padding-left: 40px">
-                        <button type="button" class="btn">标签路由演示</button>
-                    </a>
-                    <a th:href="@{/auth/result}" style="padding-left: 40px">
-                        <button type="button" class="btn">服务鉴权演示</button>
-                    </a>
-
-                </div>
-            </div>
-        </div>
-
-    </main>
+</main>
 
 
-
-    <footer th:replace="footer.html :: pageFooter"></footer>
-    <script th:replace="footer.html :: footerScript"></script>
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
 </body>
 </html>

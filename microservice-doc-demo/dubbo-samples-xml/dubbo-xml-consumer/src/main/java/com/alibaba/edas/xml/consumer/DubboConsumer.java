@@ -11,11 +11,11 @@ public class DubboConsumer {
         context.start();
         DemoService demoService = (DemoService) context.getBean("demoService");
 
-        while (true){
-            try{
+        while (true) {
+            try {
                 String hello = demoService.sayHello("world");
                 System.out.println(hello);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

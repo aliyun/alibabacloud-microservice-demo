@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name = "edas.service.provider")
 public interface EchoService {
-    @RequestMapping(value = "/echo/{str}",method = RequestMethod.GET)
+    @RequestMapping(value = "/echo/{str}", method = RequestMethod.GET)
     String echo(@PathVariable("str") String str);
 }

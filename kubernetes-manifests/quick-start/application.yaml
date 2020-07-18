@@ -8,9 +8,9 @@ spec:
       app: productservice
   template:
     metadata:
-#      annotations:
-#        armsPilotAutoEnable: "on"
-#        armsPilotCreateAppName: "productservice"
+      annotations:
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "productservice"
       labels:
         app: productservice
         version: 1.0.0-SNAPSHOT
@@ -26,10 +26,10 @@ spec:
               value: "nacos:8848"
             - name: spring.cloud.nacos.config.server-addr
               value: "nacos:8848"
-#          resources:
-#            limits:
-#              cpu: 1000m
-#              memory: 2048Mi
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2048Mi
 ---
 
 apiVersion: apps/v1
@@ -42,9 +42,9 @@ spec:
       app: cartservice
   template:
     metadata:
-#      annotations:
-#        armsPilotAutoEnable: "on"
-#        armsPilotCreateAppName: "cartservice"
+      annotations:
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "cartservice"
       labels:
         app: cartservice
     spec:
@@ -59,10 +59,10 @@ spec:
               value: "nacos:8848"
             - name: spring.cloud.nacos.config.server-addr
               value: "nacos:8848"
-#          resources:
-#            limits:
-#              cpu: 1000m
-#              memory: 2048Mi
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2048Mi
 
 ---
 
@@ -76,9 +76,9 @@ spec:
       app: checkoutservice
   template:
     metadata:
-#      annotations:
-#        armsPilotAutoEnable: "on"
-#        armsPilotCreateAppName: "checkoutservice"
+      annotations:
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "checkoutservice"
       labels:
         app: checkoutservice
     spec:
@@ -93,10 +93,10 @@ spec:
               value: "nacos:8848"
             - name: spring.cloud.nacos.config.server-addr
               value: "nacos:8848"
-#          resources:
-#            limits:
-#              cpu: 1000m
-#              memory: 2048Mi
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2048Mi
 
 ---
 
@@ -110,9 +110,9 @@ spec:
       app: frontend
   template:
     metadata:
-#      annotations:
-#        armsPilotAutoEnable: "on"
-#        armsPilotCreateAppName: "frontend"
+      annotations:
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "frontend"
       labels:
         app: frontend
     spec:
@@ -129,10 +129,10 @@ spec:
               value: "nacos:8848"
             - name: spring.cloud.nacos.config.server-addr
               value: "nacos:8848"
-#          resources:
-#            limits:
-#              cpu: 1000m
-#              memory: 2048Mi
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2048Mi
 ---
 apiVersion: v1
 kind: Service

@@ -1,41 +1,33 @@
-.idea
-target
-*.iml
-.DS_Store
-src/frontend/sae_profile.yaml
-
-
-# maven ignore
+HELP.md
 target/
-*.jar
-!.mvn/wrapper/*
-*.war
-*.zip
-*.tar
-*.tar.gz
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# eclipse ignore
-.settings/
-.project
+### STS ###
+.apt_generated
 .classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# idea ignore
-.idea/
-*.ipr
-*.iml
+### IntelliJ IDEA ###
+.idea
 *.iws
+*.iml
+*.ipr
 
-# temp ignore
-*.log
-*.cache
-*.diff
-*.patch
-*.tmp
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# system ignore
-.DS_Store
-Thumbs.db
-*.orig
-
-# flatten ignore
-.flattened-pom.xml
+### VS Code ###
+.vscode/

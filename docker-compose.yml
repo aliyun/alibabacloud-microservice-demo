@@ -5,22 +5,22 @@ services:
     image: nacos/nacos-server:latest
     container_name: nacos-standalone
     environment:
-    - PREFER_HOST_MODE=hostname
-    - MODE=standalone
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
     ports:
-    - "8848:8848"
+      - "8848:8848"
 
-#  currency-mysql:
-#    image: mysql:5.6
-#    ports:
-#      - 3306
-#    command: [
-#      --character-set-server=utf8mb4,
-#      --collation-server=utf8mb4_unicode_ci
-#    ]
-#    environment:
-#      MYSQL_ROOT_PASSWORD: currencyservice
-#      MYSQL_DATABASE: currency
+  #  currency-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #      - 3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: currencyservice
+  #      MYSQL_DATABASE: currency
 
   checkout-mysql:
     image: mysql:5.6
@@ -33,7 +33,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: checkoutservice
       MYSQL_DATABASE: checkout
-      
+
   product-mysql:
     image: mysql:5.6
     ports:
@@ -55,7 +55,7 @@ services:
     build: ./src/frontend
     image: frontend:1.0.0-SNAPSHOT
     container_name: frontend
-#    restart: always
+    #    restart: always
     environment:
       - dubbo.registry.address=nacos://nacos:8848
       - spring.cloud.nacos.discovery.server-addr=nacos:8848
@@ -82,9 +82,9 @@ services:
     image: checkoutservice:1.0.0-SNAPSHOT
     container_name: checkoutservice
     environment:
-    - dubbo.registry.address=nacos://nacos:8848
-    - spring.cloud.nacos.discovery.server-addr=nacos:8848
-    - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+      - spring.cloud.nacos.config.server-addr=nacos:8848
     depends_on:
       - "nacos"
       - "checkout-mysql"
@@ -94,9 +94,9 @@ services:
     image: productservice:1.0.0-SNAPSHOT
     container_name: productservice
     environment:
-    - dubbo.registry.address=nacos://nacos:8848
-    - spring.cloud.nacos.discovery.server-addr=nacos:8848
-    - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+      - spring.cloud.nacos.config.server-addr=nacos:8848
     depends_on:
       - "nacos"
       - "product-mysql"

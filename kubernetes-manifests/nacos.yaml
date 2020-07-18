@@ -15,12 +15,12 @@ spec:
         - name: nacos-standalone
           image: nacos/nacos-server:latest
           ports:
-          - containerPort: 8848
+            - containerPort: 8848
           env:
-          - name: PREFER_HOST_MODE
-            value: "hostname"
-          - name: MODE
-            value: "standalone"
+            - name: PREFER_HOST_MODE
+              value: "hostname"
+            - name: MODE
+              value: "standalone"
 ---
 apiVersion: v1
 kind: Service
@@ -31,6 +31,6 @@ spec:
   selector:
     app: nacos
   ports:
-  - name: http
-    port: 8848
-    targetPort: 8848
+    - name: http
+      port: 8848
+      targetPort: 8848

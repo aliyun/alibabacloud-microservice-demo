@@ -4,4 +4,4 @@ COPY /checkoutservice-provider/target/checkoutservice-provider-0.0.1-SNAPSHOT.ja
 
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/checkoutservice-provider-0.0.1-SNAPSHOT.jar"]
+CMD ["java -jar -Xms1024m -Xmn500m /app/checkoutservice-provider-0.0.1-SNAPSHOT.jar"]

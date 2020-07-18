@@ -2,7 +2,7 @@ package com.alibabacloud.hipstershop.checkoutservice.entity;
 
 import com.alibabacloud.hipstershop.checkoutservice.utils.JsonUtils;
 import com.alibabacloud.hipstershop.checkoutserviceapi.domain.Order;
-import com.alibabacloud.hipstershop.domain.ProductItem;
+import com.alibabacloud.hipstershop.productserviceapi.domain.ProductItem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -12,8 +12,7 @@ import javax.persistence.Id;
 import java.util.List;
 
 /**
- *
- *Pojo,对应于数据库表
+ * Pojo,对应于数据库表
  *
  * @author xiaofeng.gxf
  * @date 2020/7/7
@@ -32,9 +31,10 @@ public class OrderForm {
     @Column(nullable = false, columnDefinition = "varchar(2000)")
     private String productList;
 
-    public OrderForm(){}
+    public OrderForm() {
+    }
 
-    public OrderForm(Order order){
+    public OrderForm(Order order) {
         this.orderId = order.getOrderId();
         this.shipId = order.getShipId();
         this.userId = order.getUserId();
@@ -52,9 +52,10 @@ public class OrderForm {
 
     /**
      * 将OrderForm转化为Order对象
+     *
      * @return order对象
      */
-    public Order getOrder(){
+    public Order getOrder() {
         Order order = new Order();
         order.setOrderId(this.orderId);
         order.setShipId(this.shipId);
@@ -65,7 +66,8 @@ public class OrderForm {
         order.setStatus(this.status);
         try {
             order.setProductItemList(JsonUtils.objectMapper.readValue(this.productList,
-                    new TypeReference<List<ProductItem>>() {}));
+                    new TypeReference<List<ProductItem>>() {
+                    }));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             order.setProductItemList(null);

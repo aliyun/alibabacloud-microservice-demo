@@ -7,6 +7,6 @@ spec:
   selector:
     app: {{ .Values.nacos.name }}
   ports:
-  - name: http
-    port: {{ .Values.nacos.port }}
-    targetPort: {{ .Values.nacos.port }}
+    - name: http
+      port: {{ .Values.nacos.port }}
+      targetPort: {{ .Values.nacos.port }}

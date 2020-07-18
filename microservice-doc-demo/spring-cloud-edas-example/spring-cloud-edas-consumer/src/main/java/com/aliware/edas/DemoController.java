@@ -40,8 +40,8 @@ public class DemoController {
 
         long end = System.currentTimeMillis();
         return "" + start + " Consumer received." +
-            "\t" + result +
-            "\r\n" + end + " Consumer Return";
+                "\t" + result +
+                "\r\n" + end + " Consumer Return";
     }
 
     @RequestMapping(value = "/consumer/alive", method = RequestMethod.GET)

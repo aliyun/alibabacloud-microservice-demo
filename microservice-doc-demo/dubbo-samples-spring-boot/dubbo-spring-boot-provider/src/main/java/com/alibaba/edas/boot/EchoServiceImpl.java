@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 
 import java.util.concurrent.TimeUnit;
 
-@Service(timeout = 5000, version = "1.0.0", group = "DUBBO",register = false)
+@Service(timeout = 5000, version = "1.0.0", group = "DUBBO", register = false)
 public class EchoServiceImpl implements EchoService {
 
     @Override

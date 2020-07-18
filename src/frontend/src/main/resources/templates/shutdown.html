@@ -22,13 +22,15 @@
                 <a th:href="@{/shutdown/begin}">
                     <button type="button" class="btn">开启流量调用</button>
                 </a>
-                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
             <div class="col-md-6">
                 <a th:href="@{/shutdown/stop}">
                     <button type="button" class="btn">停止流量调用</button>
                 </a>
-                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
 
         </div>

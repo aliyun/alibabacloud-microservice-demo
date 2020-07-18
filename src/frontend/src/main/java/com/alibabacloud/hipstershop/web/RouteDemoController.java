@@ -45,12 +45,12 @@ public class RouteDemoController {
                 }
             }
 
-            for(Map.Entry<String,Integer> entry : SPRING_CLOUD_RESULT_MAP.entrySet()){
-                SPRING_CLOUD_RESULT_LIST.add(new ResultNode(entry.getKey(),entry.getValue()));
+            for (Map.Entry<String, Integer> entry : SPRING_CLOUD_RESULT_MAP.entrySet()) {
+                SPRING_CLOUD_RESULT_LIST.add(new ResultNode(entry.getKey(), entry.getValue()));
             }
 
 
-            model.addAttribute("spring_cloud_router_result",SPRING_CLOUD_RESULT_LIST);
+            model.addAttribute("spring_cloud_router_result", SPRING_CLOUD_RESULT_LIST);
         }
         synchronized (DUBBO_LOCK) {
 
@@ -67,24 +67,24 @@ public class RouteDemoController {
                 }
             }
 
-            for(Map.Entry<String,Integer> entry : DUBBO_RESULT_MAP.entrySet()){
-                DUBBO_RESULT_LIST.add(new ResultNode(entry.getKey(),entry.getValue()));
+            for (Map.Entry<String, Integer> entry : DUBBO_RESULT_MAP.entrySet()) {
+                DUBBO_RESULT_LIST.add(new ResultNode(entry.getKey(), entry.getValue()));
             }
 
 
-            model.addAttribute("dubbo_router_result",DUBBO_RESULT_LIST);
+            model.addAttribute("dubbo_router_result", DUBBO_RESULT_LIST);
         }
 
-        model.addAttribute("spring_cloud_name",spring_cloud_name);
-        model.addAttribute("spring_cloud_age",spring_cloud_age);
-        model.addAttribute("dubbo_name",dubbo_name);
-        model.addAttribute("dubbo_age",dubbo_age);
+        model.addAttribute("spring_cloud_name", spring_cloud_name);
+        model.addAttribute("spring_cloud_age", spring_cloud_age);
+        model.addAttribute("dubbo_name", dubbo_name);
+        model.addAttribute("dubbo_age", dubbo_age);
 
         return "router.html";
     }
 
 
-    static  class ResultNode{
+    static class ResultNode {
 
         private String ip;
         private int times;

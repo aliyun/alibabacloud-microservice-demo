@@ -84,10 +84,10 @@ public class GracefulShutdownDemoController {
             model.addAttribute("cartservice", DUBBO_RESULT_LIST);
         }
 
-        model.addAttribute("dubbo_invoker_times",DUBBO_INVOKER_TIMES.get());
-        model.addAttribute("dubbo_error_times",DUBBO_ERROR_TIMES.get());
-        model.addAttribute("spring_cloud_invoker_times",SPRING_CLOUD_INVOKER_TIMES.get());
-        model.addAttribute("spring_cloud_error_times",SPRING_CLOUD_ERROR_TIMES.get());
+        model.addAttribute("dubbo_invoker_times", DUBBO_INVOKER_TIMES.get());
+        model.addAttribute("dubbo_error_times", DUBBO_ERROR_TIMES.get());
+        model.addAttribute("spring_cloud_invoker_times", SPRING_CLOUD_INVOKER_TIMES.get());
+        model.addAttribute("spring_cloud_error_times", SPRING_CLOUD_ERROR_TIMES.get());
         return "shutdown.html";
     }
 

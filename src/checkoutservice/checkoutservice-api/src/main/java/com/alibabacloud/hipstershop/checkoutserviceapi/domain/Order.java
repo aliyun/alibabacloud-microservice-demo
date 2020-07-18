@@ -1,12 +1,13 @@
 package com.alibabacloud.hipstershop.checkoutserviceapi.domain;
 
-import com.alibabacloud.hipstershop.domain.ProductItem;
+import com.alibabacloud.hipstershop.productserviceapi.domain.ProductItem;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 订单对象，用于通信
+ *
  * @author xiaofeng.gxf
  * @date 2020/6/24
  */

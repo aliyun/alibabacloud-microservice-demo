@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(PandoraBootRunner.class)
 @DelegateTo(SpringJUnit4ClassRunner.class)
 // 加载测试需要的类，一定要加入 Spring Boot 的启动类，其次需要加入本类。
-@SpringBootTest(classes = {HSFProviderApplication.class, HelloServiceTest.class })
+@SpringBootTest(classes = {HSFProviderApplication.class, HelloServiceTest.class})
 @Component
 public class HelloServiceTest {
 
@@ -33,13 +33,15 @@ public class HelloServiceTest {
     public void testInvoke() {
         TestCase.assertEquals("hello world", helloService.echo("hello world"));
     }
+
     //泛化调用
     @Test
     public void testGenericInvoke() {
         GenericService service = (GenericService) helloService;
-        Object result = service.$invoke("echo", new String[] {"java.lang.String"}, new Object[] {"hello world"});
+        Object result = service.$invoke("echo", new String[]{"java.lang.String"}, new Object[]{"hello world"});
         TestCase.assertEquals("hello world", result);
     }
+
     //返回值 Mock
     @Test
     public void testMock() {

@@ -7,9 +7,9 @@ spec:
   selector:
     app: {{ .Values.frontend.name }}
   ports:
-  - name: http
-    port: {{ .Values.frontend.port }}
-    targetPort: {{ .Values.frontend.name }}
+    - name: http
+      port: {{ .Values.frontend.port }}
+      targetPort: {{ .Values.frontend.name }}
 ---
 apiVersion: v1
 kind: Service
@@ -20,6 +20,6 @@ spec:
   selector:
     app: {{ .Values.frontend.name }}
   ports:
-  - name: http
-    port: {{ .Values.frontend.port }}
-    targetPort: {{ .Values.frontend.port }}
+    - name: http
+      port: {{ .Values.frontend.port }}
+      targetPort: {{ .Values.frontend.port }}

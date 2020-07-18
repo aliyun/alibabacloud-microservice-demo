@@ -15,26 +15,26 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class IndexServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -112210702214857712L;
+    private static final long serialVersionUID = -112210702214857712L;
 
-	@Override
-	public void doGet( HttpServletRequest req, HttpServletResponse resp )
-		throws IOException {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
 
-		final ItemService itemService = ( ItemService )
-			StartListener.CONTEXT.getBean( "item" );
+        final ItemService itemService = (ItemService)
+                StartListener.CONTEXT.getBean("item");
 
-		Item item = itemService.getItemByName(
-			req.getParameter("name"));
+        Item item = itemService.getItemByName(
+                req.getParameter("name"));
 
-		PrintWriter writer = resp.getWriter();
-		writer.write(String.format("Item Id: %s, Name: %s",
-			item.getItemId(), item.getItemName() ));
-	}
-	
-	@Override
-	protected void doPost( HttpServletRequest req, HttpServletResponse resp )
-		throws ServletException, IOException {
-	}
+        PrintWriter writer = resp.getWriter();
+        writer.write(String.format("Item Id: %s, Name: %s",
+                item.getItemId(), item.getItemName()));
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+    }
 
 }

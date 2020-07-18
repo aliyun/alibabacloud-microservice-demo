@@ -25,7 +25,7 @@ public class CurrencyServiceImpl implements CurrencyService {
      */
     ConcurrentHashMap<String, UserCurrency> userCurrencyConcurrentHashMap = new ConcurrentHashMap<>();
 
-    public CurrencyServiceImpl(){
+    public CurrencyServiceImpl() {
         Currency yuan = new Currency("CNY", "China", "￥", 1.0);
         Currency dollar = new Currency("USD", "USA", "$", 7.01);
         currencyConcurrentHashMap.put("CNY", yuan);
@@ -39,7 +39,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public Currency getCurrency(String userId) {
-        if(!userCurrencyConcurrentHashMap.containsKey(userId)){
+        if (!userCurrencyConcurrentHashMap.containsKey(userId)) {
             userCurrencyConcurrentHashMap.put(userId, new UserCurrency(userId, "CNY"));
         }
         return currencyConcurrentHashMap.get(userCurrencyConcurrentHashMap.get(userId).getCurrencyCode());
