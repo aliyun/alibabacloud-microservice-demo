@@ -11,25 +11,73 @@
 <body>
 
 <header th:fragment="pageHeader">
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="/" class="navbar-brand d-flex align-items-center">
-                Hipster Shop
-            </a>
-<!--            {{ if $.currencies }}-->
-            <form class="form-inline ml-auto" method="POST" action="/setCurrency" id="currency_form">
-<!--                <select name="currency_code" class="form-control"-->
-<!--                        onchange="document.getElementById('currency_form').submit();" style="width:auto;">-->
-<!--                    {{range $.currencies}}-->
-<!--                    <option value="{{.}}" {{if eq . $.user_currency}}selected="selected"{{end}}>{{.}}</option>-->
-<!--                    {{end}}-->
-<!--                </select>-->
-                <a class="btn btn-primary btn-light ml-2" href="/cart" role="button"
-                   th:text="@{'View Cart (' + ${cartSize} + ')'}"></a>
-            </form>
+<!--    <div class="navbar navbar-dark bg-dark box-shadow"> //bg-success-->
+<!--        <div class="container d-flex justify-content-between">-->
+<!--            <a href="/" class="navbar-brand d-flex align-items-center">-->
+<!--                Hipster Shop-->
+<!--            </a>-->
+<!--&lt;!&ndash;            {{ if $.currencies }}&ndash;&gt;-->
+<!--            <form class="form-inline ml-auto" method="POST" action="/setCurrency" id="currency_form">-->
+<!--&lt;!&ndash;                <select name="currency_code" class="form-control"&ndash;&gt;-->
+<!--&lt;!&ndash;                        onchange="document.getElementById('currency_form').submit();" style="width:auto;">&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{range $.currencies}}&ndash;&gt;-->
+<!--&lt;!&ndash;                    <option value="{{.}}" {{if eq . $.user_currency}}selected="selected"{{end}}>{{.}}</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{end}}&ndash;&gt;-->
+<!--&lt;!&ndash;                </select>&ndash;&gt;-->
+<!--                <a class="btn btn-primary btn-light ml-2" href="/cart" role="button"-->
+<!--                   th:text="@{'View Cart (' + ${cartSize} + ')'}"></a>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+    <div th:if="${new_version}">
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                    Hipster Shop
+                </a>
+                <!--            {{ if $.currencies }}-->
+                <form class="form-inline ml-auto" method="POST" action="/setCurrency" id="currency_form">
+                    <!--                <select name="currency_code" class="form-control"-->
+                    <!--                        onchange="document.getElementById('currency_form').submit();" style="width:auto;">-->
+                    <!--                    {{range $.currencies}}-->
+                    <!--                    <option value="{{.}}" {{if eq . $.user_currency}}selected="selected"{{end}}>{{.}}</option>-->
+                    <!--                    {{end}}-->
+                    <!--                </select>-->
+                    <a class="btn btn-primary btn-light ml-2" href="/cart" role="button"
+                       th:text="@{'View Cart (' + ${cartSize} + ')'}"></a>
+                </form>
+            </div>
         </div>
     </div>
+    <!-- ELSE -->
+    <div th:unless="${new_version}">
+        <div class="navbar navbar-dark bg-success box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                    Hipster Shop
+                </a>
+                <!--            {{ if $.currencies }}-->
+                <form class="form-inline ml-auto" method="POST" action="/setCurrency" id="currency_form">
+                    <!--                <select name="currency_code" class="form-control"-->
+                    <!--                        onchange="document.getElementById('currency_form').submit();" style="width:auto;">-->
+                    <!--                    {{range $.currencies}}-->
+                    <!--                    <option value="{{.}}" {{if eq . $.user_currency}}selected="selected"{{end}}>{{.}}</option>-->
+                    <!--                    {{end}}-->
+                    <!--                </select>-->
+                    <a class="btn btn-primary btn-light ml-2" href="/cart" role="button"
+                       th:text="@{'View Cart (' + ${cartSize} + ')'}"></a>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </header>
+
+
+
+
 
 </body>
 </html>

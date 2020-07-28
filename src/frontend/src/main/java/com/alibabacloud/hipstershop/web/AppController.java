@@ -5,6 +5,7 @@ import com.alibabacloud.hipstershop.CartItem;
 import com.alibabacloud.hipstershop.dao.CartDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import com.alibabacloud.hipstershop.domain.Product;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class AppController {
+
+
+    private static String env = System.getenv("demo_version");
 
     @Autowired
     private ProductDAO productDAO;
@@ -64,6 +68,8 @@ public class AppController {
         model.addAttribute("PRODUCT_APP_NAME", PRODUCT_APP_NAME);
         model.addAttribute("PRODUCT_SERVICE_TAG", PRODUCT_SERVICE_TAG);
         model.addAttribute("PRODUCT_IP", PRODUCT_IP);
+
+        model.addAttribute("new_version", StringUtils.isBlank(env));
         return "index.html";
     }
 

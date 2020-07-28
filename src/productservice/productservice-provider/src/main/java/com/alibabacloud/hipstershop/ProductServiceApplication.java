@@ -39,7 +39,7 @@ public class ProductServiceApplication {
                         } catch (Throwable ignore) {}
                     }
                 }
-                SERVICE_TAG = properties.getProperty("alicloud.service.tag");
+                SERVICE_TAG = properties.getProperty("alicloud.service.tag").replace("\"","");
             }else {
                 SERVICE_TAG = "nil";
             }
