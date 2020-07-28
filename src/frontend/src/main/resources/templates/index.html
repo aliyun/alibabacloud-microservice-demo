@@ -10,6 +10,19 @@
 <!--                 {{ with $.banner_color }}-->
 <!--                 style="background-color: {{.}};"-->
 <!--                 {{ end }}-->
+
+            <div class="container">
+                <h2 class="jumbotron-heading">
+                    <span th:text="${FRONTEND_APP_NAME}+'_'+${FRONTEND_SERVICE_TAG}+'_'+${FRONTEND_IP}+'---->'+ ${PRODUCT_APP_NAME}+'_'+${PRODUCT_SERVICE_TAG}+'_'+${PRODUCT_IP}"/>
+                </h2>
+
+                <p> </p>
+                <p> </p>
+                <p> </p>
+            </div>
+
+
+
             <div class="container">
                 <h1 class="jumbotron-heading">
                     听说男孩子都喜欢鞋子跟玩具？enjoy it！

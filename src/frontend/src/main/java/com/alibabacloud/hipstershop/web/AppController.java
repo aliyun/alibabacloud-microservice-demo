@@ -1,10 +1,12 @@
 package com.alibabacloud.hipstershop.web;
 
+import com.alibabacloud.hipstershop.Application;
 import com.alibabacloud.hipstershop.CartItem;
 import com.alibabacloud.hipstershop.dao.CartDAO;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author wangtao 2019-08-12 15:41
@@ -29,13 +33,37 @@ public class AppController {
     @Autowired
     private CartDAO cartDAO;
 
+
+    @Autowired
+    private Registration registration;
+
     private Random random = new Random(System.currentTimeMillis());
 
     private String userID = "Test User";
 
+    public static String PRODUCT_APP_NAME = "";
+    public static String PRODUCT_SERVICE_TAG = "";
+    public static String PRODUCT_IP = "";
+
+
+    @ModelAttribute
+    public void setVaryResponseHeader(HttpServletResponse response) {
+        response.setHeader("APP_NAME", Application.APP_NAME);
+        response.setHeader("SERVICE_TAG", Application.SERVICE_TAG);
+        response.setHeader("SERVICE_IP", registration.getHost());
+    }
+
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("products", productDAO.getProductList());
+
+        model.addAttribute("FRONTEND_APP_NAME", Application.APP_NAME);
+        model.addAttribute("FRONTEND_SERVICE_TAG", Application.SERVICE_TAG);
+        model.addAttribute("FRONTEND_IP", registration.getHost());
+
+        model.addAttribute("PRODUCT_APP_NAME", PRODUCT_APP_NAME);
+        model.addAttribute("PRODUCT_SERVICE_TAG", PRODUCT_SERVICE_TAG);
+        model.addAttribute("PRODUCT_IP", PRODUCT_IP);
         return "index.html";
     }
 

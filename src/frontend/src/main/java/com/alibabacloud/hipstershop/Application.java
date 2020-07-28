@@ -1,5 +1,10 @@
 package com.alibabacloud.hipstershop;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -18,5 +23,34 @@ public class Application {
     @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    public static String SERVICE_TAG;
+    public static String APP_NAME = System.getProperty("msc.appName","nil");
+
+    static {
+
+        try {
+            File file = new File("/etc/podinfo/annotations");
+            if (file.exists()) {
+
+                Properties properties = new Properties();
+                FileReader fr = null;
+                try {
+                    fr = new FileReader(file);
+                    properties.load(fr);
+                } catch (IOException e) {
+                } finally {
+                    if (fr != null) {
+                        try {
+                            fr.close();
+                        } catch (Throwable ignore) {}
+                    }
+                }
+                SERVICE_TAG = properties.getProperty("alicloud.service.tag");
+            }else {
+                SERVICE_TAG = "nil";
+            }
+        } catch (Throwable ignore) {}
     }
 }

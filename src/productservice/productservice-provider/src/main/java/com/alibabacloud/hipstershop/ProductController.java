@@ -1,7 +1,10 @@
 package com.alibabacloud.hipstershop;
 
 import com.alibabacloud.hipstershop.domain.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,11 +13,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ProductController {
 
     private List<Product> products = new ArrayList<>();
+
+    @Autowired
+    private Registration registration;
+
+    @ModelAttribute
+    public void setVaryResponseHeader(HttpServletResponse response) {
+        response.setHeader("APP_NAME", ProductServiceApplication.APP_NAME);
+        response.setHeader("SERVICE_TAG", ProductServiceApplication.SERVICE_TAG);
+        response.setHeader("SERVICE_IP", registration.getHost());
+    }
 
     public ProductController() {
         Product p1 = new Product();
