@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/service-weight: 'zuul-gateway-svc: 100'
+  creationTimestamp: "2020-06-28T23:27:20Z"
+  generation: 2
+  name: zuul-ingress
+  namespace: default
+  resourceVersion: "866915526"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/ingresses/zuul-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: zuul-gateway-svc
+          servicePort: 80
+        path: /
+status:
+  loadBalancer:
+    ingress:
+    - ip: {{ .Values.slb.zuul}}

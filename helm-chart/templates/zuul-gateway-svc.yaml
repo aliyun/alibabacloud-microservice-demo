@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
+    service.beta.kubernetes.io/alicloud-loadbalancer-address-type: intranet
+  creationTimestamp: null
+  name: zuul-gateway-svc
+  selfLink: /api/v1/namespaces/default/services/zuul-gateway-svc
+spec:
+  externalTrafficPolicy: Local
+  healthCheckNodePort: 30958
+  ports:
+  - nodePort: 32266
+    port: 80
+    protocol: TCP
+    targetPort: 19999
+  selector:
+    app: zuul-gateway
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}

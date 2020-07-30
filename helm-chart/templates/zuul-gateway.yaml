@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "12"
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: zuul-gateway
+  name: zuul-gateway
+  selfLink: /apis/apps/v1/namespaces/default/deployments/zuul-gateway
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: zuul-gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: zuul-gateway
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: zuul-gateway
+      creationTimestamp: null
+      labels:
+        app: zuul-gateway
+    spec:
+      containers:
+      - env:
+        - name: LANG
+          value: C.UTF-8
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        - name: zuul.routes.test.path
+          value: /**
+        - name: profiler.micro.service.shutdown.auto.wait.enable
+          value: "false"
+        - name: micro.service.shutdown.wait.time
+          value: "15000"
+        - name: spring.cloud.nacos.discovery.server-addr
+          value: {{ .Values.mse.address.springcloud}}
+        - name: dubbo.registry.address
+          value: {{ .Values.mse.address.dubbo}}
+        - name: ribbon.eager-load.enabled
+          value: "true"
+        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/zuul-gateway:1.0-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        name: zuul-gateway
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
