@@ -1,7 +1,6 @@
 package com.alibabacloud.hipstershop.currencyservice.domain;
 
 /**
- *
  * 用户默认货币
  * 后续改进为持久化存储
  *

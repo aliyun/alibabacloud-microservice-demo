@@ -70,7 +70,8 @@ public class AccessCountUtil {
                     }
                     break;
                 }
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -109,17 +110,29 @@ public class AccessCountUtil {
         private int times;
         private boolean display; // 是否显示times
 
-        public String getResult() { return result; }
+        public String getResult() {
+            return result;
+        }
 
-        public void setResult(String result) { this.result = result; }
+        public void setResult(String result) {
+            this.result = result;
+        }
 
-        public int getTimes() { return times; }
+        public int getTimes() {
+            return times;
+        }
 
-        public void setTimes(int times) { this.times = times;}
+        public void setTimes(int times) {
+            this.times = times;
+        }
 
-        public boolean getDisplay() { return display; }
+        public boolean getDisplay() {
+            return display;
+        }
 
-        public void setDisplay(boolean display) { this.display = display;}
+        public void setDisplay(boolean display) {
+            this.display = display;
+        }
 
         public ResultNode(String result, int times, boolean display) {
             this.result = result;

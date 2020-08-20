@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 public class EchoController {
 
-	@Value("${test.name}")
-	private String userName;
+    @Value("${test.name}")
+    private String userName;
 
-	@RequestMapping(value = "/")
-	public String echo() {
-		return userName;
-	}
+    @RequestMapping(value = "/")
+    public String echo() {
+        return userName;
+    }
 }

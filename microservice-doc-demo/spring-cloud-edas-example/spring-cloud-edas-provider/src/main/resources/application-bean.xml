@@ -7,7 +7,7 @@
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/"/>
         <property name="suffix" value=".jsp"/>
-        <property name="cache" value="false" />
+        <property name="cache" value="false"/>
     </bean>
 
 

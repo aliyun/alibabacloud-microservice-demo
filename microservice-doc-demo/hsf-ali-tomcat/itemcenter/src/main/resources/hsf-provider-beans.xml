@@ -7,7 +7,7 @@
        http://www.taobao.com/hsf
        http://www.taobao.com/hsf/hsf.xsd" default-autowire="byName">
 
-    <bean id="itemService" class="com.alibaba.edas.carshop.itemcenter.ItemServiceImpl" />
+    <bean id="itemService" class="com.alibaba.edas.carshop.itemcenter.ItemServiceImpl"/>
 
     <!-- 提供一个服务示例 -->
 

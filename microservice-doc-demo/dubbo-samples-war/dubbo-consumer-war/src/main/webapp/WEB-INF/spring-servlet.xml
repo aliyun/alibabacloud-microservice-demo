@@ -12,21 +12,21 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes" value = "text/html;charset=UTF-8" />
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <dubbo:annotation package="com.alibaba.edas" />
+    <dubbo:annotation package="com.alibaba.edas"/>
 
     <dubbo:application name="dubbo-consumer"/>
 
     <dubbo:registry protocol="nacos" address="127.0.0.1:8848"/>
 
-    <dubbo:protocol name="dubbo" port="20881" threads="100" />
+    <dubbo:protocol name="dubbo" port="20881" threads="100"/>
 
-    <mvc:resources mapping="/**" location="/WEB-INF/static/" />
+    <mvc:resources mapping="/**" location="/WEB-INF/static/"/>
 
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 
 </beans>

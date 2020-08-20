@@ -25,7 +25,7 @@ public class DemoConsumerController {
     @PostConstruct
     public void init() {
         final ScheduledExecutorService executorService = Executors
-            .newSingleThreadScheduledExecutor();
+                .newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 try {

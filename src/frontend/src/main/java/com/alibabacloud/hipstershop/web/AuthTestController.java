@@ -38,7 +38,7 @@ public class AuthTestController {
 
         // 模拟 viewCart() 接口调用
         String uri = "http://127.0.0.1:" + port + "/cart";
-        EXECUTOR_SERVICE.submit((Runnable)() -> {
+        EXECUTOR_SERVICE.submit((Runnable) () -> {
             AccessCountUtil.uriAccess(uri, DUBBO_AUTH_LOCK, DUBBO_AUTH_RESULT_QUEUE);
         });
 
@@ -46,7 +46,7 @@ public class AuthTestController {
         for (int i = 0; i < PRODUCT_NUM; i++) {
             String uri2 = "http://127.0.0.1:" + port + "/product/" + products[i];
             int finalI = i;
-            EXECUTOR_SERVICE.submit((Runnable)() -> {
+            EXECUTOR_SERVICE.submit((Runnable) () -> {
                 AccessCountUtil.uriAccess(uri2, PRODUCT_LOCK[finalI], SPRING_CLOUD_AUTH_RESULT_QUEUE[finalI]);
             });
         }
@@ -55,7 +55,8 @@ public class AuthTestController {
 
         try {
             TimeUnit.MILLISECONDS.sleep(500);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
 
         redirectAttributes.addFlashAttribute("message", "开启成功，点击按钮可查最新结果");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name = "edas.service.consumer")
 public interface EchoService {
-    @RequestMapping(value = "/consumer/alive",method = RequestMethod.GET)
+    @RequestMapping(value = "/consumer/alive", method = RequestMethod.GET)
     boolean alive();
 
-    @RequestMapping(value = "/consumer-echo/{str}",method = RequestMethod.GET)
+    @RequestMapping(value = "/consumer-echo/{str}", method = RequestMethod.GET)
     String echo(@PathVariable("str") String str);
 }

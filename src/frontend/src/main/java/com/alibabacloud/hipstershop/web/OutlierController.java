@@ -31,20 +31,20 @@ public class OutlierController {
     private String port;
 
     private static final ScheduledExecutorService REFRESH_EXECUTOR = Executors.newScheduledThreadPool(1,
-        new ThreadFactory() {
-            public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r);
-                thread.setDaemon(true);
-                thread.setName("dubbo.outlier.refresh-" + thread.getId());
-                return thread;
-            }
-        });
+            new ThreadFactory() {
+                public Thread newThread(Runnable r) {
+                    Thread thread = new Thread(r);
+                    thread.setDaemon(true);
+                    thread.setName("dubbo.outlier.refresh-" + thread.getId());
+                    return thread;
+                }
+            });
 
     @RequestMapping(value = "/outlier/begin", method = RequestMethod.GET)
     public String begin(Model model) {
         begin.set(true);
 
-        REFRESH_EXECUTOR.submit((Runnable)() -> {
+        REFRESH_EXECUTOR.submit((Runnable) () -> {
             while (begin.get()) {
                 try {
                     Thread.sleep(sleepTime);

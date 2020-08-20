@@ -18,8 +18,8 @@ public class EchoServiceImpl implements EchoService {
 
         long end = System.currentTimeMillis();
         return "\r\n\t" + start + " Provider received." +
-            "\r\n\t\tProvider processed after sleep 1 second! Echo String: \"" + name + "\"" +
-            "\r\n\t" + end + " Provider Return";
+                "\r\n\t\tProvider processed after sleep 1 second! Echo String: \"" + name + "\"" +
+                "\r\n\t" + end + " Provider Return";
 
     }
 }

@@ -1,4 +1,4 @@
-package com.alibabacloud.hipstershop.provider;
+package com.alibabacloud.hipstershop.cartserviceprovider;
 
 import org.junit.Test;
 import org.springframework.util.Assert;

@@ -20,35 +20,35 @@ import java.util.List;
 @RestController
 public class TestController {
 
-	@Autowired
-	private RestTemplate restTemplate;
-	@Autowired
-	private EchoService echoService;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
+    private EchoService echoService;
 
-	@Autowired
-	private NacosDiscoveryProperties properties;
+    @Autowired
+    private NacosDiscoveryProperties properties;
 
-	@RequestMapping(value = "/echo-rest/{str}", method = RequestMethod.GET)
-	public String rest(@PathVariable String str) {
-		return restTemplate.getForObject("http://service-provider/echo/" + str,
-				String.class);
-	}
+    @RequestMapping(value = "/echo-rest/{str}", method = RequestMethod.GET)
+    public String rest(@PathVariable String str) {
+        return restTemplate.getForObject("http://service-provider/echo/" + str,
+                String.class);
+    }
 
-	@RequestMapping(value = "/echo-feign/{str}", method = RequestMethod.GET)
-	public String feign(@PathVariable String str) {
-		return echoService.echo(str);
-	}
+    @RequestMapping(value = "/echo-feign/{str}", method = RequestMethod.GET)
+    public String feign(@PathVariable String str) {
+        return echoService.echo(str);
+    }
 
-	@RequestMapping(value = "/servers", method = RequestMethod.GET)
-	public List<NacosServer> servers() {
+    @RequestMapping(value = "/servers", method = RequestMethod.GET)
+    public List<NacosServer> servers() {
 
-		DefaultClientConfigImpl iClientConfig = new DefaultClientConfigImpl();
-		iClientConfig.setClientName("service-provider");
+        DefaultClientConfigImpl iClientConfig = new DefaultClientConfigImpl();
+        iClientConfig.setClientName("service-provider");
 
-		NacosServerList serverList = new NacosServerList(properties);
-		serverList.initWithNiwsConfig(iClientConfig);
+        NacosServerList serverList = new NacosServerList(properties);
+        serverList.initWithNiwsConfig(iClientConfig);
 
-		return serverList.getInitialListOfServers();
-	}
+        return serverList.getInitialListOfServers();
+    }
 
 }

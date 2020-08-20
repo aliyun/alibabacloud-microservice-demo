@@ -49,22 +49,24 @@
 
     {{/if}}
 
-    </script>
-</br>
-<div>
-    <h2>官方文档：</h2>
-    <div class="docs-container"></div>
-</div>
 
-<script id="docs" type="text/reactive">
+    </script>
+    </br>
+    <div>
+        <h2>官方文档：</h2>
+        <div class="docs-container"></div>
+    </div>
+
+    <script id="docs" type="text/reactive">
     <ol>
     {{#each docs}}
         <li><a target="_blank" href="{{link}}">{{title}}</a></li>
     {{/each}}
     </ol>
 
-</script>
 
-<script src="/javascript/edas-demo.js"></script>
+    </script>
+
+    <script src="/javascript/edas-demo.js"></script>
 </body>
 </html>

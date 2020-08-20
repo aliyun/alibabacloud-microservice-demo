@@ -15,9 +15,9 @@ spec:
         - name: {{ .Values.nacos.name }}
           image: {{ .Values.nacos.image }}
           ports:
-          - containerPort: {{ .Values.nacos.port }}
+            - containerPort: {{ .Values.nacos.port }}
           env:
-          - name: PREFER_HOST_MODE
-            value: "hostname"
-          - name: MODE
-            value: "standalone"
+            - name: PREFER_HOST_MODE
+              value: "hostname"
+            - name: MODE
+              value: "standalone"

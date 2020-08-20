@@ -15,9 +15,9 @@ spec:
         - name: {{ .Values.productservice.name }}
           image: {{ .Values.productservice.image }}
           env:
-          - name: dubbo.registry.address
-            value: "nacos://{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
-          - name: spring.cloud.nacos.discovery.server-addr
-            value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
-          - name: spring.cloud.nacos.config.server-addr
-            value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+            - name: dubbo.registry.address
+              value: "nacos://{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"
+            - name: spring.cloud.nacos.config.server-addr
+              value: "{{ .Values.nacos.host }}:{{ .Values.nacos.port }}"

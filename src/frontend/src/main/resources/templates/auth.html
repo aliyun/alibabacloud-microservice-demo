@@ -8,8 +8,6 @@
     <div class="container bg-light py-3 px-lg-5 py-lg-5">
 
 
-
-
         <h1 style="padding-bottom: 20px">服务鉴权演示</h1>
 
         <p></p>
@@ -24,13 +22,15 @@
                 <a th:href="@{/auth/begin}">
                     <button type="button" class="btn">开启流量调用</button>
                 </a>
-                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
             <div class="col-md-6">
                 <a th:href="@{/auth/stop}">
                     <button type="button" class="btn">停止流量调用</button>
                 </a>
-                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
 
         </div>

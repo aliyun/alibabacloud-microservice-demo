@@ -5,8 +5,8 @@ package com.alibaba.edas.carshop.itemcenter;
  */
 public interface ItemService {
 
-	Item getItemById( long id );
-	
-	Item getItemByName( String name );
-	
+    Item getItemById(long id);
+
+    Item getItemByName(String name);
+
 }

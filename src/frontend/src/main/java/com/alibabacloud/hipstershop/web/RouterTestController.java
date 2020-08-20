@@ -39,22 +39,22 @@ public class RouterTestController {
 
     @RequestMapping(value = "/dubbo", method = RequestMethod.GET)
     public String dubbo(
-        @RequestParam(value = "name", required = false, defaultValue = "") String name,
-        @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
         return cartDAO.getRemoteIp(name, age);
     }
 
     @RequestMapping(value = "/springcloud", method = RequestMethod.GET)
     public String springcloud(
-        @RequestParam(value = "name", required = false, defaultValue = "") String name,
-        @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
         return productDAO.getRemoteIp(name, age);
     }
 
     @RequestMapping(value = "/update/dubbo")
     public String updateDubbo(
-        @RequestParam(value = "name", required = false, defaultValue = "") String name,
-        @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
 
         dubbo_age = age;
         dubbo_name = name;
@@ -63,8 +63,8 @@ public class RouterTestController {
 
     @RequestMapping(value = "/update/springcloud")
     public String updateSc(
-        @RequestParam(value = "name", required = false, defaultValue = "") String name,
-        @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
         spring_cloud_age = age;
         spring_cloud_name = name;
         return "ok";
@@ -97,21 +97,21 @@ public class RouterTestController {
         return new RedirectView("/router/result");
     }
 
-    public static void startInvoke(String port){
+    public static void startInvoke(String port) {
         INVOKER_ENABLE.set(true);
 
-        EXECUTOR_SERVICE.submit((Runnable)() -> {
+        EXECUTOR_SERVICE.submit((Runnable) () -> {
             while (INVOKER_ENABLE.get()) {
                 try {
                     TimeUnit.MICROSECONDS.sleep(10);
                     DUBBO_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
-                        "http://127.0.0.1:" + port + "/router/dubbo?name=" + dubbo_name + "&age=" + dubbo_age);
+                            "http://127.0.0.1:" + port + "/router/dubbo?name=" + dubbo_name + "&age=" + dubbo_age);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
-                        .readLine();
+                            .readLine();
                     synchronized (DUBBO_LOCK) {
-                        if(INVOKER_ENABLE.get()) {
+                        if (INVOKER_ENABLE.get()) {
                             if (result.length() < 20) {
                                 DUBBO_RESULT_QUEUE.add(result);
                             } else {
@@ -127,19 +127,19 @@ public class RouterTestController {
             }
         });
 
-        EXECUTOR_SERVICE.submit((Runnable)() -> {
+        EXECUTOR_SERVICE.submit((Runnable) () -> {
             while (INVOKER_ENABLE.get()) {
                 try {
                     TimeUnit.MICROSECONDS.sleep(10);
                     SPRING_CLOUD_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
-                        "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
-                            + spring_cloud_age);
+                            "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
+                                    + spring_cloud_age);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
-                        .readLine();
+                            .readLine();
                     synchronized (SPRING_CLOUD_LOCK) {
-                        if(INVOKER_ENABLE.get()) {
+                        if (INVOKER_ENABLE.get()) {
                             if (result.length() < 20) {
                                 SPRING_CLOUD_RESULT_QUEUE.add(result);
                             } else {
@@ -159,7 +159,7 @@ public class RouterTestController {
     }
 
 
-    public static void stopInvoker(){
+    public static void stopInvoker() {
         INVOKER_ENABLE.set(false);
         ROUTER_BEGIN.set(false);
 

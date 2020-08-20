@@ -49,7 +49,7 @@ public class AuthDemoController {
 
             AccessCountUtil.putResult(PRODUCT_LOCK[i], SPRING_CLOUD_RESULT_LIST[i], SPRING_CLOUD_RESULT_MAP[i], SPRING_CLOUD_AUTH_RESULT_QUEUE[i], display);
 
-            model.addAttribute("product"+i, SPRING_CLOUD_RESULT_LIST[i]);
+            model.addAttribute("product" + i, SPRING_CLOUD_RESULT_LIST[i]);
         }
         return "auth.html";
     }

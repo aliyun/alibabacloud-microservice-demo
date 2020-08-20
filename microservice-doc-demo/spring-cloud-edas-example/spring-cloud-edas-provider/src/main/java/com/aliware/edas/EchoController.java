@@ -15,7 +15,7 @@ public class EchoController {
     private EchoService echoService;
 
     @RequestMapping("/ping")
-    public boolean ping(){
+    public boolean ping() {
         try {
             return echoService.alive();
 
@@ -47,7 +47,7 @@ public class EchoController {
     }
 
     @RequestMapping(value = "/echo/{str}")
-    public String echo(@PathVariable String str){
+    public String echo(@PathVariable String str) {
         long start = System.currentTimeMillis();
 
         try {
@@ -57,7 +57,7 @@ public class EchoController {
 
         long end = System.currentTimeMillis();
         return "\r\n\t" + start + " Provider received." +
-            "\r\n\t\tProvider processed after sleep 1 second! Echo String: \"" + str + "\"" +
-            "\r\n\t" + end + " Provider Return";
+                "\r\n\t\tProvider processed after sleep 1 second! Echo String: \"" + str + "\"" +
+                "\r\n\t" + end + " Provider Return";
     }
 }

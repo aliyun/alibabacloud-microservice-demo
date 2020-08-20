@@ -8,16 +8,14 @@
     <div class="container bg-light py-3 px-lg-5 py-lg-5">
 
 
-
-
-
         <p></p>
         <p>说明，此页面为演示标签路由/金丝雀发布功能使用，调用结果显示最近的 1000 次调用中，分别被路由到了服务提供者的哪些 IP</p>
         <p>点击"开启流量调用"后，frontend 应用将不停地调用 cartservice 和 productservice</p>
         <p>点击"停止流量调用"后，流量调用被停止，同时清空数据</p>
         <p>调用参数分别表示传递的参数</p>
-        <p>    其中 Spring Cloud 调用对应的是 productservice 的 /getIp 这个 URL，用户名和年龄分别为 name 和 age 。</p>
-        <p>    其中 Dubbo 调用对应的是 cartservice 的 CartDAO 接口的 String getRemoteIp(String name, int age) 方法，用户名和年龄分别为 name 和 age 。</p>
+        <p> 其中 Spring Cloud 调用对应的是 productservice 的 /getIp 这个 URL，用户名和年龄分别为 name 和 age 。</p>
+        <p> 其中 Dubbo 调用对应的是 cartservice 的 CartDAO 接口的 String getRemoteIp(String name, int age) 方法，用户名和年龄分别为 name 和 age
+            。</p>
 
         <h1>流量开关</h1>
         <p></p>
@@ -28,13 +26,15 @@
                 <a th:href="@{/router/begin}">
                     <button type="button" class="btn">开启流量调用</button>
                 </a>
-                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
             <div class="col-md-6">
                 <a th:href="@{/router/stop}">
                     <button type="button" class="btn">停止流量调用</button>
                 </a>
-                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}" style="padding-left: 5px; padding-top:10px"></div>
+                <div th:if="${message2}" th:text="${message2}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
             </div>
 
         </div>

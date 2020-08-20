@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckController {
 
     @RequestMapping("/health")
-    public String heakthCheck(){
+    public String heakthCheck() {
         return "success";
     }
 

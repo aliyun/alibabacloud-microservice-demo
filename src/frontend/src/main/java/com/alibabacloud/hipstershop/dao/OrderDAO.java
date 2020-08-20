@@ -16,12 +16,12 @@ public class OrderDAO {
     private CheckoutService checkoutService;
 
     public String checkout(String email, String streetAddress, String zipCode, String city, String state,
-                   String creditCardNumber, int creditCardExpirationMonth, String creditCardCvv, String userId){
-        return checkoutService.checkout(email,streetAddress, zipCode, city, state, creditCardNumber,
+                           String creditCardNumber, int creditCardExpirationMonth, String creditCardCvv, String userId) {
+        return checkoutService.checkout(email, streetAddress, zipCode, city, state, creditCardNumber,
                 creditCardExpirationMonth, creditCardCvv, userId);
     }
 
-    public Order getOrder(String orderId, String userId){
+    public Order getOrder(String orderId, String userId) {
         return checkoutService.getOrder(orderId, userId);
     }
 
