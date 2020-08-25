@@ -1,5 +1,6 @@
 package com.alibabacloud.hipstershop.web;
 
+import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibabacloud.hipstershop.dao.ProductDAO;
 import com.alibabacloud.hipstershop.domain.bo.fault.FaultInfo;
 import com.alibabacloud.hipstershop.utils.Constant;
@@ -23,6 +24,9 @@ public class FaultInjectionController {
     @Resource
     ProductDAO productDAO;
 
+    @Resource
+    NacosConfigManager nacosConfigManager;
+
     private final String dataId = "productservice.properties";
     private final String group = "DEFAULT_GROUP";
 
@@ -42,8 +46,12 @@ public class FaultInjectionController {
 
     @RequestMapping("/end/fullgc")
     public RedirectView endFullGc(RedirectAttributes redirectAttributes){
-        productDAO.addFaultInstance(dataId, group, Constant.CLEAR);
-        redirectAttributes.addFlashAttribute("endFullGCResult", "Full GC 故障已清除");
+        try {
+            nacosConfigManager.getConfigService().publishConfig(dataId, group, "no exception!");
+            redirectAttributes.addFlashAttribute("endFullGCResult", "Full GC 故障已清除");
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("endFullGCResult", "故障清除失败");
+        }
         return new RedirectView("/fault/result");
     }
 
@@ -57,8 +65,12 @@ public class FaultInjectionController {
 
     @RequestMapping("/end/timeout")
     public RedirectView endTimeout(RedirectAttributes redirectAttributes){
-        productDAO.addFaultInstance(dataId, group, Constant.CLEAR);
-        redirectAttributes.addFlashAttribute("endTimeoutResult", "Full GC 故障已清除");
+        try {
+            nacosConfigManager.getConfigService().publishConfig(dataId, group, "no exception!");
+            redirectAttributes.addFlashAttribute("endTimeoutResult", "Full GC 故障已清除");
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("endFullGCResult", "故障清除失败");
+        }
         return new RedirectView("/fault/result");
     }
 

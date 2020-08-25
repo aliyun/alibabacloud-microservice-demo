@@ -11,6 +11,9 @@ spec:
       annotations:
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "productservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "productservice"
+        ahasNamespace: "default"
       labels:
         app: productservice
         version: 1.0.0-SNAPSHOT
@@ -45,6 +48,9 @@ spec:
       annotations:
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "cartservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "cartservice"
+        ahasNamespace: "default"
       labels:
         app: cartservice
     spec:
@@ -79,6 +85,10 @@ spec:
       annotations:
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "checkoutservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "checkoutservice"
+        ahasNamespace: "default"
+
       labels:
         app: checkoutservice
     spec:
@@ -113,6 +123,9 @@ spec:
       annotations:
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "frontend"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "frontend"
+        ahasNamespace: "default"
       labels:
         app: frontend
     spec:
