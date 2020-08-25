@@ -40,7 +40,7 @@ public class RedisRepository {
 
     public boolean removeUserCartItems(String userId) {
         //移除购物车商品
-        redisTemplate.delete(Common.getRedisKey(userId).getKey());
+//        redisTemplate.delete(Common.getRedisKey(userId).getKey());
         return true;
     }
 
