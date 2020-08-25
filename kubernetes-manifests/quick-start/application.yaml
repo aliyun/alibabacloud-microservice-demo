@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: productservice
-          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/checkoutservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/productservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
