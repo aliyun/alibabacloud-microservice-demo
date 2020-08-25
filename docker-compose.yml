@@ -57,9 +57,9 @@ services:
     container_name: frontend
     #    restart: always
     environment:
-      - dubbo.registry.address=nacos://nacos:8848
-      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-      - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos-server:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+      - spring.cloud.nacos.config.server-addr=nacos-server:8848
     ports:
       - "8080:8080"
     depends_on:
@@ -70,9 +70,9 @@ services:
     image: cartservice:1.0.0-SNAPSHOT
     container_name: cartservice
     environment:
-      - dubbo.registry.address=nacos://nacos:8848
-      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-      - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos-server:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+      - spring.cloud.nacos.config.server-addr=nacos-server:8848
     depends_on:
       - "nacos"
       - "cart-redis"
@@ -82,9 +82,9 @@ services:
     image: checkoutservice:1.0.0-SNAPSHOT
     container_name: checkoutservice
     environment:
-      - dubbo.registry.address=nacos://nacos:8848
-      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-      - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos-server:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+      - spring.cloud.nacos.config.server-addr=nacos-server:8848
     depends_on:
       - "nacos"
       - "checkout-mysql"
@@ -94,9 +94,9 @@ services:
     image: productservice:1.0.0-SNAPSHOT
     container_name: productservice
     environment:
-      - dubbo.registry.address=nacos://nacos:8848
-      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-      - spring.cloud.nacos.config.server-addr=nacos:8848
+      - dubbo.registry.address=nacos://nacos-server:8848
+      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+      - spring.cloud.nacos.config.server-addr=nacos-server:8848
     depends_on:
       - "nacos"
       - "product-mysql"
@@ -106,9 +106,9 @@ services:
 #    image: adservice:1.0.0-SNAPSHOT
 #    container_name: adservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"
 #
@@ -119,9 +119,9 @@ services:
 #    image: currencyservice:1.0.0-SNAPSHOT
 #    container_name: currencyservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"
 #
@@ -130,9 +130,9 @@ services:
 #    image: emailservice:1.0.0-SNAPSHOT
 #    container_name: emailservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"
 #
@@ -141,9 +141,9 @@ services:
 #    image: paymentservice:1.0.0-SNAPSHOT
 #    container_name: paymentservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"
 #
@@ -152,9 +152,9 @@ services:
 #    image: recomendationservice:1.0.0-SNAPSHOT
 #    container_name: recomendationservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"
 #
@@ -163,8 +163,8 @@ services:
 #    image: shippingservice:1.0.0-SNAPSHOT
 #    container_name: shippingservice
 #    environment:
-#      - dubbo.registry.address=nacos://nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
-#      - spring.cloud.nacos.discovery.server-addr=nacos:8848
+#      - dubbo.registry.address=nacos://nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
+#      - spring.cloud.nacos.discovery.server-addr=nacos-server:8848
 #    depends_on:
 #      - "nacos"

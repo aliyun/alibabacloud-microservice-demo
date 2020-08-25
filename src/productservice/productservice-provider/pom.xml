@@ -12,6 +12,10 @@
     <artifactId>productservice-provider</artifactId>
 
     <properties>
+        <java.encoding>UTF-8</java.encoding>
+        <project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${java.encoding}</project.reporting.outputEncoding>
+        <maven.compiler.encoding>${java.encoding}</maven.compiler.encoding>
         <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
         <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
         <dubbo.version>2.7.4</dubbo.version>
