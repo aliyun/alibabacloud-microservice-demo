@@ -67,7 +67,7 @@ public class FaultInjectionController {
     public RedirectView endTimeout(RedirectAttributes redirectAttributes){
         try {
             nacosConfigManager.getConfigService().publishConfig(dataId, group, "no exception!");
-            redirectAttributes.addFlashAttribute("endTimeoutResult", "Full GC 故障已清除");
+            redirectAttributes.addFlashAttribute("endTimeoutResult", "Timeout 故障已清除");
         } catch (Exception e){
             redirectAttributes.addFlashAttribute("endFullGCResult", "故障清除失败");
         }
