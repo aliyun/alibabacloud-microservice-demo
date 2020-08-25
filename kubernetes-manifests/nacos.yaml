@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nacos
+  name: nacos-server
 spec:
   selector:
     matchLabels:
-      app: nacos
+      app: nacos-server
   template:
     metadata:
       labels:
-        app: nacos
+        app: nacos-server
     spec:
       containers:
         - name: nacos-standalone
@@ -25,11 +25,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nacos
+  name: nacos-server
 spec:
   type: ClusterIP
   selector:
-    app: nacos
+    app: nacos-server
   ports:
     - name: http
       port: 8848
