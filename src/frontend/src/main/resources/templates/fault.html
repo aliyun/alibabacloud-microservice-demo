@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+
+        <p></p>
+        <p>本页面用于演示注入故障，故障类型包括Full GC，Timeout等。</p>
+
+        <h1>故障注入</h1>
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href="@{/fault/start/fullgc}">
+                    <button type="button" class="btn">注入Full GC故障</button>
+                </a>
+                <div th:if="${startFullGCResult}" th:text="${startFullGCResult}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/fault/end/fullgc}">
+                    <button type="button" class="btn">停止注入Full GC故障</button>
+                </a>
+                <div th:if="${endFullGCResult}" th:text="${endFullGCResult}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <a th:href="@{/fault/start/timeout}">
+                    <button type="button" class="btn">注入Timeout故障</button>
+                </a>
+                <div th:if="${startTimeoutResult}" th:text="${startTimeoutResult}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/fault/end/timeout}">
+                    <button type="button" class="btn">停止注入Timeout故障</button>
+                </a>
+                <div th:if="${endTimeoutResult}" th:text="${endTimeoutResult}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

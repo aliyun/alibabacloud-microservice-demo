@@ -26,6 +26,11 @@ public class ProductController {
         return productServiceApi.setConfig(dataId, group, content);
     }
 
+    @PostMapping("/addFaultInstance")
+    public String addFaultInstance(@RequestParam("dataId") String dataId, @RequestParam("group") String group, @RequestParam("content")String content){
+        return productServiceApi.addFaultInstance(dataId, group, content);
+    }
+
     @GetMapping("/products")
     public List<Product> getProductList() {
         return productServiceApi.getAllProduct().stream().map(ProductInfo::getProduct).collect(Collectors.toList());
