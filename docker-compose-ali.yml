@@ -2,7 +2,7 @@ version: "3"
 services:
   nacos:
     hostname: nacos
-    image: registry.cn-beijing.aliyuncs.com/xfguo/test/nacos/nacos-server:latest
+    image: nacos/nacos-server:latest
     container_name: nacos-standalone
     environment:
       - PREFER_HOST_MODE=hostname
@@ -23,7 +23,7 @@ services:
   #      MYSQL_DATABASE: currency
 
   checkout-mysql:
-    image: registry.cn-beijing.aliyuncs.com/xfguo/test/mysql:5.6
+    image: mysql:5.6
     ports:
       - 3306
     command: [
@@ -35,7 +35,7 @@ services:
       MYSQL_DATABASE: checkout
 
   product-mysql:
-    image: registry.cn-beijing.aliyuncs.com/xfguo/test/mysql:5.6
+    image: mysql:5.6
     ports:
       - 3306
     command: [
@@ -47,13 +47,13 @@ services:
       MYSQL_DATABASE: product
 
   cart-redis:
-    image: registry.cn-beijing.aliyuncs.com/xfguo/test/redis:latest
+    image: redis:latest
     ports:
       - 6379:6379
 
   frontend:
     build: ./src/frontend
-    image: registry-vpc.cn-beijing.aliyuncs.com/xiaofeng-gxf/frontend:1.1.1-SNAPSHOT
+    image: registry.cn-shanghai.aliyuncs.com/microservice_demo/frontend:1.0.0-SNAPSHOT
     container_name: frontend
     #    restart: always
     environment:
@@ -67,7 +67,7 @@ services:
 
   cartservice:
     build: ./src/cartservice
-    image: registry-vpc.cn-beijing.aliyuncs.com/xiaofeng-gxf/cartservice:1.1.1-SNAPSHOT
+    image: registry.cn-shanghai.aliyuncs.com/microservice_demo/cartservice:1.0.0-SNAPSHOT
     container_name: cartservice
     environment:
       - dubbo.registry.address=nacos://nacos-server:8848
@@ -79,7 +79,7 @@ services:
 
   checkoutservice:
     build: ./src/checkoutservice
-    image: registry-vpc.cn-beijing.aliyuncs.com/xiaofeng-gxf/checkoutservice:1.1.1-SNAPSHOT
+    image: registry.cn-shanghai.aliyuncs.com/microservice_demo/checkoutservice:1.0.0-SNAPSHOT
     container_name: checkoutservice
     environment:
       - dubbo.registry.address=nacos://nacos-server:8848
@@ -91,7 +91,7 @@ services:
 
   prdoctservice:
     build: ./src/productservice
-    image: registry-vpc.cn-beijing.aliyuncs.com/xiaofeng-gxf/productservice:1.1.1-SNAPSHOT
+    image: registry.cn-shanghai.aliyuncs.com/microservice_demo/productservice:1.0.0-SNAPSHOT
     container_name: productservice
     environment:
       - dubbo.registry.address=nacos://nacos-server:8848

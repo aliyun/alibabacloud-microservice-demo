@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: productservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/productservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/checkoutservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: cartservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/cartservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/cartservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
@@ -84,7 +84,7 @@ spec:
     spec:
       containers:
         - name: checkoutservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/checkoutservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/checkoutservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
@@ -118,7 +118,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/frontend:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/frontend:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
