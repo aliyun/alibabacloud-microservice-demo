@@ -44,7 +44,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     private OrderFormRepository orderFormRepository;
 
     @Override
-    public String checkout(String email, String streetAddress, String zipCode, String city, String state,
+    public String checkout(String email, String streetAddress, String zipCode, String city, String state, String country,
                            String creditCardNumber, int creditCardExpirationMonth, String creditCardCvv, String userId) {
         Order order = null;
 //        try {

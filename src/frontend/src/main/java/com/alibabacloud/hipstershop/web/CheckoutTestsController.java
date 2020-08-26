@@ -32,6 +32,7 @@ public class CheckoutTestsController {
                            @RequestParam(name = "zip_code") String zipCode,
                            @RequestParam(name = "city") String city,
                            @RequestParam(name = "state") String state,
+                           @RequestParam(name = "country") String country,
                            @RequestParam(name = "credit_card_number") String creditCardNumber,
                            @RequestParam(name = "credit_card_expiration_month") int creditCardExpirationMonth,
                            @RequestParam(name = "credit_card_cvv") String creditCardCvv) throws UnknownHostException {
@@ -41,9 +42,8 @@ public class CheckoutTestsController {
                 throw new RuntimeException();
             }
         }
-        String orderId = orderDAO.checkout(email, streetAddress, zipCode, city, state, creditCardNumber,
+        return orderDAO.checkout(email, streetAddress, zipCode, city, state, country, creditCardNumber,
                 creditCardExpirationMonth, creditCardCvv, userID);
-        return orderId;
     }
 
     @PostMapping("/exception_checkout")
