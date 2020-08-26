@@ -101,6 +101,11 @@ services:
       - "nacos"
       - "product-mysql"
 
+  loadgenerator:
+    build: ./src/loadgenerator
+    image: registry.cn-shanghai.aliyuncs.com/microservice_demo/loadgenerator:1.0.0-SNAPSHOT
+    container_name: loadgenerator
+
 #  adservice:
 #    build: ./src/adservice
 #    image: adservice:1.0.0-SNAPSHOT

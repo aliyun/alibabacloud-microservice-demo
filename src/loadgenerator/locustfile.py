@@ -70,6 +70,7 @@ class UserBehavior(TaskSet):
         browseProduct: 10,
         addToCart: 2,
         viewCart: 3,
+        checkout: 3
         }
 
 class WebsiteUser(HttpLocust):
