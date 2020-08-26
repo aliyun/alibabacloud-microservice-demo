@@ -128,3 +128,43 @@ spec:
       targetPort: 3306
   selector:
     app: product-mysql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-server
+spec:
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+        - name: nacos-standalone
+          image: nacos/nacos-server:latest
+          ports:
+            - containerPort: 8848
+          env:
+            - name: PREFER_HOST_MODE
+              value: "hostname"
+            - name: MODE
+              value: "standalone"
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-server
+spec:
+  type: ClusterIP
+  selector:
+    app: nacos-server
+  ports:
+    - name: http
+      port: 8848
+      targetPort: 8848
