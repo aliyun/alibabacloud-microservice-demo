@@ -2,7 +2,7 @@ FROM python:3-slim as base
 
 FROM base as builder
 
-RUN apt-get -qq update \
+RUN apt-get -qq update  --fix-missing\
     && apt-get install -y --no-install-recommends \
         g++
 
