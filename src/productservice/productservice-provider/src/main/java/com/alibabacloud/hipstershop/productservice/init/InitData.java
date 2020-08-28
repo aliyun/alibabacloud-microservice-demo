@@ -4,6 +4,7 @@ package com.alibabacloud.hipstershop.productservice.init;
 import com.alibabacloud.hipstershop.productservice.entity.ProductInfo;
 import com.alibabacloud.hipstershop.productservice.repository.ProductInfoRepository;
 import com.alibabacloud.hipstershop.productserviceapi.domain.Product;
+import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,8 @@ public class InitData implements ApplicationRunner {
     @Resource
     ProductInfoRepository productInfoRepository;
 
+    private static String env = System.getenv("demo_version");
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -33,7 +36,11 @@ public class InitData implements ApplicationRunner {
         p1.setId("OLJCESPC7Z");
         p1.setName("Air Jordan 1 Mid SE 白绿 GS");
         p1.setDescription("Air Jordan 1于1985年推出，是耐克第一双以乔丹名字命名的篮球鞋，正是这双鞋，开启了一个时代。");
-        p1.setPicture("/img/products/1.png");
+        if(StringUtils.isNotBlank(env)){
+            p1.setPicture("/img/products/air-plant.png");
+        } else {
+            p1.setPicture("/img/products/1.png");
+        }
         p1.setPrice(1559);
         p1.setCategories(Collections.singletonList("shoe"));
         productInfoList.add(new ProductInfo(p1));
@@ -42,7 +49,11 @@ public class InitData implements ApplicationRunner {
         p2.setId("66VCHSJNUP");
         p2.setName("Air Jordan Legacy 312");
         p2.setDescription("Air Jordan Legacy 312 男子运动鞋饰有醒目的设计细节，旨在向 Michael Jordan 的传奇精神致敬。匠心设计依托现代手法将经典 Jordan 元素混搭。");
-        p2.setPicture("/img/products/2.png");
+        if(StringUtils.isNotBlank(env)){
+            p2.setPicture("/img/products/barista-kit.png");
+        } else {
+            p2.setPicture("/img/products/2.png");
+        }
         p2.setPrice(1099);
         p2.setCategories(Collections.singletonList("shoe"));
         productInfoList.add(new ProductInfo(p2));
@@ -51,7 +62,11 @@ public class InitData implements ApplicationRunner {
         p3.setId("1YMWWN1N4O");
         p3.setName("adidas Yezezy Boost 350");
         p3.setDescription("adidas Yeezy Boost 350 v2是迄今为止最受欢迎的Yeezy鞋之一。它采用弹性Primeknit鞋面和BOOST中底，而最醒目的细节是罗纹中底。");
-        p3.setPicture("/img/products/3.png");
+        if(StringUtils.isNotBlank(env)){
+            p3.setPicture("/img/products/camera-lens.png");
+        } else {
+            p3.setPicture("/img/products/3.png");
+        }
         p3.setPrice(1609);
         p3.setCategories(Collections.singletonList("shoe"));
         productInfoList.add(new ProductInfo(p3));
