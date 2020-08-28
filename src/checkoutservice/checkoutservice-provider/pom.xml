@@ -14,6 +14,10 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
+        <java.encoding>UTF-8</java.encoding>
+        <project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${java.encoding}</project.reporting.outputEncoding>
+        <maven.compiler.encoding>${java.encoding}</maven.compiler.encoding>
         <java.version>1.8</java.version>
         <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
         <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>

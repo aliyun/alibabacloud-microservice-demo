@@ -35,4 +35,13 @@ public interface ProductServiceApi {
      * @param content content
      */
     String setConfig(String dataId, String group, String content);
+
+    /**
+     * 把当前机器的IP地址加入故障列表
+     * @param dataId dataid
+     * @param group group
+     * @param content content
+     * @return ip地址
+     */
+    String addFaultInstance(String dataId, String group, String content);
 }

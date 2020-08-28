@@ -89,10 +89,11 @@ public class AppController {
                                  @RequestParam(name = "zip_code") String zipCode,
                                  @RequestParam(name = "city") String city,
                                  @RequestParam(name = "state") String state,
+                                 @RequestParam(name = "country") String country,
                                  @RequestParam(name = "credit_card_number") String creditCardNumber,
                                  @RequestParam(name = "credit_card_expiration_month") int creditCardExpirationMonth,
                                  @RequestParam(name = "credit_card_cvv") String creditCardCvv) {
-        String orderId = orderDAO.checkout(email, streetAddress, zipCode, city, state, creditCardNumber,
+        String orderId = orderDAO.checkout(email, streetAddress, zipCode, city, state, country, creditCardNumber,
                 creditCardExpirationMonth, creditCardCvv, userID);
         return new RedirectView("/checkout/" + orderId);
     }

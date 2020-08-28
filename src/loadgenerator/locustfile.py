@@ -48,7 +48,7 @@ def addToCart(l):
 
 def checkout(l):
     addToCart(l)
-    l.client.post("/cart/checkout", {
+    l.client.post("/checkout_test", {
         'email': 'someone@example.com',
         'street_address': '1600 Amphitheatre Parkway',
         'zip_code': '94043',
@@ -57,7 +57,6 @@ def checkout(l):
         'country': 'United States',
         'credit_card_number': '4432-8015-6152-0454',
         'credit_card_expiration_month': '1',
-        'credit_card_expiration_year': '2039',
         'credit_card_cvv': '672',
     })
 
@@ -70,6 +69,7 @@ class UserBehavior(TaskSet):
         browseProduct: 10,
         addToCart: 2,
         viewCart: 3,
+        checkout: 3
         }
 
 class WebsiteUser(HttpLocust):

@@ -29,6 +29,10 @@ public class ProductDAO {
         return productService.getProductList();
     }
 
+    public String addFaultInstance(String dataId, String group, String content){
+        return productService.addFaultInstance(dataId, group, content);
+    }
+
     public String getRemoteIp(String name, int age) {
         return restTemplate.getForObject("http://productservice/getIp?name=" + name + "&age=" + age, String.class);
     }
@@ -46,5 +50,8 @@ public class ProductDAO {
 
         @GetMapping("/product/{id}")
         Product getProductById(@PathVariable(name = "id") String id);
+
+        @PostMapping("/addFaultInstance")
+        public String addFaultInstance(@RequestParam("dataId") String dataId, @RequestParam("group") String group, @RequestParam("content")String content);
     }
 }

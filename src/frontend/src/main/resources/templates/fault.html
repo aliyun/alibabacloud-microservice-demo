@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header.html :: commonHead">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+<script th:src="@{/js/index.js}"></script>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+        <p></p>
+        <p>本页面用于演示注入故障，故障类型包括Full GC，Timeout等。</p>
+        <h1>故障注入</h1>
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="row" style="height: 500px">
+            <div class="col-md-10">
+                <topo-net id="topo" style="height:400px"/>
+            </div>
+            <div class="col-md-2">
+                <a th:href="@{/fault/start/fullgc}" class="btn btn-primary" style="margin-top: 10px">注入Full GC故障</a>
+                <div th:if="${startFullGCResult}" th:text="${startFullGCResult}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+
+                <a th:href="@{/fault/end/fullgc}" class="btn btn-primary" style="margin-top: 10px">停止注入Full GC故障</a>
+                <div th:if="${endFullGCResult}" th:text="${endFullGCResult}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+                <a th:href="@{/fault/start/timeout}" class="btn btn-primary" style="margin-top: 10px">注入Timeout故障</a>
+                <div th:if="${startTimeoutResult}" th:text="${startTimeoutResult}" th:class="${'alert' + alertClass}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+                <a th:href="@{/fault/end/timeout}" class="btn btn-primary" style="margin-top: 10px">停止注入Timeout故障</a>
+                <div th:if="${endTimeoutResult}" th:text="${endTimeoutResult}" th:class="${'alert' + alertClass2}"
+                     style="padding-left: 5px; padding-top:10px"></div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script>
+
+const data = {
+        "nodes": [
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0,
+                "count": 0,
+                "pid": "bjpc0h9h4d@9f4adbf7204ee06",
+                "error": 0,
+                "type": "DUBBO",
+                "selfElapsedRate": 0,
+                "elapsed": 0,
+                "qps": 0,
+                "name": "checkout",
+                "id": -937157083,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0,
+                "count": 0,
+                "pid": "bjpc0h9h4d@09d4d8d81b76785",
+                "error": 0,
+                "type": "DUBBO",
+                "selfElapsedRate": 0,
+                "elapsed": 0,
+                "qps": 0,
+                "name": "cart",
+                "id": -1785452459,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0,
+                "count": 0,
+                "pid": "bjpc0h9h4d@d32c33edacf297c",
+                "error": 0,
+                "type": "TOMCAT",
+                "selfElapsedRate": 0,
+                "elapsed": 0,
+                "qps": 0,
+                "name": "front",
+                "id": 2016431978,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0,
+                "count": 0,
+                "pid": "bjpc0h9h4d@5ac83c777a51651",
+                "error": 0,
+                "type": "DUBBO",
+                "selfElapsedRate": 0,
+                "elapsed": 0,
+                "qps": 0,
+                "name": "product",
+                "id": 503412365,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0,
+                "count": 0,
+                "pid": "bjpc0h9h4d@9f4adbf7204ee06",
+                "error": 0,
+                "type": "MYSQL",
+                "selfElapsedRate": 0,
+                "elapsed": 0,
+                "qps": 0,
+                "name": "checkout",
+                "id": -537757281,
+                "errorCount": 0
+            }
+        ],
+        "link": [
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 74,
+                "count": 3,
+                "callRate": 0,
+                "rpcCode": 8,
+                "error": 0,
+                "traceRate": 0,
+                "elapsed": 0,
+                "protocol": "DUBBO",
+                "parentCount": 0,
+                "qps": 0.05172413793103448,
+                "from": -937157083,
+                "to": -1785452459,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 259.3333333333333,
+                "count": 6,
+                "callRate": 0,
+                "rpcCode": 8,
+                "error": 0,
+                "traceRate": 0,
+                "elapsed": 0,
+                "protocol": "DUBBO",
+                "parentCount": 0,
+                "qps": 0.10344827586206896,
+                "from": 2016431978,
+                "to": -937157083,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 36.111111111111114,
+                "count": 9,
+                "callRate": 0,
+                "rpcCode": 60,
+                "error": 0,
+                "traceRate": 0,
+                "elapsed": 0,
+                "protocol": "MYSQL",
+                "parentCount": 0,
+                "qps": 0.15517241379310345,
+                "from": -937157083,
+                "to": -537757281,
+                "errorCount": 0
+            },
+            {
+                "requestCount": 0,
+                "selfElapsed": 0,
+                "rt": 0.3333333333333333,
+                "count": 3,
+                "callRate": 0,
+                "rpcCode": 8,
+                "error": 0,
+                "traceRate": 0,
+                "elapsed": 0,
+                "protocol": "DUBBO",
+                "parentCount": 0,
+                "qps": 0.05172413793103448,
+                "from": -937157083,
+                "to": 503412365,
+                "errorCount": 0
+            }
+        ],
+        "activeNode": {
+            "requestCount": 0,
+            "selfElapsed": 0,
+            "rt": 0,
+            "count": 0,
+            "pid": "bjpc0h9h4d@9f4adbf7204ee06",
+            "error": 0,
+            "type": "DUBBO",
+            "selfElapsedRate": 0,
+            "elapsed": 0,
+            "qps": 0,
+            "name": "checkout",
+            "id": -937157083,
+            "errorCount": 0
+        },
+        "maxRange": 0
+}
+    function getColor(elapsed, def) {
+        if (elapsed > 1000) {
+            return '#d9534f';
+        }
+        if (elapsed > 500) {
+            return '#f0ad4e';
+        }
+        return def || '#00A263';
+    }
+
+
+    function formatQps(qps) {
+        return qps.toFixed(2)
+    }
+
+    function getEdgeText(edge) {
+        // return formatQps(edge.qps) + ' ' + edge.protocol + '\n' + '平均  ' + edge.rt.toFixed(2) + 'ms';
+        return edge.protocol;
+    }
+
+    const nodes = (data.nodes || [])
+        .map((n) => {
+            const nodeType = (n.type || 'UNKNOWN').toUpperCase();
+            return {
+                id: n.id,
+                label: n.name,
+                nodeType,
+                data: n,
+            }
+        });
+    const edges = (data.link || []).map((n) => {
+        return {
+            from: n.from,
+            to: n.to,
+            data: n,
+        }
+    });
+</script>
+<script>
+    const $topo = document.getElementById('topo');
+    $topo.config = {
+        tooltip: {
+            dir: 'tb',
+            format: function (data, target) {
+                return `
+  <style>
+      .tooltop_content{
+        padding: 10px;
+        font-size: 12px;
+        max-width: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+        /*min-width: 100px;*/
+        word-break: break-all;
+        color: white;
+      }
+      .tooltop_content .title{
+        font-size: 14px;
+      }
+      .tooltop_content .key{
+          display: inline-block;
+          width: 60px;
+      }
+  </style>
+  <div class="tooltop_content">
+      <div class="title">${data.name}</div>
+  </div>`
+            },
+        },
+
+        effectType: 'circle', //highlight   circle
+        edge: {
+            label: function (data, type) {
+                let color = data.error ? '#d9534f' : '#999';
+                switch (type) {
+                    case 'text':
+                        return getEdgeText(data);
+                    case 'normal':
+                        return { weight: 200, anchor: 'middle', fill: color };
+                    case 'highlight':
+                        return { weight: 200, anchor: 'middle', fill: color };
+                    case 'active':
+                        return { weight: 600, anchor: 'middle', fill: color };
+                }
+            },
+            path: function (data, type) {
+                switch (type) {
+                    case 'normal':
+                        return { color: getColor(data.elapsed), width: 1 };
+                    case 'highlight':
+                        return { color: getColor(data.elapsed), width: 2 };
+                    case 'active':
+                        return { color: getColor(data.elapsed), width: 3 };
+                    case 'subActive':
+                        return { color: getColor(data.elapsed), width: 1 };
+                }
+            },
+        },
+        node: {
+            showLabel: true,
+            maxLabelLength: 10,
+        },
+    };
+    $topo.data = { nodes, edges }
+</script>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

@@ -9,23 +9,27 @@ spec:
   template:
     metadata:
       annotations:
+        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "productservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "productservice"
+        ahasNamespace: "default"
       labels:
         app: productservice
         version: 1.0.0-SNAPSHOT
     spec:
       containers:
         - name: productservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/productservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/productservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
-              value: "nacos://nacos:8848"
+              value: "nacos://nacos-server:8848"
             - name: spring.cloud.nacos.discovery.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
             - name: spring.cloud.nacos.config.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
           resources:
             limits:
               cpu: 1000m
@@ -43,22 +47,26 @@ spec:
   template:
     metadata:
       annotations:
+        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "cartservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "cartservice"
+        ahasNamespace: "default"
       labels:
         app: cartservice
     spec:
       containers:
         - name: cartservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/cartservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/cartservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
-              value: "nacos://nacos:8848"
+              value: "nacos://nacos-server:8848"
             - name: spring.cloud.nacos.discovery.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
             - name: spring.cloud.nacos.config.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
           resources:
             limits:
               cpu: 1000m
@@ -77,22 +85,27 @@ spec:
   template:
     metadata:
       annotations:
+        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "checkoutservice"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "checkoutservice"
+        ahasNamespace: "default"
+
       labels:
         app: checkoutservice
     spec:
       containers:
         - name: checkoutservice
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/checkoutservice:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/checkoutservice:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: dubbo.registry.address
-              value: "nacos://nacos:8848"
+              value: "nacos://nacos-server:8848"
             - name: spring.cloud.nacos.discovery.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
             - name: spring.cloud.nacos.config.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
           resources:
             limits:
               cpu: 1000m
@@ -111,28 +124,75 @@ spec:
   template:
     metadata:
       annotations:
+        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "frontend"
+        ahasPilotAutoEnable: "on"
+        ahasAppName: "frontend"
+        ahasNamespace: "default"
       labels:
         app: frontend
     spec:
       containers:
         - name: frontend
-          image: registry.cn-beijing.aliyuncs.com/xfguo/test/frontend:1.0.0-SNAPSHOT
+          image: registry.cn-shanghai.aliyuncs.com/microservice_demo/frontend:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: dubbo.registry.address
-              value: "nacos://nacos:8848"
+              value: "nacos://nacos-server:8848"
             - name: spring.cloud.nacos.discovery.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
             - name: spring.cloud.nacos.config.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
           resources:
             limits:
               cpu: 1000m
               memory: 2048Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: loadgenerator
+    name: loadgenerator
+    namespace: default
+spec:
+    selector:
+        matchLabels:
+            app: loadgenerator
+    template:
+        metadata:
+            labels:
+                app: loadgenerator
+        spec:
+            containers:
+                - name: loadgenerator
+                  image: registry.cn-shanghai.aliyuncs.com/microservice_demo/loadgenerator:1.0.0-SNAPSHOT
+                  imagePullPolicy: Always
+                  env:
+                      - name: LANG
+                        value: C.UTF-8
+                      - name: GPG_KEY
+                        value: 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+                      - name: PYTHON_GET_PIP_URL
+                        value: >-
+                            https://github.com/pypa/get-pip/raw/404c9418e33c5031b1a9ab623168b3e8a2ed8c88/get-pip.py
+                      - name: PYTHON_GET_PIP_SHA256
+                        value: 56bb63d3cf54e7444351256f72a60f575f6d8c7f1faacffae33167afc8e7609d
+                      - name: FRONTEND_ADDR
+                        value: frontend-external:8080
+                      - name: USERS
+                        value: '20'
+                  resources:
+                      limits:
+                          cpu: 300m
+                          memory: 512Mi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+
 ---
 apiVersion: v1
 kind: Service

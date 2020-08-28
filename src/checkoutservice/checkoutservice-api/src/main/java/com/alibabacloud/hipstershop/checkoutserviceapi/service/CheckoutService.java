@@ -36,7 +36,7 @@ public interface CheckoutService {
      * <p>
      * 3. 订单设定过期时间（redis实现）。
      */
-    String checkout(String email, String streetAddress, String zipCode, String city, String state,
+    String checkout(String email, String streetAddress, String zipCode, String city, String state, String country,
                     String creditCardNumber, int creditCardExpirationMonth, String creditCardCvv, String userId);
 
     /**

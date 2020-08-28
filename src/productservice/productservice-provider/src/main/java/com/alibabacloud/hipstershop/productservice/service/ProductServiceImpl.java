@@ -1,5 +1,6 @@
 package com.alibabacloud.hipstershop.productservice.service;
 
+import com.alibabacloud.hipstershop.productservice.utils.Constant;
 import com.alibabacloud.hipstershop.productserviceapi.domain.ProductItem;
 import com.alibabacloud.hipstershop.productserviceapi.service.ProductService;
 import org.apache.dubbo.config.annotation.Service;
@@ -48,14 +49,14 @@ public class ProductServiceImpl implements ProductService {
                 Random random = new Random();
                 int i = random.nextInt(100);
                 if (i < rate) {
-                    if("sleep".equals(exceptionType)) {
+                    if(Constant.SLEEP.equals(exceptionType)) {
                         try {
                             Thread.sleep(exceptionValue);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    else if("fullgc".equals(exceptionType)) {
+                    else if(Constant.FULL_GC.equals(exceptionType)) {
                         List<Object> list = new ArrayList<>();
                         for(int j = 0; j < exceptionValue; j++) {
                             list.add(new byte[10 * 1024 * 1024]);

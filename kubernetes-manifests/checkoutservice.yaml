@@ -16,11 +16,11 @@ spec:
           image: checkoutservice:1.0.0-SNAPSHOT
           env:
             - name: dubbo.registry.address
-              value: "nacos://nacos:8848"
+              value: "nacos://nacos-server:8848"
             - name: spring.cloud.nacos.discovery.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
             - name: spring.cloud.nacos.config.server-addr
-              value: "nacos:8848"
+              value: "nacos-server:8848"
 
 ---
 
