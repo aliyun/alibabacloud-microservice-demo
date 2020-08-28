@@ -3,22 +3,35 @@
 <head th:replace="header.html :: commonHead"></head>
 
 <body>
-<header th:replace="header.html :: pageHeader"></header>
-<main role="main">
-    <section class="jumbotron text-center mb-0">
-        <!-- The background color is used for canary deployement -->
-        <!--                 {{ with $.banner_color }}-->
-        <!--                 style="background-color: {{.}};"-->
-        <!--                 {{ end }}-->
-        <div class="container">
-            <h1 class="jumbotron-heading">
-                听说男孩子都喜欢鞋子跟玩具？enjoy it！
-            </h1>
-            <p class="lead text-muted">
-                厌倦了主流时尚理念、流行趋势和社会规范？这一系列潮流产品将有助于你赶上了时尚潮流，表达了你的个人风格。
-            </p>
-        </div>
-    </section>
+    <header th:replace="header.html :: pageHeader"></header>
+    <main role="main">
+        <section class="jumbotron text-center mb-0">
+            <!-- The background color is used for canary deployement -->
+<!--                 {{ with $.banner_color }}-->
+<!--                 style="background-color: {{.}};"-->
+<!--                 {{ end }}-->
+
+            <div class="container">
+                <h2 class="jumbotron-heading">
+                    <span th:text="'zuul ----> '+${FRONTEND_APP_NAME}+'_'+${FRONTEND_SERVICE_TAG}+'_'+${FRONTEND_IP}+' ----> '+ ${PRODUCT_APP_NAME}+'_'+${PRODUCT_SERVICE_TAG}+'_'+${PRODUCT_IP}"/>
+                </h2>
+
+                <p> </p>
+                <p> </p>
+                <p> </p>
+            </div>
+
+
+
+            <div class="container">
+                <h1 class="jumbotron-heading">
+                    听说男孩子都喜欢鞋子跟玩具？enjoy it！
+                </h1>
+                <p class="lead text-muted">
+                    厌倦了主流时尚理念、流行趋势和社会规范？这一系列潮流产品将有助于你赶上了时尚潮流，表达了你的个人风格。
+                </p>
+            </div>
+        </section>
 
     <div class="py-5 bg-light">
         <div class="container">

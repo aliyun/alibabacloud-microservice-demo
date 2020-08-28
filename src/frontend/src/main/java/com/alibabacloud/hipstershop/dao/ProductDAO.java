@@ -3,6 +3,8 @@ package com.alibabacloud.hipstershop.dao;
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+
+import static com.alibabacloud.hipstershop.web.AppController.PRODUCT_APP_NAME;
+import static com.alibabacloud.hipstershop.web.AppController.PRODUCT_SERVICE_TAG;
+import static com.alibabacloud.hipstershop.web.AppController.PRODUCT_IP;
 
 @Service
 public class ProductDAO {
@@ -26,7 +32,14 @@ public class ProductDAO {
     }
 
     public List<Product> getProductList() {
-        return productService.getProductList();
+
+        ResponseEntity<List<Product>> responseEntity = productService.getProductList();
+
+        PRODUCT_APP_NAME = getValueFromHttpHeader(responseEntity.getHeaders(),"APP_NAME");
+        PRODUCT_SERVICE_TAG = getValueFromHttpHeader(responseEntity.getHeaders(),"SERVICE_TAG");
+        PRODUCT_IP = getValueFromHttpHeader(responseEntity.getHeaders(),"SERVICE_IP");
+
+        return responseEntity.getBody();
     }
 
     public String addFaultInstance(String dataId, String group, String content){
@@ -46,12 +59,16 @@ public class ProductDAO {
     public interface ProductService {
 
         @GetMapping("/products/")
-        List<Product> getProductList();
+        ResponseEntity<List<Product>> getProductList();
 
         @GetMapping("/product/{id}")
         Product getProductById(@PathVariable(name = "id") String id);
 
         @PostMapping("/addFaultInstance")
         public String addFaultInstance(@RequestParam("dataId") String dataId, @RequestParam("group") String group, @RequestParam("content")String content);
+    }
+
+    private String getValueFromHttpHeader(HttpHeaders httpHeaders, String key) {
+        return null == httpHeaders.get(key) ? "" : httpHeaders.get(key).get(0);
     }
 }

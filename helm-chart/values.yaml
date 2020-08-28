@@ -24,3 +24,12 @@ frontend:
 checkoutservice:
   name: checkoutservice
   image: checkoutservice:1.0.0-SNAPSHOT
+
+## 修改成你的 SLB IP
+slb:
+  zuul: 127.0.0.1
+
+mse:
+  address:
+    springcloud: nacos-server:8848
+    dubbo: nacos://nacos-server:8848

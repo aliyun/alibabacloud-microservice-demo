@@ -103,7 +103,7 @@ public class RouterTestController {
         EXECUTOR_SERVICE.submit((Runnable) () -> {
             while (INVOKER_ENABLE.get()) {
                 try {
-                    TimeUnit.MICROSECONDS.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(10);
                     DUBBO_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
                             "http://127.0.0.1:" + port + "/router/dubbo?name=" + dubbo_name + "&age=" + dubbo_age);
@@ -130,7 +130,7 @@ public class RouterTestController {
         EXECUTOR_SERVICE.submit((Runnable) () -> {
             while (INVOKER_ENABLE.get()) {
                 try {
-                    TimeUnit.MICROSECONDS.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(10);
                     SPRING_CLOUD_INVOKER_TIMES.getAndIncrement();
                     HttpUriRequest request = new HttpGet(
                             "http://127.0.0.1:" + port + "/router/springcloud?name=" + spring_cloud_name + "&age="
