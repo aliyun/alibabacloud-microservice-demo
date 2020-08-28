@@ -88,6 +88,9 @@ If you want to delete the deployment with helm, use the following command:
 helm delete microservice-demo
 ```
 
+### Collaborator
+If you are a collaborator, please read the [Collaborator](https://github.com/aliyun/alibabacloud-microservice-demo/doc/Collaborator.md) to prepare for development.
+
 ### Credit
 
 This project is originiated from [GoogleCloudPlatform/microservice-demo](https://github.com/GoogleCloudPlatform/microservices-demo)
