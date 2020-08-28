@@ -1,7 +1,8 @@
-package com.alibabacloud.hipstershop;
+package com.alibabacloud.hipstershop.productservice.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibabacloud.hipstershop.productservice.ProductServiceApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.web.bind.annotation.ModelAttribute;
