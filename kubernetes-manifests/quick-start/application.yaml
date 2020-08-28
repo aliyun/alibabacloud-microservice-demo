@@ -152,45 +152,46 @@ spec:
               memory: 2048Mi
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loadgenerator
-spec:
-  selector:
-    matchLabels:
-      app: loadgenerator
-  replicas: 1
-  template:
-    metadata:
-      labels:
+    labels:
         app: loadgenerator
-    spec:
-      terminationGracePeriodSeconds: 5
-      restartPolicy: Always
-      containers:
-        - name: main
-          image: loadgenerator
-          env:
-            - name: LANG
-              value: C.UTF-8
-            - name: GPG_KEY
-              value: 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-            - name: PYTHON_GET_PIP_URL
-              value: https://github.com/pypa/get-pip/raw/404c9418e33c5031b1a9ab623168b3e8a2ed8c88/get-pip.py
-            - name: PYTHON_GET_PIP_SHA256
-              value: 56bb63d3cf54e7444351256f72a60f575f6d8c7f1faacffae33167afc8e7609d
-            - name: FRONTEND_ADDR
-              value: zuul-gateway-svc
-            - name: USERS
-              value: '20'
-          resources:
-            limits:
-              cpu: 250m
-              memory: 512Mi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
+    name: loadgenerator
+    namespace: default
+spec:
+    selector:
+        matchLabels:
+            app: loadgenerator
+    template:
+        metadata:
+            labels:
+                app: loadgenerator
+        spec:
+            containers:
+                - name: loadgenerator
+                  image: registry.cn-shanghai.aliyuncs.com/microservice_demo/loadgenerator:1.0.0-SNAPSHOT
+                  imagePullPolicy: Always
+                  env:
+                      - name: LANG
+                        value: C.UTF-8
+                      - name: GPG_KEY
+                        value: 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+                      - name: PYTHON_GET_PIP_URL
+                        value: >-
+                            https://github.com/pypa/get-pip/raw/404c9418e33c5031b1a9ab623168b3e8a2ed8c88/get-pip.py
+                      - name: PYTHON_GET_PIP_SHA256
+                        value: 56bb63d3cf54e7444351256f72a60f575f6d8c7f1faacffae33167afc8e7609d
+                      - name: FRONTEND_ADDR
+                        value: frontend-external:8080
+                      - name: USERS
+                        value: '20'
+                  resources:
+                      limits:
+                          cpu: 300m
+                          memory: 512Mi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
 
 ---
 apiVersion: v1

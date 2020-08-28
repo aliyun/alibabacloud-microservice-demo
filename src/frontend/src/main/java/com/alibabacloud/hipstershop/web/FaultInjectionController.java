@@ -40,7 +40,7 @@ public class FaultInjectionController {
     public RedirectView startFullGc(RedirectAttributes redirectAttributes){
         FaultInfo faultInfo = new FaultInfo(dataId, group, new HashSet<>(), 50, Constant.FULL_GC, 1);
         String ips = productDAO.addFaultInstance(dataId, group, faultInfo.getContent());
-        redirectAttributes.addFlashAttribute("startFullGCResult", "注入Full GC 实例IP：" + ips);
+        redirectAttributes.addFlashAttribute("startFullGCResult", "product的实例：" + ips + " 注入fullgc");
         return new RedirectView("/fault/result");
     }
 
@@ -48,7 +48,7 @@ public class FaultInjectionController {
     public RedirectView endFullGc(RedirectAttributes redirectAttributes){
         try {
             nacosConfigManager.getConfigService().publishConfig(dataId, group, "no exception!");
-            redirectAttributes.addFlashAttribute("endFullGCResult", "Full GC 故障已清除");
+            redirectAttributes.addFlashAttribute("endFullGCResult", "fullgc故障已清除");
         } catch (Exception e){
             redirectAttributes.addFlashAttribute("endFullGCResult", "故障清除失败");
         }
