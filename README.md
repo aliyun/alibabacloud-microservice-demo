@@ -89,7 +89,7 @@ helm delete microservice-demo
 ```
 
 ### Collaborator
-If you are a collaborator, please read the [Collaborator](https://github.com/aliyun/alibabacloud-microservice-demo/doc/Collaborator.md) to prepare for development.
+If you are a collaborator, please read the [Collaborator](https://github.com/aliyun/alibabacloud-microservice-demo/blob/master/doc/Collaborator.md) to prepare for development.
 
 ### Credit
 
