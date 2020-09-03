@@ -24,9 +24,9 @@ spec:
       annotations:
         alicloud.service.tag: v1
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: cartservice
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: cartservice
+        msePilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
       labels:
         app: cartservice1
     spec:

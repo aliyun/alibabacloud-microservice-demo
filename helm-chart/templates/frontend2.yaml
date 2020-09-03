@@ -25,9 +25,9 @@ spec:
       annotations:
         alicloud.service.tag: tag2
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: frontend2
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend2
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: frontend
+        msePilotCreateAppName: {{ .Values.application.name.prefix}}frontend
       labels:
         app: frontend2
     spec:

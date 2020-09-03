@@ -29,6 +29,11 @@ checkoutservice:
 slb:
   zuul: 127.0.0.1
 
+application:
+  name:
+    prefix: yizhan-
+
+
 mse:
   address:
     springcloud: nacos-server:8848

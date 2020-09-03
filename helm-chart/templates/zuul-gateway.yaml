@@ -25,9 +25,9 @@ spec:
     metadata:
       annotations:
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: zuul-gateway
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}zuul-gateway
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: zuul-gateway
+        msePilotCreateAppName: {{ .Values.application.name.prefix}}zuul-gateway
       creationTimestamp: null
       labels:
         app: zuul-gateway
