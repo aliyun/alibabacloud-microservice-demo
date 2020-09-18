@@ -1,10 +1,11 @@
 package com.alibaba.edas.boot;
 
-import com.alibaba.dubbo.config.annotation.Service;
 
 import java.util.concurrent.TimeUnit;
 
-@Service(timeout = 5000, version = "1.0.0", group = "DUBBO", register = false)
+import org.apache.dubbo.config.annotation.Service;
+
+@Service(version = "1.0.0", group = "DUBBO")
 public class EchoServiceImpl implements EchoService {
 
     @Override
