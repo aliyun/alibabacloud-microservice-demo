@@ -36,7 +36,7 @@ spec:
           value: {{ .Values.mse.address.springcloud}}
         - name: dubbo.registry.address
           value: {{ .Values.mse.address.dubbo}}
-        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/cartservice:latest
+        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/cartservice:{{ .Values.images.version}}
         imagePullPolicy: Always
         name: cartservice2
         resources:

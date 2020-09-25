@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: checkout-mysql
+  selfLink: /api/v1/namespaces/default/services/checkout-mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: checkout-mysql
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

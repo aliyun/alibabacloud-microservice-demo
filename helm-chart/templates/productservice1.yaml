@@ -44,7 +44,7 @@ spec:
           value: {{ .Values.mse.address.springcloud}}
         - name: dubbo.registry.address
           value: {{ .Values.mse.address.dubbo}}
-        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/productservice:latest
+        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/productservice:{{ .Values.images.version}}
         imagePullPolicy: Always
         name: productservice1
         ports:
