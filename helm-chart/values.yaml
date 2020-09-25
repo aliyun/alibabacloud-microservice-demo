@@ -25,17 +25,21 @@ checkoutservice:
   name: checkoutservice
   image: checkoutservice:1.0.0-SNAPSHOT
 
-## 修改成你的 SLB IP
+
 slb:
   zuul: 127.0.0.1
 
+# 接入 mse 时的应用名前缀
 application:
   name:
     prefix: yizhan-
 
+
+# 各组件的镜像版本号
 images:
   version: 0.1-SNAPSHOT
 
+# 默认选择时使用 K8s 里拉起的 Nacos ，也可以填写成 MSE 里购买的 nacos
 mse:
   address:
     springcloud: nacos-server:8848

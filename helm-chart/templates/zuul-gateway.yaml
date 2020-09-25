@@ -50,6 +50,8 @@ spec:
           value: {{ .Values.mse.address.dubbo}}
         - name: ribbon.eager-load.enabled
           value: "true"
+        - name: JAVA_TOOL_OPTIONS
+          value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/zuul-gateway:1.0-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: zuul-gateway

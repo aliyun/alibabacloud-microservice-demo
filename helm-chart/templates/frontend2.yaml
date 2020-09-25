@@ -43,6 +43,8 @@ spec:
           value: {{ .Values.mse.address.springcloud}}
         - name: dubbo.registry.address
           value: {{ .Values.mse.address.dubbo}}
+        - name: JAVA_TOOL_OPTIONS
+          value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/frontend:{{ .Values.images.version}}
         imagePullPolicy: Always
         name: frontend-v2
