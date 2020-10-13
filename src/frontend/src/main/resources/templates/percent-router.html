@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<header th:replace="header.html :: pageHeader"></header>
+<main role="main">
+    <div class="container bg-light py-3 px-lg-5 py-lg-5">
+
+
+        <p></p>
+        <p>说明，此页面为演示标签路由按参数比例灰度使用，调用结果显示最近的 1000 次调用中，不同的 UserId 分别被路由到了服务提供者的哪些 Tag</p>
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <p>调用结果</p>
+                <div th:each="mapEntry: ${percent_router_result}" class="col-md-12">
+                    <div class="card mb-6 box-shadow">
+
+                        <div class="card-body">
+                            <div class="card-title" th:text="${mapEntry.key}"></div>
+                            <div class="card-title" th:text="${mapEntry.value.size()}"></div>
+                            <span th:each="userId: ${mapEntry.value}">
+                                <span th:text="${userId}+','"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+                <p></p>
+                <p></p>
+                <p></p>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+
+<footer th:replace="footer.html :: pageFooter"></footer>
+<script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

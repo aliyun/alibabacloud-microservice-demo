@@ -3,7 +3,9 @@ package com.alibabacloud.hipstershop.dao;
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +50,21 @@ public class ProductDAO {
 
     public String getRemoteIp(String name, int age) {
         return restTemplate.getForObject("http://productservice/getIp?name=" + name + "&age=" + age, String.class);
+    }
+
+    public String getRemoteTag(String name, int age) {
+        return restTemplate.getForObject("http://productservice/getTag?name=" + name + "&age=" + age, String.class);
+    }
+
+    public String postRequestBody(String name, int age) {
+
+        String json ="{\"name\": \""+name+"\",\"age\": "+age+"}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request =
+            new HttpEntity<String>(json, headers);
+
+        return restTemplate.postForObject("http://productservice/getPostTag",request, String.class);
     }
 
     public String setExceptionByIp(String ip) {

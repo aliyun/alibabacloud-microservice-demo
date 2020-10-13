@@ -1,5 +1,6 @@
 package com.alibabacloud.hipstershop.web;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.thymeleaf.util.StringUtils;
 
 import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 
@@ -17,9 +19,12 @@ import static com.alibabacloud.hipstershop.common.CommonUtil.*;
 @Controller
 public class RouteDemoController {
 
+
     private static final Map<String, Integer> SPRING_CLOUD_RESULT_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, HashSet<String>> PERCENT_RESULT_MAP = new ConcurrentHashMap<>();
 
     private static final List<ResultNode> SPRING_CLOUD_RESULT_LIST = new LinkedList<>();
+    private static final List<ResultNode> PERCENT_RESULT_LIST = new LinkedList<>();
 
 
     private static final Map<String, Integer> DUBBO_RESULT_MAP = new ConcurrentHashMap<>();
@@ -81,6 +86,40 @@ public class RouteDemoController {
         model.addAttribute("dubbo_age", dubbo_age);
 
         return "router.html";
+    }
+
+
+    @GetMapping("/router/percent")
+    public String percentRouterResult(Model model) {
+
+
+        synchronized (TAG_LOCK) {
+
+            PERCENT_RESULT_LIST.clear();
+            PERCENT_RESULT_MAP.clear();
+
+            for (String str : PERCENT_RESULT_QUEUE) {
+
+                if(str.contains(":")) {
+
+                    String tag = StringUtils.substringBefore(str,":");
+                    String userId = StringUtils.substringAfter(str,":");
+
+                    if (null == PERCENT_RESULT_MAP.get(tag)) {
+                        HashSet<String> set = new HashSet<>();
+                        set.add(userId);
+                        PERCENT_RESULT_MAP.put(tag, set);
+                    } else {
+                        HashSet<String> set = PERCENT_RESULT_MAP.get(tag);
+                        set.add(userId);
+                    }
+                }
+            }
+
+            model.addAttribute("percent_router_result", PERCENT_RESULT_MAP);
+        }
+
+        return "percent-router.html";
     }
 
 

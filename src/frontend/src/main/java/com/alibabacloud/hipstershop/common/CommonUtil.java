@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,13 +28,16 @@ public class CommonUtil {
     public static final AtomicBoolean AUTH_ENABLE = new AtomicBoolean(false);
 
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
     public static final Object DUBBO_LOCK = new Object();
+    public static final Object TAG_LOCK = new Object();
     public static final Object SPRING_CLOUD_LOCK = new Object();
     public static final Object DUBBO_AUTH_LOCK = new Object();
     public static final Object[] PRODUCT_LOCK = new Object[PRODUCT_NUM];
 
     public static Queue<String> DUBBO_RESULT_QUEUE = EvictingQueue.create(1000);
+    public static Queue<String> PERCENT_RESULT_QUEUE = EvictingQueue.create(1000);
 
     public static Queue<String> SPRING_CLOUD_RESULT_QUEUE = EvictingQueue.create(1000);
 
