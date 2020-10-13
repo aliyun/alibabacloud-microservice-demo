@@ -29,8 +29,16 @@ public class CartServiceImpl implements CartService {
     @Value("${slow.call.ip:''}")
     private String slowCallIp;
 
+    @Value("${throwException:false}")
+    private boolean throwException;
+
     @Override
     public List<CartItem> viewCart(String userId) {
+
+        if(throwException){
+            throw new RuntimeException();
+        }
+
         // 模拟运行时异常
         if (exceptionIp != null && exceptionIp.equals(getLocalIp())) {
             throw new RuntimeException("runtime exception");
