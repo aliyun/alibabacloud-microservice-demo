@@ -35,7 +35,7 @@ public class ReturnIpController {
     }
 
     @RequestMapping(value = "/getTag", method = RequestMethod.GET)
-    public String getTag(@RequestParam("name") String name, @RequestParam("age") int age) {
+    public String getTag(@RequestParam("name") String name, @RequestParam("province") String province) {
         return ProductServiceApplication.SERVICE_TAG;
     }
 

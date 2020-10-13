@@ -28,7 +28,8 @@ public class CommonUtil {
     public static final AtomicBoolean AUTH_ENABLE = new AtomicBoolean(false);
 
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);
-    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors
+        .newSingleThreadScheduledExecutor();
 
     public static final Object DUBBO_LOCK = new Object();
     public static final Object TAG_LOCK = new Object();
@@ -37,7 +38,7 @@ public class CommonUtil {
     public static final Object[] PRODUCT_LOCK = new Object[PRODUCT_NUM];
 
     public static Queue<String> DUBBO_RESULT_QUEUE = EvictingQueue.create(1000);
-    public static Queue<String> PERCENT_RESULT_QUEUE = EvictingQueue.create(1000);
+    public static Queue<String> PERCENT_RESULT_QUEUE = EvictingQueue.create(100);
 
     public static Queue<String> SPRING_CLOUD_RESULT_QUEUE = EvictingQueue.create(1000);
 
@@ -57,11 +58,12 @@ public class CommonUtil {
     public static Queue<String> PRODUCT_QUEUE4 = EvictingQueue.create(10);
     public static Queue<String> PRODUCT_QUEUE5 = EvictingQueue.create(10);
 
-
     public static String dubbo_name = "xiaoming";
     public static String spring_cloud_name = "xiaoming";
+    public static String province = "zhejiang";
 
-    public static String[] products = {"OLJCESPC7Z", "66VCHSJNUP", "1YMWWN1N4O", "L9ECAV7KIM", "2ZYFJ3GM2N", "0PUK6V6EV0"};
+    public static String[] products = {"OLJCESPC7Z", "66VCHSJNUP", "1YMWWN1N4O", "L9ECAV7KIM", "2ZYFJ3GM2N",
+        "0PUK6V6EV0"};
 
     public static int dubbo_age = 0;
     public static int spring_cloud_age = 0;

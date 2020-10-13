@@ -117,6 +117,7 @@ public class RouteDemoController {
             }
 
             model.addAttribute("percent_router_result", PERCENT_RESULT_MAP);
+            model.addAttribute("province", province);
         }
 
         return "percent-router.html";

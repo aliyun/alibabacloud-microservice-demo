@@ -52,8 +52,8 @@ public class ProductDAO {
         return restTemplate.getForObject("http://productservice/getIp?name=" + name + "&age=" + age, String.class);
     }
 
-    public String getRemoteTag(String name, int age) {
-        return restTemplate.getForObject("http://productservice/getTag?name=" + name + "&age=" + age, String.class);
+    public String getRemoteTag(String name, String province) {
+        return restTemplate.getForObject("http://productservice/getTag?name=" + name + "&province=" + province, String.class);
     }
 
     public String postRequestBody(String name, int age) {

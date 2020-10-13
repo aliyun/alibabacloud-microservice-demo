@@ -46,7 +46,7 @@ public class RouterTestController {
             for (int i = 0; i < 100; i++) {
                 try {
                     HttpUriRequest request = new HttpGet(
-                        "http://127.0.0.1:" + port + "/router/invoke_percent?name=" + i + "&age=" + dubbo_age);
+                        "http://127.0.0.1:" + port + "/router/invoke_percent?name=" + i + "&province=" + province);
                     CloseableHttpResponse response = HttpClients.createDefault().execute(request);
                     String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
                         .readLine();
@@ -84,8 +84,8 @@ public class RouterTestController {
     @RequestMapping(value = "/invoke_percent", method = RequestMethod.GET)
     public String percent(
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
-            @RequestParam(value = "age", required = false, defaultValue = "0") int age) {
-        return productDAO.getRemoteTag(name, age);
+            @RequestParam(value = "province", required = false, defaultValue = "") String province) {
+        return productDAO.getRemoteTag(name, province);
     }
 
     @RequestMapping(value = "/invoke_request_body", method = RequestMethod.GET)
@@ -95,6 +95,13 @@ public class RouterTestController {
         return productDAO.postRequestBody(name, age);
     }
 
+    @RequestMapping(value = "/update/province")
+    public String updateProvince(
+            @RequestParam(value = "province", required = false, defaultValue = "") String str) {
+
+        province = str;
+        return "ok";
+    }
     @RequestMapping(value = "/update/dubbo")
     public String updateDubbo(
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
