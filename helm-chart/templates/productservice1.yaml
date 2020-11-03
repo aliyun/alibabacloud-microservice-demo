@@ -47,6 +47,12 @@ spec:
         - name: JAVA_TOOL_OPTIONS
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/productservice:{{ .Values.images.version}}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sleep
+              - '30'
         imagePullPolicy: Always
         name: productservice1
         ports:
@@ -62,5 +68,5 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 60
 status: {}
