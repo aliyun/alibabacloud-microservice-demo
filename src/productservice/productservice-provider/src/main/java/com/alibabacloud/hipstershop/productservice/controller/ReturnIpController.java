@@ -31,6 +31,9 @@ public class ReturnIpController {
 
     @RequestMapping(value = "/getIp", method = RequestMethod.GET)
     public String getIp(@RequestParam("name") String name, @RequestParam("age") int age) {
+        if (name.equals(registration.getHost())) {
+            throw new RuntimeException("mock error");
+        }
         return registration.getHost();
     }
 
