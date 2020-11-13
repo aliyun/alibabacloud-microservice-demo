@@ -41,7 +41,13 @@ spec:
           value: zuul-gateway-svc
         - name: USERS
           value: "200"
-        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/loadgenerator:1.0.0-SNAPSHOT
+        - name: BASE_URL
+          value: ""
+        - name: USER_PARAM
+          value: user=tag
+        - name: VIEW_CART
+          value: "true"
+        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/loadgenerator:2.0
         imagePullPolicy: IfNotPresent
         name: loadgenerator1
         resources:

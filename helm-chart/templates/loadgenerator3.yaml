@@ -6,16 +6,16 @@ metadata:
   creationTimestamp: null
   generation: 1
   labels:
-    app: loadgenerator2
-  name: loadgenerator2
-  selfLink: /apis/apps/v1/namespaces/default/deployments/loadgenerator2
+    app: loadgenerator3
+  name: loadgenerator3
+  selfLink: /apis/apps/v1/namespaces/default/deployments/loadgenerator3
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: loadgenerator2
+      app: loadgenerator3
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -25,7 +25,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: loadgenerator2
+        app: loadgenerator3
     spec:
       containers:
       - env:
@@ -44,12 +44,12 @@ spec:
         - name: BASE_URL
           value: ""
         - name: USER_PARAM
-          value: user=tag2
+          value: user=tag3
         - name: VIEW_CART
           value: "false"
         image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/loadgenerator:2.0
         imagePullPolicy: IfNotPresent
-        name: loadgenerator2
+        name: loadgenerator3
         resources:
           requests:
             cpu: 250m

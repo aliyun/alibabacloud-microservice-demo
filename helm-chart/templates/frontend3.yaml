@@ -2,20 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    deployment.kubernetes.io/revision: "63"
+    deployment.kubernetes.io/revision: "12"
   creationTimestamp: null
   generation: 1
   labels:
-    app: productservice1
-  name: productservice1
-  selfLink: /apis/apps/v1/namespaces/default/deployments/productservice1
+    app: frontend3
+  name: frontend3
+  selfLink: /apis/apps/v1/namespaces/default/deployments/frontend3
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: productservice1
+      app: frontend3
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -24,27 +23,31 @@ spec:
   template:
     metadata:
       annotations:
-        alicloud.service.tag: tag1
+        alicloud.service.tag: tag3
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: {{ .Values.application.name.prefix}}productservice1
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend3
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: {{ .Values.application.name.prefix}}productservice
+        msePilotCreateAppName: {{ .Values.application.name.prefix}}frontend
       labels:
-        app: productservice1
+        app: frontend3
     spec:
       containers:
       - env:
-        - name: micro.service.shutdown.wait.time
-          value: "5000"
+        - name: LANG
+          value: C.UTF-8
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        - name: demo_version
+          value: "true"
         - name: spring.cloud.nacos.discovery.server-addr
           value: {{ .Values.mse.address.springcloud}}
         - name: dubbo.registry.address
           value: {{ .Values.mse.address.dubbo}}
         - name: JAVA_TOOL_OPTIONS
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
-        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/productservice:{{ .Values.images.version}}
+        image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/frontend:{{ .Values.images.version}}
         imagePullPolicy: Always
-        name: productservice1
+        name: frontend-v2
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -58,5 +61,5 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      terminationGracePeriodSeconds: 60
+      terminationGracePeriodSeconds: 30
 status: {}

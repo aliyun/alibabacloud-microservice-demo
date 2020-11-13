@@ -39,34 +39,6 @@ public class RouterTestController {
     @Value("${server.port}")
     private String port;
 
-    @PostConstruct
-    public void startPercentInvoke(){
-        SCHEDULED_EXECUTOR_SERVICE.scheduleWithFixedDelay((Runnable) () -> {
-
-            for (int i = 0; i < 100; i++) {
-                try {
-                    HttpUriRequest request = new HttpGet(
-                        "http://127.0.0.1:" + port + "/router/invoke_percent?name=" + i + "&province=" + province);
-                    CloseableHttpResponse response = HttpClients.createDefault().execute(request);
-                    String result = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
-                        .readLine();
-                    synchronized (TAG_LOCK) {
-                        if (result.length() < 20) {
-                            PERCENT_RESULT_QUEUE.add(result + ":" + i);
-                        } else {
-                            PERCENT_RESULT_QUEUE.add("出错了");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        },5,5,TimeUnit.SECONDS);
-    }
-
-
-
     @RequestMapping(value = "/dubbo", method = RequestMethod.GET)
     public String dubbo(
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
