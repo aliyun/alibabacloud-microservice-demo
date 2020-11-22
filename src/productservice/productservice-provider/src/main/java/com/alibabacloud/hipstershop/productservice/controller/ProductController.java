@@ -41,14 +41,18 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public Product getProductById(@PathVariable(name = "id") String id) {
         Product product =  productServiceApi.getProduct(id).getProduct();
-        if("/img/products/1.png".equals(product.getPicture())){
-            product.setPicture("/img/products/air-plant.jpg");
-        }
-        if("/img/products/2.png".equals(product.getPicture())){
-            product.setPicture("/img/products/barista-kit.jpg");
-        }
-        if("/img/products/3.png".equals(product.getPicture())){
-            product.setPicture("/img/products/camera-lens.jpg");
+
+
+        if(demoVersion) {
+            if ("/img/products/1.png".equals(product.getPicture())) {
+                product.setPicture("/img/products/air-plant.jpg");
+            }
+            if ("/img/products/2.png".equals(product.getPicture())) {
+                product.setPicture("/img/products/barista-kit.jpg");
+            }
+            if ("/img/products/3.png".equals(product.getPicture())) {
+                product.setPicture("/img/products/camera-lens.jpg");
+            }
         }
         return product;
     }
