@@ -18,6 +18,7 @@
         <module>src/emailservice</module>
         <module>src/recomendationservice</module>
         <module>src/shippingservice</module>
+        <module>src/exception-mock</module>
     </modules>
 
     <packaging>pom</packaging>
