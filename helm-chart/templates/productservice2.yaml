@@ -36,6 +36,8 @@ spec:
           value: "false"
         - name: profiler.micro.service.http.server.enable
           value: "false"
+        - name: profiler.micro.service.graceful.shutdown.enable
+          value: "false"
         - name: demo_version
           value: "true"
         - name: spring.cloud.nacos.discovery.server-addr

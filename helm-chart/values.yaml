@@ -32,7 +32,7 @@ slb:
 # 接入 mse 时的应用名前缀
 application:
   name:
-    prefix: yizhan-
+    prefix: demo-
 
 
 # 各组件的镜像版本号
