@@ -1,7 +1,11 @@
-FROM  openjdk:8-jre-alpine
+FROM openjdk:8-jdk-alpine
+
+# copy arthas
+COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
+
 WORKDIR /app
 COPY /target/frontend-1.0.0-SNAPSHOT.jar /app
+COPY /start.sh /app
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -Dcom.sun.management.jmxremote.port=19991 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -jar /app/frontend-1.0.0-SNAPSHOT.jar"]
+CMD ["/app/start.sh"]
