@@ -1,15 +1,15 @@
 language: java
-sudo: false
 jdk:
   - openjdk8
 cache:
   directories:
     - "$HOME/.m2"
-script:
-  - sh travis-build.sh
 
-after_success:
-  - cd src/frontend && mvn --batch-mode package toolkit:deploy -Dtoolkit_profile=sae_profile.yaml -Dtoolkit_package=sae_package.yaml -Dtoolkit_deploy=sae_deploy.yaml
-
-before_install:
-  - openssl aes-256-cbc -k "$TRAVIS_PASSWORD" -in src/frontend/sae_profile.yaml.enc -out src/frontend/sae_profile.yaml -d
+jobs:
+  include:
+    - script: sh travis-build.sh
+    - name: deploy
+      if: branch = master && type != pull_request
+      script:
+        - openssl aes-256-cbc -k "$TRAVIS_PASSWORD" -in src/frontend/sae_profile.yaml.enc -out src/frontend/sae_profile.yaml -d
+        - cd src/frontend && mvn --batch-mode package toolkit:deploy -Dtoolkit_profile=sae_profile.yaml -Dtoolkit_package=sae_package.yaml -Dtoolkit_deploy=sae_deploy.yaml
