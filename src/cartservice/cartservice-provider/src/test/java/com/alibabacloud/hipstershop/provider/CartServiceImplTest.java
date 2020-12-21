@@ -1,5 +1,6 @@
 package com.alibabacloud.hipstershop.cartserviceprovider;
 
+import com.alibabacloud.hipstershop.cartserviceprovider.service.CartServiceImpl;
 import org.junit.Test;
 import org.springframework.util.Assert;
 
@@ -13,7 +14,7 @@ public class CartServiceImplTest {
         try {
             Method method = CartServiceImpl.class.getDeclaredMethod("getLocalIp");
             method.setAccessible(true);
-            Assert.notNull(method.invoke(cartService));
+            Assert.notNull(method.invoke(cartService), "the return value shouldn't be null");
         } catch (Exception e) {
         }
     }
