@@ -1,7 +1,11 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jdk-alpine
+
+# copy arthas
+COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
+
 WORKDIR /app
 COPY /shippingservice-provider/target/shippingservice-provider-0.0.1-SNAPSHOT.jar /app
+COPY /start.sh /app
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/shippingservice-provider-0.0.1-SNAPSHOT.jar"]
+CMD ["/app/start.sh"]
