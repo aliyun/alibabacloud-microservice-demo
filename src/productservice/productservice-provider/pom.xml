@@ -121,6 +121,10 @@
             <artifactId>productservice-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
 
         <!-- SDK/Starter需1.6.2及以上版本，并排掉sentinel-dubbo-adapter依赖 -->
