@@ -45,6 +45,8 @@ spec:
           value: {{ .Values.mse.address.dubbo}}
         - name: JAVA_TOOL_OPTIONS
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
+        - name: dubbo.consumer.check
+          value: "false"
         image: registry.cn-hangzhou.aliyuncs.com/alibabacloud-microservice-demo/frontend:{{ .Values.images.version}}
         imagePullPolicy: Always
         name: frontend-v2

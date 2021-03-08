@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
-    service.beta.kubernetes.io/alicloud-loadbalancer-address-type: intranet
+    service.beta.kubernetes.io/alicloud-loadbalancer-address-type: internet
   creationTimestamp: null
   name: zuul-gateway-svc
   selfLink: /api/v1/namespaces/default/services/zuul-gateway-svc

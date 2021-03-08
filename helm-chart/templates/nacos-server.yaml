@@ -62,7 +62,7 @@ spec:
           value: "false"
         - name: TIME_ZONE
           value: Asia/Shanghai
-        image: nacos/nacos-server:latest
+        image: nacos/nacos-server:1.2.1
         imagePullPolicy: Always
         name: nacos-server
         ports:
