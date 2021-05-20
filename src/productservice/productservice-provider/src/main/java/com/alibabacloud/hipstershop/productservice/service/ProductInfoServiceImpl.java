@@ -2,9 +2,12 @@ package com.alibabacloud.hipstershop.productservice.service;
 
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.nacos.api.exception.NacosException;
+
+import com.alibabacloud.hipstershop.checkoutserviceapi.service.CurrencyService;
 import com.alibabacloud.hipstershop.productservice.domain.bo.FaultInfo;
 import com.alibabacloud.hipstershop.productservice.entity.ProductInfo;
 import com.alibabacloud.hipstershop.productservice.repository.ProductInfoRepository;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,14 +31,19 @@ public class ProductInfoServiceImpl implements ProductServiceApi {
     @Resource
     ProductInfoRepository productInfoRepository;
 
+    //@Reference(version = "1.0.0", check = false)
+    //private CurrencyService currencyService;
+
     @Override
     public ProductInfo getProduct(String id) {
+        //currencyService.getAllCurrency();
         Optional<ProductInfo> productInfo = productInfoRepository.findById(id);
         return productInfo.orElse(null);
     }
 
     @Override
     public List<ProductInfo> getAllProduct() {
+        //currencyService.getAllCurrency();
         return productInfoRepository.findAll();
     }
 

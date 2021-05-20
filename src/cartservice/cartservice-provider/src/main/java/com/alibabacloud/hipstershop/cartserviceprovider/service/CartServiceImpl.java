@@ -2,11 +2,16 @@ package com.alibabacloud.hipstershop.cartserviceprovider.service;
 
 import com.alibabacloud.hipstershop.cartserviceapi.domain.CartItem;
 import com.alibabacloud.hipstershop.cartserviceprovider.repository.RedisRepository;
+import com.alibabacloud.hipstershop.checkoutserviceapi.service.CurrencyService;
+import com.alibabacloud.hipstershop.currencyserviceapi.domain.Currency;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import com.alibabacloud.hipstershop.cartserviceapi.service.CartService;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.cloud.context.config.annotation.RefreshScope;
 //import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import javax.annotation.Resource;
@@ -16,12 +21,17 @@ import java.util.*;
 
 //@RefreshScope
 @Service(version = "1.0.0")
+@org.springframework.stereotype.Service
+@EnableDubbo
 public class CartServiceImpl implements CartService {
 
     private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
     @Resource
     private RedisRepository redisRepository;
+
+    @Reference(version = "0.0.1", check = false)
+    private CurrencyService currencyService;
 
     @Value("${exception.ip:''}")
     private String exceptionIp;
@@ -51,6 +61,8 @@ public class CartServiceImpl implements CartService {
             }
         }
 
+        Currency currency = currencyService.getCurrency(userId);
+        Double rate = currency.getExchangeRate();
         List<CartItem> res = redisRepository.getUserCartItems(userId);
         String ip = getLocalIp();
         List<CartItem> newRes = new ArrayList<>();

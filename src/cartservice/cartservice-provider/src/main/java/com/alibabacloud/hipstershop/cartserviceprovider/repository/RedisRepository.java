@@ -26,6 +26,9 @@ public class RedisRepository {
             List<CartItem> cartItems = getUserCartItems(userId);
             CartItem cartItem2 = cartItems.stream()
                     .filter(cartItem1 -> cartItem1.equals(cartItem)).findFirst().orElse(null);
+            if (cartItem == null || cartItem2 ==null) {
+                return false;
+            }
             Objects.requireNonNull(cartItem)
                     .setQuantity(Objects.requireNonNull(cartItem2).getQuantity() + cartItem.getQuantity());
             redisTemplate.delete(key);
