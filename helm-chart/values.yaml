@@ -37,7 +37,7 @@ application:
 
 # 各组件的镜像版本号
 images:
-  version: 0.1-SNAPSHOT
+  version: 1.0.0-SNAPSHOT
 
 # 默认选择时使用 K8s 里拉起的 Nacos ，也可以填写成 MSE 里购买的 nacos
 mse:
