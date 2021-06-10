@@ -11,7 +11,7 @@ This demo is powered by the following projects and products:
 * [Nacos](https://github.com/alibaba/nacos) for Service Discovery and Configuration management
 * Alibaba Cloud [EDAS](https://www.aliyun.com/product/edas) for deployment and hosting
 * Alibaba Cloud [ARMS](https://www.aliyun.com/product/arms) for monitoring
-* Alibaba Cloud [SAE](https://www.aliyun.com/product/sae) for deployment and hosting without being aware of the underlying infrastrcuture.
+* Alibaba Cloud [SAE](https://www.aliyun.com/product/sae) for deployment and hosting without being aware of the underlying infrastructure.
 
 ### Live Demo
 
