@@ -2,6 +2,7 @@ package com.alibabacloud.hipstershop.dao;
 
 import com.alibabacloud.hipstershop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ public class ProductDAO {
     private ProductService productService;
 
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
     public Product getProductById(String id) {
