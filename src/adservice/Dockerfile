@@ -4,7 +4,7 @@ FROM registry.cn-beijing.aliyuncs.com/edas_unified/jct_dw_8_4_4:0.1
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
 WORKDIR /app
-COPY /adservice-provider/target/adservice-provider-0.0.1-SNAPSHOT.jar /app
+COPY /adservice-provider/target/adservice-provider-1.0.0-SNAPSHOT.jar /app
 COPY /start.sh /app
 
 EXPOSE 8080

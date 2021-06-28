@@ -8,7 +8,7 @@ cartservice:
 
 productservice:
   name: productservice
-  image: productservice:1.1.0-SNAPSHOT
+  image: productservice:1.0.0-SNAPSHOT
 
 nacos:
   name: nacos-standalone
