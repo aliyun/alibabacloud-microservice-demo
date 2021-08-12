@@ -1,12 +1,12 @@
 package com.alibaba.edas.benchmark;
 
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Component
+@Service
 public class OrderService {
 
     public OrderDTO queryOrder(long orderNo) {
