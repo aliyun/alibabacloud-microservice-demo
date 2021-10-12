@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-a
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-a
+      labels:
+        app: spring-cloud-a
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry-vpc.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-a
+          ports:
+            - containerPort: 20001

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-zuul
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-zuul
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-zuul
+      labels:
+        app: spring-cloud-zuul
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry-vpc.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-zuul:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-zuul
+          ports:
+            - containerPort: 20000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
+    service.beta.kubernetes.io/alicloud-loadbalancer-address-type: internet
+  name: zuul-slb
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 20000
+  selector:
+    app: spring-cloud-zuul
+  type: LoadBalancer
+status:
+  loadBalancer: {}
