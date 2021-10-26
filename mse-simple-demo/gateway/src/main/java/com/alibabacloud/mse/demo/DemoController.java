@@ -4,6 +4,7 @@ package com.alibabacloud.mse.demo;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,10 @@ import java.util.concurrent.TimeUnit;
 public class DemoController {
 
 
-    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(1,
+    @Value("${demo.qps:10}")
+    private int qps;
+
+    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(2,
             new ThreadFactory() {
                 public Thread newThread(Runnable r) {
                     Thread thread = new Thread(r);
@@ -46,6 +50,19 @@ public class DemoController {
                 } catch (Exception ignore) {
                 }
             }
-        }, 100, 100, TimeUnit.MILLISECONDS);
+        }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+
+        FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+
+                try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a?name=xiaoming");
+                    httpClient.execute(httpGet);
+
+                } catch (Exception ignore) {
+                }
+            }
+        }, 100, 10 * 1000000 / qps , TimeUnit.MICROSECONDS);
     }
 }
