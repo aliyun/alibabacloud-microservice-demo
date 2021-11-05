@@ -19,11 +19,16 @@ import java.util.concurrent.TimeUnit;
 public class DemoController {
 
 
-    @Value("${demo.qps:10}")
+    @Value("${demo.qps:100}")
     private int qps;
+
+    @Value("${background.color:white}")
+    private String backgroundColor;
 
     private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(2,
             new ThreadFactory() {
+
+                @Override
                 public Thread newThread(Runnable r) {
                     Thread thread = new Thread(r);
                     thread.setDaemon(true);
@@ -32,13 +37,15 @@ public class DemoController {
                 }
             });
 
-    @GetMapping("/demo")
+    @GetMapping("/")
     public String index(Model model) {
+        model.addAttribute("backgroundColor", backgroundColor);
         return "index";
     }
 
     @PostConstruct
     private void flow() {
+
         FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -52,12 +59,15 @@ public class DemoController {
             }
         }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
 
+
+
         FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
 
                 try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a?name=xiaoming");
+                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
+                    httpGet.addHeader("x-mse-tag", "gray");
                     httpClient.execute(httpGet);
 
                 } catch (Exception ignore) {

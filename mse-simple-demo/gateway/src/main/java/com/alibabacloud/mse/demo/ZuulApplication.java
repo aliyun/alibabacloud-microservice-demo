@@ -20,9 +20,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
-/**
- * @author <a href="mailto:fangjian0423@gmail.com">Jim</a>
- */
 @SpringBootApplication
 @EnableZuulProxy
 public class ZuulApplication {
