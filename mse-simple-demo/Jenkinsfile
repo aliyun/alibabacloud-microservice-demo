@@ -1,0 +1,91 @@
+#!groovy
+pipeline {
+
+    // 定义本次构建使用哪个标签的构建环境，本示例中为 “slave-pipeline”
+    agent{
+        node{
+          label 'slave-pipeline'
+        }
+    }
+
+    //常量参数，初始确定后一般不需更改
+    environment{
+        IMAGE = sh(returnStdout: true,script: 'echo registry.$image_region.aliyuncs.com/$image_namespace/$image_reponame:$image_tag').trim()
+        BRANCH =  sh(returnStdout: true,script: 'echo $branch').trim()
+    }
+    options {
+        //保持构建的最大个数
+        buildDiscarder(logRotator(numToKeepStr: '10')) 
+    }
+    
+    parameters {
+        string(name: 'image_region', defaultValue: 'cn-shanghai')
+        string(name: 'image_namespace', defaultValue: 'yizhan')
+        string(name: 'image_reponame', defaultValue: 'spring-cloud-a')
+        string(name: 'image_tag', defaultValue: 'gray')
+        string(name: 'branch', defaultValue: 'master')
+        string(name: 'number_of_pods', defaultValue: '2')
+    }
+
+    //pipeline的各个阶段场景
+    stages {
+
+        stage('代码打包') {
+            steps{
+                container("maven") {
+                    echo "镜像构建......"
+                    sh "cd A && mvn clean package"
+                }
+                
+            }
+        }
+
+
+        stage('镜像构建及发布'){
+          steps{
+              container("kaniko") {
+                  sh "kaniko -f `pwd`/A/Dockerfile -c `pwd`/A --destination=${IMAGE} --skip-tls-verify"
+              }
+          }
+        }
+
+        stage('灰度部署') {
+            steps{
+                container('kubectl') {
+                    echo "灰度部署......"
+                    sh "cd A && sed -i -E \"s/${env.image_reponame}:.+/${env.image_reponame}:${env.image_tag}/\" A-gray-deployment.yaml"
+                    sh "cd A && sed -i -E \"s/replicas:.+/replicas: ${env.number_of_pods}/\" A-gray-deployment.yaml"
+                    sh "kubectl apply -f A/A-gray-deployment.yaml -n default"
+                }
+            }
+        }
+        
+        stage('结束灰度') {
+            input {
+                message "请确认是否全量发布"
+                ok "确认"
+                parameters {
+                    string(name: 'continue', defaultValue: 'true', description: 'true为全量发布，其他为回滚')
+                }
+            }
+            steps{
+                script {
+                    env.continue = sh (script: 'echo ${continue}', returnStdout: true).trim()
+                    if (env.continue.equals('true')) {
+                        container('kubectl') {
+                            echo "全量发布......"
+                            sh "cd A && sed -i -E \"s/${env.image_reponame}:.+/${env.image_reponame}:${env.image_tag}/\" A-deployment.yaml"
+                            sh "cd A && sed -i -E \"s/replicas:.+/replicas: ${env.number_of_pods}/\" A-deployment.yaml"
+                            sh "kubectl apply -f A/A-deployment.yaml -n default"
+                        }
+                    } else {
+                        echo '回滚'
+                    }
+                    container('kubectl') {
+                        sh "kubectl delete -f A/A-gray-deployment.yaml -n default"
+                    }
+                }
+            }
+        }
+    }
+}
