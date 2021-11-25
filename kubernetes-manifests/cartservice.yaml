@@ -44,3 +44,18 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6379
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cart-redis
+  name: cart-redis
+spec:
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    app: cart-redis
