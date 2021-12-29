@@ -32,9 +32,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * @author <a href="mailto:fangjian0423@gmail.com">Jim</a>
- */
 @SpringBootApplication
 public class CApplication {
 

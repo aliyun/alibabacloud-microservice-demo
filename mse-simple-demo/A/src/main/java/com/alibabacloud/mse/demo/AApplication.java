@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.alibabacloud.mse.demo;
 
@@ -20,11 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibabacloud.mse.demo.service.HelloServiceB;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -90,6 +78,14 @@ public class AApplication {
             }
             return "A"+SERVICE_TAG+"[" + request.getLocalAddr() + "]" + " -> " +
                     helloServiceB.hello("A");
+        }
+
+        @GetMapping("swagger-demo")
+        @ApiOperation(value = "这是一个演示swagger的接口 ", tags = {"首页操作页面"})
+        public String swagger(@ApiParam(name = "name", value = "我是姓名", required = true) String name,
+                              @ApiParam(name = "age", value = "我是年龄", required = true)int age,
+                              @ApiParam(name = "aliware-products", value = "我是购买阿里云原生产品列表", required = true) List<String> aliwareProducts) {
+            return "hello swagger";
         }
     }
 

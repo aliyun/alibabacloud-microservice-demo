@@ -1,22 +1,29 @@
 package com.alibabacloud.mse.demo.service;
 
-//import com.pingpongx.ocean.context.BusinessContext;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import com.alibabacloud.mse.demo.AApplication;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
-/**
- * @author zhujy
- */
 @Slf4j
 @Component
 public class MqConsumer implements MessageListenerConcurrently {
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
+    InetUtils inetUtils;
 
     @SneakyThrows
     @Override
@@ -24,10 +31,11 @@ public class MqConsumer implements MessageListenerConcurrently {
         try {
             MessageExt messageExt = list.get(0);
             String topic = messageExt.getTopic();
-            String tags = messageExt.getTags();
             String messageString = new String(messageExt.getBody(), StandardCharsets.UTF_8);
+            String result =  "A"+ AApplication.SERVICE_TAG+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                    restTemplate.getForObject("http://sc-B/b", String.class);
 
-            log.info("topic:{},tags:{},messageString:{}", topic, tags, messageString);
+            log.info("topic:{},producer:{},invoke result:{}", topic, messageString, result);
 
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         } finally {
