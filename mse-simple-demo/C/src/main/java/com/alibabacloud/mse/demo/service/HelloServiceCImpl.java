@@ -44,8 +44,7 @@ public class HelloServiceCImpl implements HelloServiceC {
             msg.setBody(value.getBytes(StandardCharsets.UTF_8));
             producer.send(msg);
             log.info("topic:{},messageString:{},__microservice_tag__:{}", topic, value, StringUtils.trimToNull(invokerTag));
-        } catch (Exception e) {
-            log.error("error:", e);
+        } catch (Exception ignore) {
         }
 
         return value;

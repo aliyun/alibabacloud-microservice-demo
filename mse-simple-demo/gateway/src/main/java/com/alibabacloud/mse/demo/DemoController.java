@@ -22,6 +22,10 @@ public class DemoController {
     @Value("${demo.qps:100}")
     private int qps;
 
+    @Value("${enable.mq.invoke:false}")
+    private boolean enableMqInvoke;
+
+
     @Value("${background.color:white}")
     private String backgroundColor;
 
@@ -60,19 +64,48 @@ public class DemoController {
         }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
 
 
-
         FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
 
                 try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
-                    httpGet.addHeader("x-mse-tag", "gray");
+                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a?name=xiaoming");
+//                    httpGet.addHeader("x-mse-tag", "gray");
                     httpClient.execute(httpGet);
 
                 } catch (Exception ignore) {
                 }
             }
         }, 100, 10 * 1000000 / qps , TimeUnit.MICROSECONDS);
+
+        if(enableMqInvoke){
+            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+                }
+            }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+
+
+            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo?name=xiaoming");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+                }
+            }, 100, 10 * 1000000 / qps , TimeUnit.MICROSECONDS);
+        }
     }
 }

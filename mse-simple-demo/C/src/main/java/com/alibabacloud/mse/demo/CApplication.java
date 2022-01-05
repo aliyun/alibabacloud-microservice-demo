@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,9 +52,12 @@ public class CApplication {
         @Autowired
         RestTemplate restTemplate;
 
+        @Autowired
+        InetUtils inetUtils;
+
         @GetMapping("/c")
         public String a(HttpServletRequest request) {
-            return "C" + SERVICE_TAG + "[" + request.getLocalAddr() + "]";
+            return "C" + SERVICE_TAG + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         }
     }
 
@@ -81,7 +85,7 @@ public class CApplication {
                 }
                 SERVICE_TAG = properties.getProperty("alicloud.service.tag").replace("\"", "");
             } else {
-                SERVICE_TAG = "";
+                SERVICE_TAG = System.getProperty("alicloud.service.tag");;
             }
         } catch (Throwable ignore) {
         }

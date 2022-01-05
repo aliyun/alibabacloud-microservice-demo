@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,9 @@ public class AApplication {
         @Autowired
         RestTemplate restTemplate;
 
+        @Autowired
+        InetUtils inetUtils;
+
         @GetMapping("/a")
         public String a(HttpServletRequest request) {
             StringBuilder headerSb = new StringBuilder();
@@ -60,7 +64,7 @@ public class AApplication {
                     headerSb.append(headerName + ":" + headerVal + ",");
                 }
             }
-            return "A"+SERVICE_TAG+"[" + request.getLocalAddr() + "]" + " -> " +
+            return "A"+SERVICE_TAG+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-B/b", String.class);
         }
 
@@ -76,7 +80,7 @@ public class AApplication {
                     headerSb.append(headerName + ":" + headerVal + ",");
                 }
             }
-            return "A"+SERVICE_TAG+"[" + request.getLocalAddr() + "]" + " -> " +
+            return "A"+SERVICE_TAG+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                     helloServiceB.hello("A");
         }
 
@@ -110,8 +114,8 @@ public class AApplication {
                     }
                 }
                 SERVICE_TAG = properties.getProperty("alicloud.service.tag").replace("\"","");
-            }else {
-                SERVICE_TAG = "";
+            } else {
+                SERVICE_TAG = System.getProperty("alicloud.service.tag");
             }
         } catch (Throwable ignore) {}
 
