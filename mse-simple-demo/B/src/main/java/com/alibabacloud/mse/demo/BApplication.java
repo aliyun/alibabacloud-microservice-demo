@@ -60,7 +60,7 @@ public class BApplication {
         InetUtils inetUtils;
 
         @GetMapping("/b")
-        public String a(HttpServletRequest request) {
+        public String b(HttpServletRequest request) {
             return "B"+SERVICE_TAG+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-C/c", String.class);
 //            return "B[" + request.getLocalAddr() + "]";

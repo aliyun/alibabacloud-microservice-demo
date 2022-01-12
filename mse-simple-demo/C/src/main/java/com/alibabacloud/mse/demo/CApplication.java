@@ -56,7 +56,7 @@ public class CApplication {
         InetUtils inetUtils;
 
         @GetMapping("/c")
-        public String a(HttpServletRequest request) {
+        public String c(HttpServletRequest request) {
             return "C" + SERVICE_TAG + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         }
     }
