@@ -11,6 +11,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibabacloud.mse.demo.service.HelloServiceB;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.dubbo.config.annotation.Reference;
@@ -43,6 +44,7 @@ public class AApplication {
     @Reference(application = "${dubbo.application.id}", version = "1.0.0")
     private HelloServiceB helloServiceB;
 
+    @Api(value = "/", tags = {"入口应用"})
     @RestController
     class AController {
 
@@ -52,6 +54,7 @@ public class AApplication {
         @Autowired
         InetUtils inetUtils;
 
+        @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
         @GetMapping("/a")
         public String a(HttpServletRequest request) {
             StringBuilder headerSb = new StringBuilder();
@@ -68,6 +71,7 @@ public class AApplication {
                 restTemplate.getForObject("http://sc-B/b", String.class);
         }
 
+        @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
         @GetMapping("/dubbo")
         public String dubbo(HttpServletRequest request) {
             StringBuilder headerSb = new StringBuilder();
