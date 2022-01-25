@@ -29,7 +29,7 @@ public class DemoController {
     @Value("${background.color:white}")
     private String backgroundColor;
 
-    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(2,
+    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(6,
             new ThreadFactory() {
 
                 @Override
@@ -70,15 +70,30 @@ public class DemoController {
 
                 try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                     HttpGet httpGet = new HttpGet("http://localhost:20000/A/a?name=xiaoming");
-//                    httpGet.addHeader("x-mse-tag", "gray");
                     httpClient.execute(httpGet);
 
                 } catch (Exception ignore) {
                 }
             }
-        }, 100, 10 * 1000000 / qps , TimeUnit.MICROSECONDS);
+        }, 100, 10 * 1000000 / qps, TimeUnit.MICROSECONDS);
 
-        if(enableMqInvoke){
+
+        FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+
+                try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
+                    httpGet.addHeader("x-mse-tag", "gray");
+                    httpClient.execute(httpGet);
+
+                } catch (Exception ignore) {
+                }
+            }
+        }, 100, 10 * 1000000 / qps, TimeUnit.MICROSECONDS);
+
+
+        if (enableMqInvoke) {
             FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
@@ -99,13 +114,25 @@ public class DemoController {
 
                     try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo?name=xiaoming");
-//                        httpGet.addHeader("x-mse-tag", "gray");
+                        httpClient.execute(httpGet);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }, 100, 10 * 1000000 / qps, TimeUnit.MICROSECONDS);
+
+            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo");
+                        httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
 
                     } catch (Exception ignore) {
                     }
                 }
-            }, 100, 10 * 1000000 / qps , TimeUnit.MICROSECONDS);
+            }, 100, 10 * 1000000 / qps, TimeUnit.MICROSECONDS);
         }
     }
 }
