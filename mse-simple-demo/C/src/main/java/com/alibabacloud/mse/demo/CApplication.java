@@ -19,6 +19,7 @@ package com.alibabacloud.mse.demo;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -55,8 +56,14 @@ public class CApplication {
         @Autowired
         InetUtils inetUtils;
 
+        @Value("${throwException:false}")
+        boolean throwException;
+
         @GetMapping("/c")
         public String c(HttpServletRequest request) {
+            if (throwException) {
+                throw new RuntimeException();
+            }
             return "C" + SERVICE_TAG + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         }
     }

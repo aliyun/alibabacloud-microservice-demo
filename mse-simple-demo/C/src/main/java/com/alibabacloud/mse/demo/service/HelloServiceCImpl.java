@@ -28,8 +28,16 @@ public class HelloServiceCImpl implements HelloServiceC {
     @Value("${rocketmq.consumer.topic}")
     private String topic;
 
+
+    @Value("${throwException:false}")
+    boolean throwException;
+
     @Override
     public String hello(String name) {
+
+        if (throwException) {
+            throw new RuntimeException();
+        }
 
         String value = "C" + SERVICE_TAG + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         String invokerTag="";
