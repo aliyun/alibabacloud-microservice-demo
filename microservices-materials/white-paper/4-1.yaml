@@ -1,0 +1,435 @@
+# Nacos Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nacos-server
+  name: nacos-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: nacos-server
+        msePilotAutoEnable: "on"
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+        - env:
+            - name: MODE
+              value: standalone
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/nacos-server:latest
+          imagePullPolicy: Always
+          name: nacos-server
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+# Nacos Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-server
+spec:
+  ports:
+    - port: 8848
+      protocol: TCP
+      targetPort: 8848
+  selector:
+    app: nacos-server
+  type: ClusterIP
+
+#入口 zuul 应用
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-zuul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-cloud-zuul
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-zuul
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-zuul
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: LANG
+              value: C.UTF-8
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-zuul:1.0.1
+          imagePullPolicy: Always
+          name: spring-cloud-zuul
+          ports:
+            - containerPort: 20000
+
+# A 应用 base 版本,开启按照机器纬度全链路透传
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-cloud-a
+  name: spring-cloud-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-a
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-a
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-a
+    spec:
+      containers:
+        - env:
+            - name: LANG
+              value: C.UTF-8
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: profiler.micro.service.tag.trace.enable
+              value: "true"
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-a
+          ports:
+            - containerPort: 20001
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 20001
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+# A 应用 gray 版本,开启按照机器纬度全链路透传
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-cloud-a-gray
+  name: spring-cloud-a-gray
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-a-gray
+  strategy:
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-a
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-a-gray
+    spec:
+      containers:
+        - env:
+            - name: LANG
+              value: C.UTF-8
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: profiler.micro.service.tag.trace.enable
+              value: "true"
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-a-gray
+          ports:
+            - containerPort: 20001
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 20001
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+# B 应用 base 版本，关闭无损下线能力
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-cloud-b
+  name: spring-cloud-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-b
+  strategy:
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-b
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-b
+    spec:
+      containers:
+        - env:
+            - name: LANG
+              value: C.UTF-8
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: micro.service.shutdown.server.enable
+              value: "false"
+            - name: profiler.micro.service.http.server.enable
+              value: "false"
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-b
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 20002
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+# B 应用 gray 版本,默认开启无损下线功能
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-cloud-b-gray
+  name: spring-cloud-b-gray
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-b-gray
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-b
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-b-gray
+    spec:
+      containers:
+        - env:
+            - name: LANG
+              value: C.UTF-8
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-b-gray
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - '-c'
+                  - >-
+                    wget http://127.0.0.1:54199/offline 2>/tmp/null;sleep
+                    30;exit 0
+          livenessProbe:
+            tcpSocket:
+              port: 20002
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+# C 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-cloud-c
+  name: spring-cloud-c
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-c
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-c
+        msePilotAutoEnable: "on"
+      labels:
+        app: spring-cloud-c
+    spec:
+      containers:
+        - env:
+            - name: LANG
+              value: C.UTF-8
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-c
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 20003
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+#HPA 配置
+---
+apiVersion: autoscaling.alibabacloud.com/v1beta1
+kind: CronHorizontalPodAutoscaler
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: spring-cloud-b
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta2
+    kind: Deployment
+    name: spring-cloud-b
+  jobs:
+    - name: "scale-down"
+      schedule: "0 0/5 * * * *"
+      targetSize: 1
+    - name: "scale-up"
+      schedule: "10 0/5 * * * *"
+      targetSize: 2
+---
+apiVersion: autoscaling.alibabacloud.com/v1beta1
+kind: CronHorizontalPodAutoscaler
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: spring-cloud-b-gray
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta2
+    kind: Deployment
+    name: spring-cloud-b-gray
+  jobs:
+    - name: "scale-down"
+      schedule: "0 0/5 * * * *"
+      targetSize: 1
+    - name: "scale-up"
+      schedule: "10 0/5 * * * *"
+      targetSize: 2
+---
+apiVersion: autoscaling.alibabacloud.com/v1beta1
+kind: CronHorizontalPodAutoscaler
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: spring-cloud-c
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta2
+    kind: Deployment
+    name: spring-cloud-c
+  jobs:
+    - name: "scale-down"
+      schedule: "0 2/5 * * * *"
+      targetSize: 1
+    - name: "scale-up"
+      schedule: "10 2/5 * * * *"
+      targetSize: 2
+
+
+# zuul 网关开启 SLB 暴露展示页面
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zuul-slb
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 20000
+  selector:
+    app: spring-cloud-zuul
+  type: ClusterIP
+
+# a 应用暴露 k8s service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-cloud-a-base
+spec:
+  ports:
+    - name: http
+      port: 20001
+      protocol: TCP
+      targetPort: 20001
+  selector:
+    app: spring-cloud-a
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-cloud-a-gray
+spec:
+  ports:
+    - name: http
+      port: 20001
+      protocol: TCP
+      targetPort: 20001
+  selector:
+    app: spring-cloud-a-gray
+
+# Nacos Server SLB Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-slb
+spec:
+  ports:
+    - port: 8848
+      protocol: TCP
+      targetPort: 8848
+  selector:
+    app: nacos-server
+  type: LoadBalancer
