@@ -1,0 +1,235 @@
+# eureka-sc-consumer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sc-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sc-consumer
+  template:
+    metadata:
+      annotations:
+        msePilotAutoEnable: 'on'
+        msePilotCreateAppName: sc-consumer
+      labels:
+        app: sc-consumer
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: LANG
+              value: C.UTF-8
+            - name: additional_nacos_address
+              value: nacos-server:8848
+          image: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/sc-consumer:migrate-eureka-1.0
+          imagePullPolicy: Always
+          name: sc-consumer
+      imagePullSecrets:
+        - name: mse-demo-hz
+
+# eureka-sc-provider
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-sc-provider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-sc-provider
+  template:
+    metadata:
+      annotations:
+        msePilotAutoEnable: 'on'
+        msePilotCreateAppName: eureka-sc-provider
+      labels:
+        app: eureka-sc-provider
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: LANG
+              value: C.UTF-8
+          image: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/sc-provider:migrate-eureka-1.0
+          imagePullPolicy: Always
+          name: eureka-sc-provider
+      imagePullSecrets:
+        - name: mse-demo-hz
+
+
+# nacos-sc-provider
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-sc-provider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-sc-provider
+  template:
+    metadata:
+      annotations:
+        msePilotAutoEnable: 'on'
+        msePilotCreateAppName: nacos-sc-provider
+      labels:
+        app: nacos-sc-provider
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: LANG
+              value: C.UTF-8
+          image: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/sc-provider:migrate-nacos-1.0
+          imagePullPolicy: Always
+          name: nacos-sc-provider
+      imagePullSecrets:
+        - name: mse-demo-hz
+
+
+# Nacos Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nacos-server
+  name: nacos-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+        - env:
+            - name: MODE
+              value: standalone
+          image: nacos/nacos-server:v2.0.3
+          imagePullPolicy: Always
+          name: nacos-server
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+# Eureka Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eureka-server
+  name: eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+        - env:
+          image: springcloud/eureka:latest
+          imagePullPolicy: Always
+          name: eureka-server
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+
+# Nacos Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-server
+spec:
+  ports:
+    - port: 8848
+      protocol: TCP
+      targetPort: 8848
+  selector:
+    app: nacos-server
+  type: ClusterIP
+
+# Nacos Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-slb
+spec:
+  ports:
+    - port: 8848
+      protocol: TCP
+      targetPort: 8848
+  selector:
+    app: nacos-server
+  type: LoadBalancer
+
+
+# Eureka Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+spec:
+  ports:
+    - port: 8761
+      protocol: TCP
+      targetPort: 8761
+  selector:
+    app: eureka-server
+  type: ClusterIP
+
+# Eureka Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-slb
+spec:
+  ports:
+    - port: 8761
+      protocol: TCP
+      targetPort: 8761
+  selector:
+    app: eureka-server
+  type: LoadBalancer
+
+# sc-consumer Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-slb
+spec:
+  ports:
+    - port: 18099
+      protocol: TCP
+      targetPort: 18099
+  selector:
+    app: sc-consumer
+  type: LoadBalancer
