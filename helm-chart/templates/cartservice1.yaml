@@ -23,12 +23,12 @@ spec:
     metadata:
       annotations:
         alicloud.service.tag: v1
+      labels:
+        app: cartservice1
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
-      labels:
-        app: cartservice1
     spec:
       containers:
       - env:

@@ -25,12 +25,12 @@ spec:
     metadata:
       annotations:
         alicloud.service.tag: tag3
+      labels:
+        app: productservice3
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: {{ .Values.application.name.prefix}}productservice3
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}productservice
-      labels:
-        app: productservice3
     spec:
       containers:
         - env:

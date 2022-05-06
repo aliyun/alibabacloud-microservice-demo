@@ -23,10 +23,10 @@ spec:
     metadata:
       annotations:
         alicloud.service.tag: v2
-        msePilotAutoEnable: "on"
-        msePilotCreateAppName: {{ .Values.application.name.prefix}}checkoutservice
       labels:
         app: checkoutservice
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: {{ .Values.application.name.prefix}}checkoutservice
     spec:
       containers:
         - env:
