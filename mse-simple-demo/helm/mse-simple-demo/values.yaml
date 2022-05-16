@@ -1,0 +1,6 @@
+env: mse-demo
+Registry: registry.cn-beijing.aliyuncs.com/luyanbo-msc/
+
+nacos:
+  host: mse-xxxxx-p.nacos-ans.mse.aliyuncs.com
+

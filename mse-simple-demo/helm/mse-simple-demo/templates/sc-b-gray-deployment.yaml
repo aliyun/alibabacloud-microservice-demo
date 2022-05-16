@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.env }}-sc-b-gray
+  namespace: {{ .Release.Namespace }}
+  labels:
+    env: {{ .Values.env }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.env }}-sc-b-gray
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+      labels:
+        msePilotAutoEnable: "on"
+        appName: "{{ .Values.env }}-sc-b"
+        app: "{{ .Values.env }}-sc-b-gray"
+        env: "{{ .Values.env }}"
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    spec:
+      containers:
+        - name: {{ .Values.env }}-sc-b
+          image: "{{ .Values.Registry }}spring-cloud-b:1.0.0"
+          imagePullPolicy: Always
+          #          command: ["/onepilot"]
+          #          args:
+          #            - --alsologtostderr
+          env:
+            - name: env
+              value: "{{ .Values.env }}"
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+          resources:
+            requests:
+              cpu: 2
+              memory: 4Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+          ports:
+            - name: http-port
+              containerPort: 20002
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
