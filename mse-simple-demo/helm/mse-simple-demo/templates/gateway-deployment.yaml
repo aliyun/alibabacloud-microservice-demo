@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.env }}-spring-cloud-zuul
+  name: spring-cloud-zuul
   namespace: {{ .Release.Namespace }}
   labels:
-    env: {{ .Values.env }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -12,16 +11,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.env }}-spring-cloud-zuul
+      app: spring-cloud-zuul
   template:
     metadata:
       annotations:
         msePilotCreateAppName: spring-cloud-zuul
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Values.env }}-spring-cloud-zuul"
-        app: {{ .Values.env }}-spring-cloud-zuul
-        env: "{{ .Values.env }}"
+        appName: "{{ .Release.Namespace }}-spring-cloud-zuul"
+        app: spring-cloud-zuul
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -30,6 +28,11 @@ spec:
       containers:
         - image: "{{ .Values.Registry }}spring-cloud-zuul:1.0.0"
           imagePullPolicy: Always
-          name: "{{ .Values.env }}-spring-cloud-zuul"
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+          name: "spring-cloud-zuul"
           ports:
             - containerPort: 20000

@@ -4,12 +4,12 @@ metadata:
   annotations:
     service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
     service.beta.kubernetes.io/alicloud-loadbalancer-address-type: internet
-  name: {{ .Values.env }}-zuul-slb
+  name: zuul-slb
 spec:
   ports:
     - port: 80
       protocol: TCP
       targetPort: 20000
   selector:
-    app: {{ .Values.env }}-spring-cloud-zuul
+    app: spring-cloud-zuul
   type: LoadBalancer
