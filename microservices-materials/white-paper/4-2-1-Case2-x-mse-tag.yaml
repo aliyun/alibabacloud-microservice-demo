@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: spring-cloud-a-base
+spec:
+  rules:
+  - host: www.base.com
+    http:
+      paths:
+      - backend:
+          serviceName: spring-cloud-a-base
+          servicePort: 20001
+        path: /
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: spring-cloud-a-gray
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "x-mse-tag"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "gray"
+    nginx.ingress.kubernetes.io/canary-weight: "0"
+spec:
+  rules:
+  - host: www.base.com
+    http:
+      paths:
+      - backend:
+          serviceName: spring-cloud-a-gray
+          servicePort: 20001
+        path: /
