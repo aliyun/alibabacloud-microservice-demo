@@ -3,11 +3,6 @@ kind: Deployment
 metadata:
   name: sc-a-gray
   namespace: {{ .Release.Namespace }}
-  labels:
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
 spec:
   replicas: 1
   selector:
@@ -21,10 +16,6 @@ spec:
         msePilotAutoEnable: "on"
         appName: "{{ .Release.Namespace }}-sc-a"
         app: "sc-a-gray"
-        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/version: {{ .Chart.AppVersion }}
     spec:
       containers:
         - name: sc-a
