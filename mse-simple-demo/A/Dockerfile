@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM flystar32/mse-base:latest
 WORKDIR /app
 COPY /target/A-1.0.0.jar /app
 
