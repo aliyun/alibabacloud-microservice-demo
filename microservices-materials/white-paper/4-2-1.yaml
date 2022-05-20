@@ -1,0 +1,246 @@
+# A 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-a
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-a
+      labels:
+        app: spring-cloud-a
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-a
+        ports:
+        - containerPort: 20001
+        livenessProbe:
+          tcpSocket:
+            port: 20001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+      
+# A 应用 gray 版本
+---            
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a-new
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-a-new
+  strategy:
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-a
+      labels:
+        app: spring-cloud-a-new
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        - name: profiler.micro.service.tag.trace.enable
+          value: "true"
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-a-new
+        ports:
+        - containerPort: 20001
+        livenessProbe:
+          tcpSocket:
+            port: 20001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+# B 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-b
+  strategy:
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-b
+      labels:
+        app: spring-cloud-b
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-b
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20002
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+# B 应用 gray 版本  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b-new
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-b-new
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-b
+      labels:
+        app: spring-cloud-b-new
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-b-new
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20002
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+# C 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-c
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-c
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-c
+      labels:
+        app: spring-cloud-c
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-c
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20003
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+# C 应用 gray 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-c-new
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-c-new
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-c
+      labels:
+        app: spring-cloud-c-new
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
+        imagePullPolicy: IfNotPresent
+        name: spring-cloud-c-new
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20003
+          initialDelaySeconds: 10
+          periodSeconds: 30
+
+# Nacos Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+      - env:
+        - name: MODE
+          value: standalone
+        image: nacos/nacos-server:latest
+        imagePullPolicy: Always
+        name: nacos-server
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+# Nacos Server Service 配置
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-server
+spec:
+  ports:
+  - port: 8848
+    protocol: TCP
+    targetPort: 8848
+  selector:
+    app: nacos-server
+  type: ClusterIP
+

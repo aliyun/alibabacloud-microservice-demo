@@ -1,0 +1,176 @@
+#入口 zuul 应用
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-zuul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-cloud-zuul
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-zuul
+      labels:
+        app: spring-cloud-zuul
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: LANG
+              value: C.UTF-8
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-zuul:1.0.1
+          imagePullPolicy: Always
+          name: spring-cloud-zuul
+          ports:
+            - containerPort: 20000
+
+
+# A 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-a
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-a
+      labels:
+        app: spring-cloud-a
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-a
+        ports:
+        - containerPort: 20001
+        livenessProbe:
+          tcpSocket:
+            port: 20001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+      
+            
+# B 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-b
+  strategy:
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-b
+      labels:
+        app: spring-cloud-b
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-b
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20002
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+            
+# C 应用 base 版本
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-c
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-c
+  template:
+    metadata:
+      annotations:
+        msePilotCreateAppName: spring-cloud-c
+      labels:
+        app: spring-cloud-c
+    spec:
+      containers:
+      - env:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk/jre
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
+        imagePullPolicy: Always
+        name: spring-cloud-c
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 20003
+          initialDelaySeconds: 10
+          periodSeconds: 30
+            
+
+# Nacos Server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+      - env:
+        - name: MODE
+          value: standalone
+        image: nacos/nacos-server:latest
+        imagePullPolicy: Always
+        name: nacos-server
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      
+# zuul 网关开启 SLB 暴露展示页面   
+---     
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
+  name: zuul-slb
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 20000
+  selector:
+    app: spring-cloud-zuul
+  type: LoadBalancer      
+

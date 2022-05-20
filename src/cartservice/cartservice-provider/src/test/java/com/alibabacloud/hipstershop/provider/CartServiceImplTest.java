@@ -1,4 +1,4 @@
-package com.alibabacloud.hipstershop.cartserviceprovider;
+package com.alibabacloud.hipstershop.provider;
 
 import com.alibabacloud.hipstershop.cartserviceprovider.service.CartServiceImpl;
 import org.junit.Test;

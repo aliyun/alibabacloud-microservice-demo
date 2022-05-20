@@ -24,13 +24,12 @@ spec:
   template:
     metadata:
       annotations:
+      labels:
+        app: zuul-gateway
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: {{ .Values.application.name.prefix}}zuul-gateway
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}zuul-gateway
-      creationTimestamp: null
-      labels:
-        app: zuul-gateway
     spec:
       containers:
       - env:
