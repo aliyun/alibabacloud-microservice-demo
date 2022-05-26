@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a-gray
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-a-gray
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-a
+      labels:
+        app: spring-cloud-a-gray
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-a-gray
+          ports:
+            - containerPort: 20001
+          livenessProbe:
+            tcpSocket:
+              port: 20001
+            initialDelaySeconds: 10
+            periodSeconds: 30
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b-gray
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-b-gray
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-b
+      labels:
+        app: spring-cloud-b-gray
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-b-gray
+          ports:
+            - containerPort: 20002
+          livenessProbe:
+            tcpSocket:
+              port: 20002
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-c-gray
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-c-gray
+  template:
+    metadata:
+      annotations:
+        alicloud.service.tag: gray
+        msePilotCreateAppName: spring-cloud-c
+      labels:
+        app: spring-cloud-c-gray
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
+          imagePullPolicy: Always
+          name: spring-cloud-c-gray
+          ports:
+            - containerPort: 20003
+          livenessProbe:
+            tcpSocket:
+              port: 20003
+            initialDelaySeconds: 10
+            periodSeconds: 30
+---

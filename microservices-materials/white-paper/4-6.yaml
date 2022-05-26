@@ -1,43 +1,3 @@
-# 部署 Nacos Server
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nacos-server
-spec:
-  selector:
-    matchLabels:
-      app: nacos-server
-  template:
-    metadata:
-      annotations:
-      labels:
-        app: nacos-server
-    spec:
-      containers:
-        - env:
-            - name: MODE
-              value: "standalone"
-          image: registry.cn-shanghai.aliyuncs.com/yizhan/nacos-server:latest
-          imagePullPolicy: IfNotPresent
-          name: nacos-server
-          ports:
-            - containerPort: 8848
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nacos-server
-spec:
-  type: ClusterIP
-  selector:
-    app: nacos-server
-  ports:
-    - name: http
-      port: 8848
-      targetPort: 8848
-
 # 部署业务应用
 ---
 apiVersion: apps/v1
@@ -59,6 +19,8 @@ spec:
         - env:
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
           image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-zuul:1.0.0
           imagePullPolicy: Always
           name: spring-cloud-zuul
@@ -104,6 +66,10 @@ spec:
         - env:
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
+            - name: dubbo.registry.address
+              value: nacos://mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
           image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:1.0.0
           imagePullPolicy: Always
           name: spring-cloud-a
@@ -114,7 +80,6 @@ spec:
               port: 20001
             initialDelaySeconds: 10
             periodSeconds: 30
-
 
 ---
 apiVersion: apps/v1
@@ -134,8 +99,12 @@ spec:
     spec:
       containers:
         - env:
-            - name: JAVA_HOME
-              value: /usr/lib/jvm/java-1.8-openjdk/jre
+          - name: JAVA_HOME
+            value: /usr/lib/jvm/java-1.8-openjdk/jre
+          - name: spring.cloud.nacos.discovery.server-addr
+            value: mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
+          - name: dubbo.registry.address
+            value: nacos://mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
           image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
           imagePullPolicy: Always
           name: spring-cloud-b
@@ -167,6 +136,10 @@ spec:
         - env:
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
+            - name: dubbo.registry.address
+              value: nacos://mse-xxxxxxx-nacos-ans.mse.aliyuncs.com:8848
           image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
           imagePullPolicy: Always
           name: spring-cloud-c
@@ -177,3 +150,5 @@ spec:
               port: 20003
             initialDelaySeconds: 10
             periodSeconds: 30
+
+---
