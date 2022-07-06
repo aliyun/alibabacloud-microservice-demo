@@ -13,10 +13,6 @@ This demo is powered by the following projects and products:
 * Alibaba Cloud [ARMS](https://www.aliyun.com/product/arms) for monitoring
 * Alibaba Cloud [SAE](https://www.aliyun.com/product/sae) for deployment and hosting without being aware of the underlying infrastructure.
 
-### Live Demo
-
-You can visit http://123.56.245.71:8080 for an live demo, which is hosted on Alibaba Cloud [SAE](https://www.aliyun.com/product/sae).
-
 ### Architecture
 
 This project contains the following applications (more applications are ong the way):
