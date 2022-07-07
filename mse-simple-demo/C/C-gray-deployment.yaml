@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-b-gray
+  name: spring-cloud-c-gray
 spec:
   selector:
     matchLabels:
-      app: spring-cloud-b-gray
+      app: spring-cloud-c-gray
   template:
     metadata:
       annotations:
         alicloud.service.tag: gray
-        msePilotCreateAppName: spring-cloud-b
+        msePilotCreateAppName: spring-cloud-c
       labels:
-        app: spring-cloud-b-gray
+        app: spring-cloud-c-gray
     spec:
       containers:
         - env:
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-1.8-openjdk/jre
-          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:1.0.0
+          image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-c:1.0.0
           imagePullPolicy: Always
-          name: spring-cloud-b-gray
+          name: spring-cloud-c-gray
           ports:
-            - containerPort: 20002
+            - containerPort: 20003
