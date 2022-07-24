@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sc-a
+  name: spring-cloud-a
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sc-a
+      app: spring-cloud-a
   template:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-sc-a"
-        app: "sc-a"
+        appName: "{{ .Release.Namespace }}-spring-cloud-a"
+        app: "spring-cloud-a"
     spec:
       containers:
-        - name: sc-a
+        - name: spring-cloud-a
           image: "{{ .Values.registry }}spring-cloud-a:1.0.0"
           imagePullPolicy: Always
           env:

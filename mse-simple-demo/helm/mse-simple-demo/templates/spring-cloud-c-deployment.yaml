@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sc-b
+  name: spring-cloud-c
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sc-b
+      app: spring-cloud-c
   template:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-sc-b"
-        app: "sc-b"
+        appName: "{{ .Release.Namespace }}-spring-cloud-c"
+        app: "spring-cloud-c"
     spec:
       containers:
-        - name: sc-b
-          image: "{{ .Values.registry }}spring-cloud-b:1.0.0"
+        - name: spring-cloud-c
+          image: "{{ .Values.registry }}spring-cloud-c:1.0.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -32,8 +32,8 @@ spec:
               cpu: 2
               memory: 4Gi
           ports:
-            - name: http-port
-              containerPort: 20002
+          - name: http-port
+            containerPort: 20003
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

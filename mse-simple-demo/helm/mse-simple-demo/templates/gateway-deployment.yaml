@@ -4,6 +4,7 @@ metadata:
   name: spring-cloud-zuul
   namespace: {{ .Release.Namespace }}
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: spring-cloud-zuul
@@ -34,3 +35,12 @@ spec:
               memory: 4Gi
           ports:
             - containerPort: 20000
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100

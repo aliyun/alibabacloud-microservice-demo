@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sc-b-gray
+  name: spring-cloud-b-gray
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sc-b-gray
+      app: spring-cloud-b-gray
   template:
     metadata:
       annotations:
         alicloud.service.tag: gray
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-sc-b"
-        app: "sc-b-gray"
+        appName: "{{ .Release.Namespace }}-spring-cloud-b"
+        app: "spring-cloud-b-gray"
     spec:
       containers:
-        - name: sc-b
+        - name: spring-cloud-b
           image: "{{ .Values.registry }}spring-cloud-b:1.0.0"
           imagePullPolicy: Always
           env:
