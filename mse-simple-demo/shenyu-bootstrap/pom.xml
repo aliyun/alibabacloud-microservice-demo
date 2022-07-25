@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.2.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.alibabacloud.mse.demo</groupId>
+	<artifactId>shenyu-bootstrap</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>demo</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+		<nacos-discovery.version>2.2.6.RELEASE</nacos-discovery.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>2.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>2.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shenyu</groupId>
+			<artifactId>shenyu-spring-boot-starter-gateway</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shenyu</groupId>
+			<artifactId>shenyu-spring-boot-starter-sync-data-websocket</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+
+		<!-- apache shenyu springCloud plugin start-->
+		<dependency>
+			<groupId>org.apache.shenyu</groupId>
+			<artifactId>shenyu-spring-boot-starter-plugin-springcloud</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+			<version>2.2.0.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shenyu</groupId>
+			<artifactId>shenyu-spring-boot-starter-plugin-httpclient</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		<!-- springCloud if you config register center is eureka please dependency end-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<version>${nacos-discovery.version}</version>
+		</dependency>
+		<!-- apache shenyu springCloud plugin end-->
+	</dependencies>
+
+	<build>
+		<finalName>shenyu-bootstrap</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

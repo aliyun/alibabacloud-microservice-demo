@@ -1,0 +1,39 @@
+# 示例使用 nodeport 方式暴露端口
+apiVersion: v1
+kind: Service
+metadata:
+  name: shenyu-admin-svc
+spec:
+  selector:
+    app: shenyu-admin
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9095
+      targetPort: 9095
+      nodePort: 31095
+---
+# shenyu-admin
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shenyu-admin
+spec:
+  selector:
+    matchLabels:
+      app: shenyu-admin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: shenyu-admin
+    spec:
+      containers:
+        - name: shenyu-admin
+          image: apache/shenyu-admin:2.4.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9095
+          env:
+            - name: 'TZ'
+              value: 'Asia/Beijing'

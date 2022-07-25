@@ -13,6 +13,7 @@
         <module>C</module>
         <module>gateway</module>
 
+        <module>shenyu-bootstrap</module>
     </modules>
 
     <packaging>pom</packaging>

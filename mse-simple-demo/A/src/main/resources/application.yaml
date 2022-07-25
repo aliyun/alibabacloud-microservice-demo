@@ -1,0 +1,51 @@
+nacos:
+  host: nacos-server
+  namespace: public
+spring:
+  application:
+    name: sc-A
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.host}:8848
+        namespace: ${nacos.namespace}
+server:
+  port: 20001
+dubbo:
+  application:
+    id: dubbo-provider-A
+    name: dubbo-provider-A
+  protocol:
+    id: dubbo
+    port: 38080
+  registry:
+    id: nacos
+    address: nacos://${nacos.host}:8848
+    parameters:
+      namespace: ${nacos.namespace}
+    check: false
+  consumer:
+    check: false
+  scan:
+    base-packages: com.alibabacloud.mse.demo.service
+rocketmq:
+  consumer:
+    topic: TEST_MQ
+    group: test-a
+middleware:
+  mq:
+    address: mqnamesrv:9876
+
+
+shenyu:
+  register:
+    registerType: http #zookeeper #etcd #nacos #consul
+    serverLists: http://shenyu-admin-svc:9095 #localhost:2181 #http://localhost:2379 #localhost:8848
+    props:
+      username: admin
+      password: 123456
+  client:
+    springCloud:
+      props:
+        contextPath: /springcloud
+#        port: 8884

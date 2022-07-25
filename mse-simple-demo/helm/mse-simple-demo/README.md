@@ -9,8 +9,8 @@ At directory `A`/`B`/`C`/`gateway`:
 ## install
 
 ```shell
-helm3 upgrade helm/mse-simple-demo \
-  --namespace default --create-namespace \
-  --install mse-simple-demo1 \
+helm3 upgrade mse-simple-demo1 helm/mse-simple-demo \
+  --namespace shenyu --create-namespace \
+  --install \
   --values helm/mse-simple-demo/values.example.yaml
 ```

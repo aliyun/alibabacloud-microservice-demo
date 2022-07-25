@@ -1,0 +1,23 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: shenyu-bootstrap
+  cloud:
+    discovery:
+      enabled: true
+    nacos:
+      discovery:
+        server-addr: mse-59dfffc4-p.nacos-ans.mse.aliyuncs.com:8848 # Spring Cloud Alibaba Dubbo use this.
+        enabled: true
+        namespace: luyanbo-cn-zhangjiakou
+server:
+  port: 9195
+management:
+  health:
+    defaults:
+      enabled: false
+shenyu:
+  sync:
+    websocket:
+      urls: ws://shenyu-admin-svc:9095/websocket
