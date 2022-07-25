@@ -17,7 +17,7 @@ spec:
             - name: MODE
               value: "standalone"
           image: registry.cn-shanghai.aliyuncs.com/yizhan/nacos-server:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: nacos-server
           ports:
             - containerPort: 8848

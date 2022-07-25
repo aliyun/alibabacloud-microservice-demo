@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-cloud-b
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        appName: "{{ .Release.Namespace }}-spring-cloud-b"
+        app: "spring-cloud-b"
+    spec:
+      containers:
+        - name: spring-cloud-b
+          image: "{{ .Values.registry }}spring-cloud-b:1.0.0"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+          resources:
+            requests:
+              cpu: 2
+              memory: 4Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+          ports:
+            - name: http-port
+              containerPort: 20002
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
