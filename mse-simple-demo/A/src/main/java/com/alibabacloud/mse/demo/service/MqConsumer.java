@@ -25,6 +25,9 @@ public class MqConsumer implements MessageListenerConcurrently {
     @Autowired
     InetUtils inetUtils;
 
+    @Autowired
+    String servcieTag;
+
     @SneakyThrows
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
@@ -32,7 +35,7 @@ public class MqConsumer implements MessageListenerConcurrently {
             MessageExt messageExt = list.get(0);
             String topic = messageExt.getTopic();
             String messageString = new String(messageExt.getBody(), StandardCharsets.UTF_8);
-            String result =  "A"+ AApplication.SERVICE_TAG+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+            String result =  "A"+ servcieTag+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                     restTemplate.getForObject("http://sc-B/b", String.class);
 
             log.info("topic:{},producer:{},invoke result:{}", topic, messageString, result);
