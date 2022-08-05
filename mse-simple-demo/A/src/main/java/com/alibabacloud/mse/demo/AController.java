@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Api(value = "/", tags = {"入口应用"})
 @RestController
@@ -37,6 +39,9 @@ class AController {
 
     @Autowired
     String servcieTag;
+
+    @Autowired
+    ThreadPoolTaskExecutor taskExecutor;
 
     private String currentZone;
 
@@ -60,7 +65,7 @@ class AController {
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/a")
-    public String a(HttpServletRequest request) {
+    public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
         StringBuilder headerSb = new StringBuilder();
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
@@ -71,8 +76,14 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
+
+        String result=restTemplate.getForObject("http://sc-B/b", String.class);
+//        String result = taskExecutor.submit(() ->
+//                restTemplate.getForObject("http://sc-B/b", String.class)
+//        ).get();
+
         return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-B/b", String.class);
+                result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
