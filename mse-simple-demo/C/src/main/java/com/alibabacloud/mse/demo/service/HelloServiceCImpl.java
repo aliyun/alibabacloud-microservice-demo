@@ -13,8 +13,6 @@ import org.springframework.cloud.commons.util.InetUtils;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.alibabacloud.mse.demo.CApplication.SERVICE_TAG;
-
 @Slf4j
 @DubboService(version = "1.0.0")
 @RequiredArgsConstructor
@@ -28,6 +26,8 @@ public class HelloServiceCImpl implements HelloServiceC {
     @Value("${rocketmq.consumer.topic}")
     private String topic;
 
+    @Autowired
+    String servcieTag;
 
     @Value("${throwException:false}")
     boolean throwException;
@@ -39,7 +39,7 @@ public class HelloServiceCImpl implements HelloServiceC {
             throw new RuntimeException();
         }
 
-        String value = "C" + SERVICE_TAG + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        String value = "C" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         String invokerTag="";
         String userData = RpcContext.getContext().getAttachment("__microservice_tag__");
         if (!StringUtils.isEmpty(userData)) {
