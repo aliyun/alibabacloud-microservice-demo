@@ -46,13 +46,13 @@ You need to go to the `src` directory, for each sub module, there is a `build.sh
 This project can be deployed to docker with the following command
 
 ```sh
-docker-compose -f docker-compose.yaml up
+docker-compose -f docker-compose.yml up
 ```
 
 If you want to undeploy, use the following command
 
 ```sh
-docker-compose -f docker-compose.yaml down
+docker-compose -f docker-compose.yml down
 ```
 
 #### Deploy to Kubernetes cluster
