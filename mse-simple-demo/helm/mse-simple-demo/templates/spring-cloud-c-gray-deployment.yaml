@@ -1,25 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-b-gray
+  name: spring-cloud-c-gray
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-b-gray
+      app: spring-cloud-c-gray
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: gray
       labels:
+        alicloud.service.tag: gray
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-b"
-        app: "spring-cloud-b-gray"
+        appName: "{{ .Release.Namespace }}-spring-cloud-c"
+        app: "spring-cloud-c-gray"
     spec:
       containers:
-        - name: spring-cloud-b
-          image: "{{ .Values.registry }}spring-cloud-b:1.0.0"
+        - name: spring-cloud-c
+          image: "{{ .Values.registry }}spring-cloud-c:1.0.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host
