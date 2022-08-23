@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,9 @@ class AController {
 
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
+
+    @Value("${custom.config.value}")
+    private String configValue;
 
     private String currentZone;
 
@@ -82,7 +86,7 @@ class AController {
 //                restTemplate.getForObject("http://sc-B/b", String.class)
 //        ).get();
 
-        return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + "[config=" + configValue + "]" + " -> " +
                 result;
     }
 
