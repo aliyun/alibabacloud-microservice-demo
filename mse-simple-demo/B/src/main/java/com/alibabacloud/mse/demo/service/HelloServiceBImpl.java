@@ -7,13 +7,13 @@ import org.springframework.cloud.commons.util.InetUtils;
 
 import static com.alibabacloud.mse.demo.BApplication.SERVICE_TAG;
 
-@Service(version = "1.0.0")
+@Service(version = "1.1.0")
 public class HelloServiceBImpl implements HelloServiceB {
 
     @Autowired
     InetUtils inetUtils;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.0.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.1.0")
     private HelloServiceC helloServiceC;
 
     @Override

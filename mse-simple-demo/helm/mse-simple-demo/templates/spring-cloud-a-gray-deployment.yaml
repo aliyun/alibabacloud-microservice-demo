@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: spring-cloud-a
-          image: "{{ .Values.registry }}spring-cloud-a:1.0.0"
+          image: "{{ .Values.registry }}spring-cloud-a:1.1.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host

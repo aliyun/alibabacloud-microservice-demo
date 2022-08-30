@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-b
+  name: spring-cloud-b-gray
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
-      app: spring-cloud-b
+      app: spring-cloud-b-gray
   template:
     metadata:
+      annotations:
+        alicloud.service.tag: gray
       labels:
         msePilotAutoEnable: "on"
         appName: "{{ .Release.Namespace }}-spring-cloud-b"
-        app: "spring-cloud-b"
+        app: "spring-cloud-b-gray"
     spec:
       containers:
         - name: spring-cloud-b
