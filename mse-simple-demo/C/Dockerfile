@@ -1,4 +1,4 @@
-FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-extended-ga-centos
+FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:11
 
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas

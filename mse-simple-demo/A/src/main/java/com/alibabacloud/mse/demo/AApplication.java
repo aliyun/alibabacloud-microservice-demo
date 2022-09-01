@@ -71,15 +71,15 @@ public class AApplication {
         return tag;
     }
 
-    @Bean(name = "taskExecutor")
-    ThreadPoolTaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("taskExecutor-default-");
-        executor.setCorePoolSize(5);
-        executor.setKeepAliveSeconds(30000);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(10);
-        return executor;
-    }
+//    @Bean(name = "taskExecutor")
+//    ThreadPoolTaskExecutor taskExecutor() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setThreadNamePrefix("taskExecutor-default-");
+//        executor.setCorePoolSize(5);
+//        executor.setKeepAliveSeconds(30000);
+//        executor.setMaxPoolSize(10);
+//        executor.setQueueCapacity(10);
+//        return executor;
+//    }
 
 }

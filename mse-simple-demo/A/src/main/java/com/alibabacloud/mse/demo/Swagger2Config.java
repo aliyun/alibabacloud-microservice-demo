@@ -1,11 +1,8 @@
 package com.alibabacloud.mse.demo;
 
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * Swagger2API文档的配置
@@ -14,11 +11,17 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class Swagger2Config {
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.any())
-            .build();
+    public GroupedOpenApi publicApi() {
+        return GroupedOpenApi.builder()
+                .group("springshop-public")
+                .pathsToMatch("/public/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi adminApi() {
+        return GroupedOpenApi.builder()
+                .group("springshop-admin")
+                .pathsToMatch("/admin/**")
+                .build();
     }
 }
