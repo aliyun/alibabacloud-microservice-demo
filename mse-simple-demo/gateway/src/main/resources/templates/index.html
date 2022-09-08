@@ -15,41 +15,54 @@
     <div id="resultSection" style="margin-top: 30px; border-top: 1px solid #eaeaea;">
     </div>
 </div>
-<script charset="utf-8" >
+<script charset="utf-8">
+    let isRequesting = true;
+
+    window.addEventListener("keydown", (event) => {
+        if (event.key === 'Escape') {
+            isRequesting = false;
+        }
+    });
+
     $('#btnStart').click(() => {
-      const url = $('#inputArea').val();
-      $('#resultSection').empty();
-      fetchVal(url);
+        const url = $('#inputArea').val();
+        $('#resultSection').empty();
+        isRequesting = true;
+        fetchVal(url);
     });
 
     const getDateTime = () => {
-      const  myDate = new Date;
-      const year = myDate.getFullYear(); //获取当前年
-      const month = myDate.getMonth() + 1; //获取当前月
-      const date = myDate.getDate(); //获取当前日
-      const hours = myDate.getHours();
-      const minutes = myDate.getMinutes();
-      const seconds = myDate.getSeconds();
-      return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+        const myDate = new Date;
+        const year = myDate.getFullYear(); //获取当前年
+        const month = myDate.getMonth() + 1; //获取当前月
+        const date = myDate.getDate(); //获取当前日
+        const hours = myDate.getHours();
+        const minutes = myDate.getMinutes();
+        const seconds = myDate.getSeconds();
+        return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     };
 
     const fetchVal = (url) => {
-      $.ajax(url,  {
+        $.ajax(url, {
 
-        success: (data) => {
-          $('#resultSection').append(`<p>${getDateTime()} 返回 ${data}</p>`);
-          setTimeout(() => {
-            fetchVal(url);
-          }, 500);
-        },
-        error: (errorThrown) => {
-          $('#resultSection').append(`<p>${getDateTime()} 返回 ${errorThrown.responseText}</p>`);
-          setTimeout(() => {
-            fetchVal(url);
-          }, 500);
-        },
-      });
+            success: (data) => {
+                $('#resultSection').append(`<pre>${getDateTime()} 返回 ${data}</pre>`);
+                if (isRequesting) {
+                    setTimeout(() => {
+                        fetchVal(url);
+                    }, 500);
+                }
+            },
+            error: (errorThrown) => {
+                $('#resultSection').append(`<pre>${getDateTime()} 返回 ${errorThrown.responseText}</pre>`);
+                if (isRequesting) {
+                    setTimeout(() => {
+                        fetchVal(url);
+                    }, 500);
+                }
+            },
+        });
     };
-  </script>
+</script>
 </body>
 </html>
