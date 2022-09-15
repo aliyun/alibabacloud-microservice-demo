@@ -10,11 +10,9 @@ spec:
       app: spring-cloud-zuul
   template:
     metadata:
-      annotations:
-        msePilotCreateAppName: spring-cloud-zuul
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-zuul"
+        appName: "{{ .Values.mse.namePrefix }}spring-cloud-zuul"
         app: spring-cloud-zuul
     spec:
       containers:

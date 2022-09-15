@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-b"
+        appName: "{{ .Values.mse.namePrefix }}spring-cloud-b"
         app: "spring-cloud-b"
     spec:
       containers:
