@@ -13,7 +13,7 @@ spec:
       labels:
         alicloud.service.tag: gray
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-c"
+        appName: "{{ .Values.mse.namePrefix }}spring-cloud-c"
         app: "spring-cloud-c-gray"
     spec:
       containers:

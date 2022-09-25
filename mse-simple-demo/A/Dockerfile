@@ -32,7 +32,7 @@ WORKDIR /app
 COPY ./ ./
 
 RUN --mount=type=cache,target=/root/.m2/repository/ \
-  mvn clean package
+  mvn clean package --batch-mode
 
 EXPOSE 20001
 ENTRYPOINT ["sh", "-c"]
