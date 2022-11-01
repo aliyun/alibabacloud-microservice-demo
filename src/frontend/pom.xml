@@ -21,7 +21,7 @@
         <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
         <spring-cloud-openfeign.version>2.2.3.RELEASE</spring-cloud-openfeign.version>
         <dubbo.version>2.7.15</dubbo.version>
-        <dubbo.spring.version>2.7.4.1</dubbo.spring.version>
+        <dubbo.spring.version>2.7.15</dubbo.spring.version>
     </properties>
 
     <dependencyManagement>
