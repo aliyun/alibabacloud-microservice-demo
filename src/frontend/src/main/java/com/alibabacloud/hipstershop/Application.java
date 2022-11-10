@@ -28,12 +28,12 @@ public class Application {
     }
 
     public static String SERVICE_TAG;
-    public static String APP_NAME = System.getProperty("msc.appName","nil");
+    public static String APP_NAME = System.getProperty("mse.appName","nil");
 
     static {
 
         try {
-            File file = new File("/etc/podinfo/annotations");
+            File file = new File("/etc/podinfo/labels");
             if (file.exists()) {
 
                 Properties properties = new Properties();

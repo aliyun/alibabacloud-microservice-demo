@@ -35,7 +35,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartItem> viewCart(String userId) {
 
-        if(throwException){
+        if (throwException) {
             throw new RuntimeException();
         }
 

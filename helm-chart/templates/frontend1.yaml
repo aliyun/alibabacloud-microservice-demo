@@ -1,10 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "48"
-  creationTimestamp: null
-  generation: 1
   labels:
     app: frontend1
   name: frontend1
@@ -22,11 +18,10 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: tag1
       labels:
+        alicloud.service.tag: tag1
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend1
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}frontend
         app: frontend1
@@ -35,8 +30,6 @@ spec:
       - env:
         - name: LANG
           value: C.UTF-8
-        - name: JAVA_HOME
-          value: /usr/lib/jvm/java-1.8-openjdk/jre
         - name: TOMCAT_ACCESSLOG_ENABLED
           value: "true"
         - name: micro.service.shutdown.wait.time
@@ -51,7 +44,7 @@ spec:
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         - name: dubbo.consumer.check
           value: "false"
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/frontend:{{ .Values.images.version}}
+        image: {{ .Values.image.prefix }}frontend:{{ .Values.image.version }}
         imagePullPolicy: Always
         name: frontend1
         ports:
@@ -68,4 +61,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
