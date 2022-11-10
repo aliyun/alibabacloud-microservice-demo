@@ -1,9 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "9"
-  generation: 1
   labels:
     app: checkoutservice
   name: checkoutservice
@@ -21,9 +18,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: v2
       labels:
+        alicloud.service.tag: v2
         app: checkoutservice
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}checkoutservice
@@ -52,4 +48,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
