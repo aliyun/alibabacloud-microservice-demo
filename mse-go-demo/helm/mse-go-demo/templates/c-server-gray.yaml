@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c-server-gray
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: c-server
+  template:
+    metadata:
+      labels:
+        alicloud.service.tag: gray
+        msePilotAutoEnable: "on"
+        appName: "{{ .Values.mse.namePrefix }}c-server"
+        app: "c-server"
+    spec:
+      containers:
+        - name: c-server
+          image: "{{ .Values.registry }}c-server:1.0.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          ports:
+            - name: port-1
+              containerPort: 50051
+              protocol: TCP
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100

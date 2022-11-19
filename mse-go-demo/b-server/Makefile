@@ -1,6 +1,6 @@
 REGISTRY ?=
 IMAGE_NAME ?= b-server
-IMAGE_TAG ?= 0.1.0
+IMAGE_TAG ?= 1.0.0
 IMG ?= ${REGISTRY}${IMAGE_NAME}:${IMAGE_TAG}
 
 docker-build:
