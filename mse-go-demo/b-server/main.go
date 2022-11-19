@@ -31,7 +31,7 @@ func (s *server) BMethod(ctx context.Context, req *b_api_pb.BRequest) (*b_api_pb
 		return nil, err
 	}
 	reply := &b_api_pb.BReply{
-		Message: cReply.GetMessage() + "-> B",
+		Message: "B->" + cReply.GetMessage(),
 	}
 	return reply, nil
 }

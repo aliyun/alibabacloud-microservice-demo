@@ -8,7 +8,8 @@ ADD . /workspace
 
 WORKDIR /workspace
 
-RUN env GOPROXY=https://goproxy.cn,direct \
+RUN --mount=type=cache,target=/go \
+  env GOPROXY=https://goproxy.cn,direct \
   go build -buildmode=pie -ldflags "-linkmode external -extldflags -static -w" -o /workspace
 
 # The RUN line below is an alternative that also results in a static binary
