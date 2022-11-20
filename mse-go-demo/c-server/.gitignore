@@ -1,0 +1,7 @@
+grpc-server
+main
+__debug_bin
+c-server
+
+.vscode/
+
