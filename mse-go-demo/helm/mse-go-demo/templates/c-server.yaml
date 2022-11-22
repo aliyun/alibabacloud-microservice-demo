@@ -28,7 +28,7 @@ spec:
               memory: 512Mi
           ports:
             - name: port-1
-              containerPort: 50051
+              containerPort: 50053
               protocol: TCP
       affinity:
         podAntiAffinity:

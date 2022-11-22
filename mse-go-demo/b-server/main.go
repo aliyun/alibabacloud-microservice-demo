@@ -18,7 +18,7 @@ import (
 
 const (
 	port    = ":50051"
-	address = "go-c-service:50051"
+	address = "go-c-service:50053"
 )
 
 // server is used to implement helloworld.GreeterServer.
