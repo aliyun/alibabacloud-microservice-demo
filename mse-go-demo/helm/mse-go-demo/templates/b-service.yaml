@@ -6,9 +6,9 @@ metadata:
 spec:
   ports:
     - name: port-1
-      port: 50051
+      port: 50052
       protocol: TCP
-      targetPort: 50051
+      targetPort: 50052
   selector:
     app: b-server
   type: ClusterIP

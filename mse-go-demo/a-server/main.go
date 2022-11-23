@@ -18,7 +18,7 @@ import (
 const (
 	port = ":8080"
 
-	address = "go-b-service:50051"
+	address = "go-b-service:50052"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
