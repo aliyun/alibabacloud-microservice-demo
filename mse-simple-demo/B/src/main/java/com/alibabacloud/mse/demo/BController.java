@@ -7,7 +7,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-class CController {
+class BController {
 
     @Autowired
     RestTemplate restTemplate;
@@ -27,9 +26,6 @@ class CController {
 
     @Autowired
     String serviceTag;
-
-    @Value("${throwException:false}")
-    boolean throwException;
 
     private String currentZone;
 
@@ -51,19 +47,15 @@ class CController {
         }
     }
 
-    @GetMapping("/c")
-    public String c(HttpServletRequest request) {
-        if (throwException) {
-            throw new RuntimeException();
-        }
-        return "C" + serviceTag+ "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+    @GetMapping("/b")
+    public String b(HttpServletRequest request) {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                restTemplate.getForObject("http://sc-C/c", String.class);
     }
 
-    @GetMapping("/c-zone")
-    public String cZone(HttpServletRequest request) {
-        if (throwException) {
-            throw new RuntimeException();
-        }
-        return "C" + serviceTag + "[" + currentZone + "]";
+    @GetMapping("/b-zone")
+    public String bZone(HttpServletRequest request) {
+        return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
+                restTemplate.getForObject("http://sc-C/c-zone", String.class);
     }
 }

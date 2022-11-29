@@ -39,7 +39,7 @@ class AController {
     private HelloServiceB helloServiceB;
 
     @Autowired
-    String servcieTag;
+    String serviceTag;
 
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
@@ -86,7 +86,7 @@ class AController {
 //                restTemplate.getForObject("http://sc-B/b", String.class)
 //        ).get();
 
-        return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + "[config=" + configValue + "]" + " -> " +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + "[config=" + configValue + "]" + " -> " +
                 result;
     }
 
@@ -103,7 +103,7 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
-        return "A" + servcieTag + "[" + currentZone + "]" + " -> " +
+        return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
                 restTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
@@ -120,7 +120,7 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
-        return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello("A");
     }
 
