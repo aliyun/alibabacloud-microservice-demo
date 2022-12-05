@@ -3,24 +3,25 @@ kind: Deployment
 metadata:
   name: nacos-server
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: nacos-server
   template:
     metadata:
-      annotations:
       labels:
+        msePilotAutoEnable: "off"
         app: nacos-server
     spec:
       containers:
-        - env:
-            - name: MODE
-              value: "standalone"
-          image: registry.cn-shanghai.aliyuncs.com/yizhan/nacos-server:latest
-          imagePullPolicy: Always
-          name: nacos-server
-          ports:
-            - containerPort: 8848
+      - env:
+        - name: MODE
+          value: standalone
+        image: nacos/nacos-server:latest
+        imagePullPolicy: Always
+        name: nacos-server
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
 
 ---
 apiVersion: v1
@@ -28,10 +29,11 @@ kind: Service
 metadata:
   name: nacos-server
 spec:
-  type: LoadBalancer
+  type: ClusterIP
+  ports:
+  - port: 8848
+    protocol: TCP
+    targetPort: 8848
   selector:
     app: nacos-server
-  ports:
-    - name: http
-      port: 8848
-      targetPort: 8848
+
