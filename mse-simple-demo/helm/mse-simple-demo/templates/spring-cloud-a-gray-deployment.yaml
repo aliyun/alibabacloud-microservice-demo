@@ -10,12 +10,11 @@ spec:
       app: spring-cloud-a-gray
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: gray
       labels:
+        app: "spring-cloud-a-gray"
+        alicloud.service.tag: gray
         msePilotAutoEnable: "on"
         appName: "{{ .Values.mse.namePrefix }}spring-cloud-a"
-        app: "spring-cloud-a-gray"
     spec:
       containers:
         - name: spring-cloud-a
