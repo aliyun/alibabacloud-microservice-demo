@@ -35,17 +35,17 @@ spec:
               port: 8848
             timeoutSeconds: 3
           readinessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 20
-            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 15
+            periodSeconds: 15
             successThreshold: 1
             tcpSocket:
               port: 8848
             timeoutSeconds: 3
           resources:
             requests:
-              cpu: 500m
-              memory: 1Gi
+              cpu: '1'
+              memory: 2Gi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
 
