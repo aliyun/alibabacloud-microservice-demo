@@ -14,12 +14,38 @@ spec:
         app: nacos-server
     spec:
       containers:
-      - env:
-        - name: MODE
-          value: standalone
-        image: nacos/nacos-server:latest
-        imagePullPolicy: Always
-        name: nacos-server
+        - name: nacos-server
+          image: 'nacos/nacos-server:v2.1.2'
+          env:
+            - name: MODE
+              value: standalone
+            - name: JVM_XMS
+              value: 512M
+            - name: JVM_XMX
+              value: 512M
+            - name: JVM_XMN
+              value: 256M
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8848
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8848
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
 
