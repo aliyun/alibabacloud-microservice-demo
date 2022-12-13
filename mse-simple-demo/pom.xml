@@ -11,6 +11,7 @@
         <module>A</module>
         <module>B</module>
         <module>C</module>
+        <module>D</module>
         <module>gateway</module>
 
     </modules>

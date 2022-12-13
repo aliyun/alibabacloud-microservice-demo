@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-d
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-d
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        appName: "{{ .Values.mse.namePrefix }}spring-boot-d"
+        app: "spring-boot-d"
+    spec:
+      containers:
+        - name: spring-boot-d
+          image: "{{ .Values.registry }}spring-boot-d:1.0.0"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+          resources:
+            requests:
+              cpu: 2
+              memory: 4Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+          ports:
+            - name: http-port
+              containerPort: 20004
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
