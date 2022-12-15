@@ -7,18 +7,20 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-c-gray
+      app: spring-cloud-c
+      version: gray
   template:
     metadata:
       labels:
+        app: "spring-cloud-c"
+        version: gray
         alicloud.service.tag: gray
         msePilotAutoEnable: "on"
         appName: "{{ .Values.mse.namePrefix }}spring-cloud-c"
-        app: "spring-cloud-c-gray"
     spec:
       containers:
         - name: spring-cloud-c
-          image: "{{ .Values.registry }}spring-cloud-c:1.0.0"
+          image: "{{ .Values.registry }}spring-cloud-c:1.1.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host

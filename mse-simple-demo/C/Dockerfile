@@ -2,9 +2,6 @@
 
 FROM maven:3-eclipse-temurin-8-alpine as build
 
-# copy arthas
-COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
-
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 COPY <<EOF /root/.m2/settings.xml
@@ -35,8 +32,11 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
 
 FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-extended-ga-centos
 
-COPY --from=build /app/target/C-1.0.0.jar /app/target/C-1.0.0.jar
+# copy arthas
+COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
+
+COPY --from=build /app/target/C.jar /app/target/C.jar
 
 EXPOSE 20003
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/C-1.0.0.jar"]
+CMD ["java -jar /app/target/C.jar"]

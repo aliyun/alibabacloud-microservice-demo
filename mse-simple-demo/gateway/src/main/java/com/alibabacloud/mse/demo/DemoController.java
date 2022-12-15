@@ -4,12 +4,17 @@ package com.alibabacloud.mse.demo;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -18,13 +23,15 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class DemoController {
 
+    @Autowired
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
 
     @Value("${demo.qps:100}")
     private int qps;
 
     @Value("${enable.mq.invoke:false}")
     private boolean enableMqInvoke;
-
 
     @Value("${background.color:white}")
     private String backgroundColor;
@@ -45,6 +52,13 @@ public class DemoController {
     public String index(Model model) {
         model.addAttribute("backgroundColor", backgroundColor);
         return "index";
+    }
+
+    @GetMapping("/spring_boot")
+    @ResponseBody
+    public String spring_boot(HttpServletRequest request) {
+        String result = restTemplate.getForObject("http://sc-a:20001/spring_boot", String.class);
+        return result;
     }
 
     @PostConstruct
