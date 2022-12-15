@@ -65,9 +65,9 @@ class BController {
                 loadBalancedRestTemplate.getForObject("http://sc-C/c-zone", String.class);
     }
 
-    @GetMapping("/spring-boot")
+    @GetMapping("/spring_boot")
     public String spring_boot(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-c/spring-boot", String.class);
+                restTemplate.getForObject("http://sc-c:20003/spring_boot", String.class);
     }
 }

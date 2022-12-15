@@ -4,6 +4,7 @@ package com.alibabacloud.mse.demo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -31,9 +32,11 @@ public class AApplication {
     }
 
     @Bean(name = "restTemplate")
-    @LoadBalanced
     RestTemplate restTemplate() {
-        return new RestTemplate();
+        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
+            request.getHeaders().add("Connection", "close");
+            return execution.execute(request, body);
+        })).build();
     }
 
     @Bean(name = "serviceTag")

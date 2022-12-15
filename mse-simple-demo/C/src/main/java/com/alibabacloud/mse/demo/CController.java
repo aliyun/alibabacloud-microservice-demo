@@ -65,7 +65,7 @@ class CController {
         return "C" + serviceTag + "[" + currentZone + "]";
     }
 
-    @GetMapping("/spring-boot")
+    @GetMapping("/spring_boot")
     public String spring_boot(HttpServletRequest request) {
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }

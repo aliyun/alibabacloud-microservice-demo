@@ -98,7 +98,7 @@ class AController {
 
     @GetMapping("/spring_boot")
     public String spring_boot(HttpServletRequest request) {
-        String result = restTemplate.getForObject("http://sc-b/spring_boot", String.class);
+        String result = restTemplate.getForObject("http://sc-b:20002/spring_boot", String.class);
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 " -> " + result;

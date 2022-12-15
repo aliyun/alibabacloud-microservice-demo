@@ -4,13 +4,19 @@ package com.alibabacloud.mse.demo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Properties;
 
 @SpringBootApplication
@@ -27,9 +33,11 @@ public class BApplication {
     }
 
     @Bean(name = "restTemplate")
-    @LoadBalanced
     RestTemplate restTemplate() {
-        return new RestTemplate();
+        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
+            request.getHeaders().add("Connection", "close");
+            return execution.execute(request, body);
+        })).build();
     }
 
     @Bean(name = "serviceTag")

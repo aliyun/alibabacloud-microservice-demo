@@ -5,8 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-    - name: port-1
-      port: 20001
+    - port: 20001
       protocol: TCP
       targetPort: 20001
   selector:
