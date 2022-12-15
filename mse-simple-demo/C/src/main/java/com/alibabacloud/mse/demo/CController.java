@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 class CController {
-
-    @Autowired
-    RestTemplate restTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -56,7 +54,7 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag+ "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
     @GetMapping("/c-zone")
@@ -65,5 +63,10 @@ class CController {
             throw new RuntimeException();
         }
         return "C" + serviceTag + "[" + currentZone + "]";
+    }
+
+    @GetMapping("/spring-boot")
+    public String spring_boot(HttpServletRequest request) {
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 }

@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -30,7 +31,12 @@ import java.util.concurrent.ExecutionException;
 class AController {
 
     @Autowired
-    RestTemplate restTemplate;
+    @Qualifier("loadBalancedRestTemplate")
+    private RestTemplate loadBalancedRestTemplate;
+
+    @Autowired
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -81,13 +87,21 @@ class AController {
             }
         }
 
-        String result=restTemplate.getForObject("http://sc-B/b", String.class);
+        String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
 //        String result = taskExecutor.submit(() ->
 //                restTemplate.getForObject("http://sc-B/b", String.class)
 //        ).get();
 
-        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + "[config=" + configValue + "]" + " -> " +
-                result;
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + result;
+    }
+
+    @GetMapping("/spring_boot")
+    public String spring_boot(HttpServletRequest request) {
+        String result = restTemplate.getForObject("http://sc-B/spring_boot", String.class);
+
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                " -> " + result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
@@ -104,7 +118,7 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
-                restTemplate.getForObject("http://sc-B/b-zone", String.class);
+                loadBalancedRestTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})

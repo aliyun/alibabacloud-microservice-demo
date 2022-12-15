@@ -20,8 +20,13 @@ public class BApplication {
         SpringApplication.run(BApplication.class, args);
     }
 
+    @Bean(name = "loadBalancedRestTemplate")
+    @LoadBalanced
+    RestTemplate loadBalancedRestTemplate() {
+        return new RestTemplate();
+    }
 
-    @Bean
+    @Bean(name = "restTemplate")
     @LoadBalanced
     RestTemplate restTemplate() {
         return new RestTemplate();

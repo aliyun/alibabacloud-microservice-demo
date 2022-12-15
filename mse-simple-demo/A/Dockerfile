@@ -36,4 +36,4 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
 
 EXPOSE 20001
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/A-1.0.0.jar"]
+CMD ["java -jar /app/target/A.jar"]

@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 class BController {
 
     @Autowired
-    RestTemplate restTemplate;
+    @Qualifier("loadBalancedRestTemplate")
+    private RestTemplate loadBalancedRestTemplate;
+
+    @Autowired
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -50,12 +56,18 @@ class BController {
     @GetMapping("/b")
     public String b(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-C/c", String.class);
+                loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
     }
 
     @GetMapping("/b-zone")
     public String bZone(HttpServletRequest request) {
         return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
-                restTemplate.getForObject("http://sc-C/c-zone", String.class);
+                loadBalancedRestTemplate.getForObject("http://sc-C/c-zone", String.class);
+    }
+
+    @GetMapping("/spring-boot")
+    public String spring_boot(HttpServletRequest request) {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                restTemplate.getForObject("http://sc-C/spring-boot", String.class);
     }
 }
