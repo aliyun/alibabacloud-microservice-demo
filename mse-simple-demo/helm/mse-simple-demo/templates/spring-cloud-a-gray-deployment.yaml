@@ -7,11 +7,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-a-gray
+      app: spring-cloud-a
+      version: gray
   template:
     metadata:
       labels:
-        app: "spring-cloud-a-gray"
+        app: "spring-cloud-a"
+        version: gray
         alicloud.service.tag: gray
         msePilotAutoEnable: "on"
         appName: "{{ .Values.mse.namePrefix }}spring-cloud-a"

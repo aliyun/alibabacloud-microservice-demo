@@ -68,6 +68,6 @@ class BController {
     @GetMapping("/spring-boot")
     public String spring_boot(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-C/spring-boot", String.class);
+                restTemplate.getForObject("http://sc-c/spring-boot", String.class);
     }
 }

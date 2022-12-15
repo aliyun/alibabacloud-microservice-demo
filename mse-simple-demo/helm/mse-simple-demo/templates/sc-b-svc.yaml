@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sc-b
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - name: port-1
+      port: 20002
+      protocol: TCP
+      targetPort: 20002
+  selector:
+    app: spring-cloud-b
+  type: ClusterIP
