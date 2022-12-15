@@ -4,8 +4,8 @@ FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-ext
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
 WORKDIR /app
-COPY /target/gateway-1.0.0.jar /app
+COPY /target/gateway.jar /app
 
 EXPOSE 20000
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/gateway-1.0.0.jar"]
+CMD ["java -jar /app/gateway.jar"]

@@ -35,8 +35,8 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
 
 FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-extended-ga-centos
 
-COPY --from=build /app/target/C-1.0.0.jar /app/target/C-1.0.0.jar
+COPY --from=build /app/target/C.jar /app/target/C.jar
 
 EXPOSE 20003
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/C-1.0.0.jar"]
+CMD ["java -jar /app/target/C.jar"]
