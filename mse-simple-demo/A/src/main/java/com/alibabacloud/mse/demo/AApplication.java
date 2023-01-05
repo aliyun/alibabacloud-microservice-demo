@@ -5,7 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +22,8 @@ import java.util.Properties;
  * @author <a href="mailto:fangjian0423@gmail.com">Jim</a>
  */
 @SpringBootApplication
+@EnableEurekaClient
+@EnableDiscoveryClient
 @EnableSwagger2
 public class AApplication {
 
