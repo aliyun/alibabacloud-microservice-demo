@@ -1,6 +1,8 @@
 package com.alibabacloud.mse.demo.a;
 
+import com.alibabacloud.mse.demo.a.service.FeignClient;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -38,6 +40,9 @@ class AController {
     private RestTemplate loadBalancedRestTemplate;
 
     @Autowired
+    private FeignClient feignClient;
+
+    @Autowired
     @Qualifier("restTemplate")
     private RestTemplate restTemplate;
 
@@ -50,14 +55,10 @@ class AController {
     @Autowired
     String serviceTag;
 
-    @Autowired
-    ThreadPoolTaskExecutor taskExecutor;
-
     @Value("${custom.config.value}")
     private String configValue;
 
     private String currentZone;
-
 
     @PostConstruct
     private void init() {
@@ -92,9 +93,48 @@ class AController {
         }
 
         String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
-//        String result = taskExecutor.submit(() ->
-//                restTemplate.getForObject("http://sc-B/b", String.class)
-//        ).get();
+
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + result;
+    }
+
+    @ApiOperation(value = "HTTP 全链路灰度入口 a调用b和c", tags = {"入口应用"})
+    @GetMapping("/a2bc")
+    public String a2bc(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+
+        String resultB = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
+        String resultA = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
+
+        return resultA + "\n" + resultB;
+    }
+
+    @ApiOperation(value = "HTTP 全链路灰度入口 feign", tags = {"入口应用"})
+    @GetMapping("/aByFeign")
+    public String aByFeign(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+
+        String result = feignClient.bByFeign("test");
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
@@ -106,7 +146,7 @@ class AController {
 
         ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/flow", String.class);
         HttpStatus status = responseEntity.getStatusCode();
-        String result = responseEntity.getBody() + status.value();
+        String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
@@ -116,13 +156,13 @@ class AController {
     @ApiOperation(value = "测试热点规则", tags = {"流量防护"})
     @GetMapping("/params/{hot}")
     public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/params/"+hot, String.class);
+        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/params/" + hot, String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
-        String result = responseEntity.getBody() + status.value();
+        String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[config=" + configValue + "]" + " params:" + hot + " -> " + result;
     }
 
     @ApiOperation(value = "测试隔离规则", tags = { "流量防护"})
@@ -131,7 +171,7 @@ class AController {
         ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/isolate", String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
-        String result = responseEntity.getBody() + status.value();
+        String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
@@ -144,6 +184,15 @@ class AController {
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 " -> " + result;
+    }
+
+    @GetMapping("/sql")
+    public String sql(HttpServletRequest request) {
+
+        String url = "http://sc-B/sql?" + request.getQueryString();
+        String result = loadBalancedRestTemplate.getForObject(url, String.class);
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
@@ -177,10 +226,10 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceB.hello("A");
+                helloServiceB.hello(JSON.toJSONString(request.getParameterMap()));
     }
 
-    @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
+    @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})
     @GetMapping("/dubbo-flow")
     public String dubbo_flow(HttpServletRequest request) {
         StringBuilder headerSb = new StringBuilder();
@@ -197,7 +246,7 @@ class AController {
                 helloServiceB.hello("A");
     }
 
-    @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
+    @ApiOperation(value = "Dubbo 热点测试", tags = {"入口应用"})
     @GetMapping("/dubbo-params/{hot}")
     public String dubbo_params(HttpServletRequest request, @PathVariable("hot") String hot) {
         StringBuilder headerSb = new StringBuilder();
@@ -210,11 +259,11 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
-        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + hot + " -> " +
                 helloServiceB.hello(hot);
     }
 
-    @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
+    @ApiOperation(value = "Dubbo 隔离测试", tags = {"入口应用"})
     @GetMapping("/dubbo-isolate")
     public String dubbo_isolate(HttpServletRequest request) {
         StringBuilder headerSb = new StringBuilder();
@@ -239,6 +288,4 @@ class AController {
                           @ApiParam(name = "aliware-products", value = "我是购买阿里云原生产品列表", required = true) List<String> aliwareProducts) {
         return "hello swagger";
     }
-
-
 }

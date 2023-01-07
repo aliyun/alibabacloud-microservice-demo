@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-c"
+        msePilotCreateAppName: "{{ .Values.mse.application.prefix}}-spring-cloud-c"
         mseNamespace: "{{ .Values.mse.namespace }}"
         alicloud.service.tag: gray
         app: "spring-cloud-c"
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: spring-cloud-c
-          image: "{{ .Values.registry }}spring-cloud-c:1.2.0"
+          image: "{{ .Values.registry }}spring-cloud-c:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -32,13 +32,6 @@ spec:
             - name: MSE_DEBUG_HOST
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
-          resources:
-            requests:
-              cpu: 1
-              memory: 2Gi
-            limits:
-              cpu: 1
-              memory: 2Gi
           ports:
             - name: http-port
               containerPort: 20002

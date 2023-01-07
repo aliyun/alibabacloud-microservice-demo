@@ -20,7 +20,7 @@ public class HelloServiceBImpl implements HelloServiceB {
 
     @Override
     public String hello(String name) {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + name + " -> " +
                 helloServiceC.hello(name);
     }
 

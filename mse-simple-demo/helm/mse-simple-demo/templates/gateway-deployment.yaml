@@ -12,30 +12,31 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-zuul"
+        msePilotCreateAppName: "{{ .Values.mse.application.prefix}}-spring-cloud-zuul"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
       containers:
-        - image: "{{ .Values.registry }}spring-cloud-zuul:1.2.0"
+        - image: "{{ .Values.registry }}spring-cloud-zuul:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            - name: enable.auto
+              value: "true"
+            - name: enable.rpc.invoke
+              value: "true"
+            - name: enable.sql
+              value: "true"
+            - name: enable.sentinel.demo.flow
+              value: "true"
             {{ if .Values.MSE_DEBUG_HOST }}
             - name: MSE_DEBUG_HOST
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           name: "spring-cloud-zuul"
-          resources:
-            requests:
-              cpu: 1
-              memory: 2Gi
-            limits:
-              cpu: 1
-              memory: 2Gi
           ports:
             - containerPort: 20000
       hostAliases:

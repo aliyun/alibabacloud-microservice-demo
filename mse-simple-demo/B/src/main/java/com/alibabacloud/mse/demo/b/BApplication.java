@@ -2,10 +2,12 @@
 package com.alibabacloud.mse.demo.b;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
@@ -20,6 +22,8 @@ import java.net.URI;
 import java.util.Properties;
 
 @SpringBootApplication
+@MapperScan("com.alibabacloud.mse.demo.mapper")
+@EnableFeignClients
 public class BApplication {
 
     public static void main(String[] args) {
