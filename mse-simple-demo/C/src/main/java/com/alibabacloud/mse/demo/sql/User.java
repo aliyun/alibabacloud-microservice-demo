@@ -64,16 +64,4 @@ public class User {
             '}';
     }
 
-
-    public static void main(String[] args) {
-        List<Integer> nums = new ArrayList<>();
-        nums.add(10);
-        nums.add(4);
-        nums.add(12);
-        nums.add(1);
-        nums.sort(Comparator.comparing(Integer::intValue).reversed());
-        for (Integer num : nums) {
-            System.out.println(num);
-        }
-    }
 }
