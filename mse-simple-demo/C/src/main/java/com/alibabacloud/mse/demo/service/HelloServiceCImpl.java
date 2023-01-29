@@ -58,4 +58,9 @@ public class HelloServiceCImpl implements HelloServiceC {
         return value;
     }
 
+    @Override
+    public String world(String name) {
+        return  "C" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
+    }
+
 }
