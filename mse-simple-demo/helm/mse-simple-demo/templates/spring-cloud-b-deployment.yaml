@@ -12,12 +12,13 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Values.mse.namePrefix }}spring-cloud-b"
+        msePilotCreateAppName: "spring-cloud-b"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-b"
     spec:
       containers:
         - name: spring-cloud-b
-          image: "{{ .Values.registry }}spring-cloud-b:1.1.0"
+          image: "{{ .Values.registry }}spring-cloud-b:1.2.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -26,11 +27,11 @@ spec:
               value: "{{ .Values.nacos.namespace }}"
           resources:
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
             limits:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
           ports:
             - name: http-port
               containerPort: 20002

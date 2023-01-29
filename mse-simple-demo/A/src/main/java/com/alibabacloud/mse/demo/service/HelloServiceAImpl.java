@@ -6,13 +6,13 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.commons.util.InetUtils;
 
-@Service(version = "1.1.0")
+@Service(version = "1.2.0")
 public class HelloServiceAImpl implements HelloServiceA {
 
     @Autowired
     InetUtils inetUtils;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.1.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
     private HelloServiceB helloServiceB;
 
     @Autowired

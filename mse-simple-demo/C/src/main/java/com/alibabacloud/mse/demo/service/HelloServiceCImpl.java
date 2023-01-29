@@ -14,7 +14,7 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@DubboService(version = "1.1.0")
+@DubboService(version = "1.2.0")
 @RequiredArgsConstructor
 public class HelloServiceCImpl implements HelloServiceC {
 
@@ -56,6 +56,11 @@ public class HelloServiceCImpl implements HelloServiceC {
         }
 
         return value;
+    }
+
+    @Override
+    public String world(String name) {
+        return  "C" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
     }
 
 }

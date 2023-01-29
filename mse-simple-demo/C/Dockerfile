@@ -11,13 +11,8 @@ COPY <<EOF /root/.m2/settings.xml
         <mirror>
             <id>alimaven</id>
             <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
             <mirrorOf>central</mirrorOf>
-        </mirror>
-        <mirror>
-            <id>maven-default-http-blocker</id>
-            <mirrorOf>!*</mirrorOf>
-            <url>http://0.0.0.0/</url>
         </mirror>
     </mirrors>
 </settings>

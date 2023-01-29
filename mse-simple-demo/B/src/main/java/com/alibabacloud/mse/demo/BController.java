@@ -1,5 +1,7 @@
 package com.alibabacloud.mse.demo;
 
+import com.alibabacloud.mse.demo.service.HelloServiceC;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -10,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 class BController {
@@ -27,6 +33,9 @@ class BController {
     @Qualifier("restTemplate")
     private RestTemplate restTemplate;
 
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    private HelloServiceC helloServiceC;
+
     @Autowired
     InetUtils inetUtils;
 
@@ -34,6 +43,8 @@ class BController {
     String serviceTag;
 
     private String currentZone;
+
+    private static final Random RANDOM = new Random();
 
     @PostConstruct
     private void init() {
@@ -53,6 +64,55 @@ class BController {
         }
     }
 
+
+    @GetMapping("/flow")
+    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        long sleepTime = 5 + RANDOM.nextInt(5);
+        silentSleep(sleepTime);
+
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
+    }
+
+    @GetMapping("/params/{hot}")
+    public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
+        long sleepTime = 5 + RANDOM.nextInt(5);
+        silentSleep(sleepTime);
+        helloServiceC.hello(hot);
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime+":"+hot;
+    }
+
+    @GetMapping("/isolate")
+    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        long sleepTime = 20 + RANDOM.nextInt(5);
+        silentSleep(sleepTime);
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
+    }
+
+
+    @GetMapping("/flow-c")
+    public String flow_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceC.hello("B");
+    }
+
+    @GetMapping("/params-c/{hot}")
+    public String params_c(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceC.hello(hot);
+    }
+
+    @GetMapping("/isolate-c")
+    public String isolate_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceC.hello("B");
+    }
+
+    @GetMapping("/rpc-c")
+    public String rpc_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceC.world("B");
+    }
+
     @GetMapping("/b")
     public String b(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
@@ -70,4 +130,13 @@ class BController {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-c:20003/spring_boot", String.class);
     }
+
+
+    private void silentSleep(long ms) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(ms);
+        } catch (InterruptedException ignored) {
+        }
+    }
+
 }
