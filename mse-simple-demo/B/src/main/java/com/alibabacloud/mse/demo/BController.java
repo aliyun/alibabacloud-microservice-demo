@@ -33,7 +33,7 @@ class BController {
     @Qualifier("restTemplate")
     private RestTemplate restTemplate;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.1.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
     private HelloServiceC helloServiceC;
 
     @Autowired

@@ -12,11 +12,12 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Values.mse.namePrefix }}spring-cloud-zuul"
+        msePilotCreateAppName: "spring-cloud-zuul"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
       containers:
-        - image: "{{ .Values.registry }}spring-cloud-zuul:1.1.0"
+        - image: "{{ .Values.registry }}spring-cloud-zuul:1.2.0"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -26,11 +27,11 @@ spec:
           name: "spring-cloud-zuul"
           resources:
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
             limits:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
           ports:
             - containerPort: 20000
       affinity:
