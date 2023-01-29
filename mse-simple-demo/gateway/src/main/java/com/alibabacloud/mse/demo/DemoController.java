@@ -197,48 +197,48 @@ public class DemoController {
                     } catch (Exception ignore) {
                     }
 
-
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
-                        httpGet.addHeader("x-mse-tag", "gray");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
-
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
-                        httpGet.addHeader("x-mse-tag", "gray");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
-
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
-                        httpGet.addHeader("x-mse-tag", "gray");
-                        httpClient.execute(httpGet);
-
-                    } catch (Exception ignore) {
-                    }
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
 
 
                 }
