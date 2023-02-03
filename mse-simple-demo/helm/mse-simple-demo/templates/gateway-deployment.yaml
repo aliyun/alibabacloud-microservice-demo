@@ -17,7 +17,7 @@ spec:
         app: spring-cloud-zuul
     spec:
       containers:
-        - image: "{{ .Values.registry }}spring-cloud-zuul:1.2.0"
+        - image: "{{ .Values.registry }}spring-cloud-zuul:1.2.0-ons-client"
           imagePullPolicy: Always
           env:
             - name: nacos.host

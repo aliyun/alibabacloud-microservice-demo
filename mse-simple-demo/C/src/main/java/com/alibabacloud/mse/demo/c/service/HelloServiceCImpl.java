@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.rpc.RpcContext;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.common.message.Message;
+import com.aliyun.openservices.ons.api.Message;
+import com.aliyun.openservices.ons.api.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
@@ -14,11 +14,11 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@DubboService(version = "1.2.0")
+@DubboService(version = "1.2.0-ons-client")
 @RequiredArgsConstructor
 public class HelloServiceCImpl implements HelloServiceC {
 
-    private final DefaultMQProducer producer;
+    private final Producer producer;
 
     @Autowired
     InetUtils inetUtils;

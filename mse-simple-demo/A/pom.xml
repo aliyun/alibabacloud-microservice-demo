@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>A</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.0-ons-client</version>
     <packaging>jar</packaging>
 
     <name>A</name>
@@ -44,9 +44,9 @@
 
         <!-- MQ -->
         <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>4.5.2</version>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.8.8.1.Final</version>
         </dependency>
 
         <!--  Dubbo -->
