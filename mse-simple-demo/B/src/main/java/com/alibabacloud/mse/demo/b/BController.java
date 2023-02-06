@@ -1,6 +1,6 @@
-package com.alibabacloud.mse.demo;
+package com.alibabacloud.mse.demo.b;
 
-import com.alibabacloud.mse.demo.service.HelloServiceC;
+import com.alibabacloud.mse.demo.c.service.HelloServiceC;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

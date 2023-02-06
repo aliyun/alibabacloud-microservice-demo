@@ -1,4 +1,4 @@
-package com.alibabacloud.mse.demo.service;
+package com.alibabacloud.mse.demo.c.service;
 
 public interface HelloServiceC {
     String hello(String name);

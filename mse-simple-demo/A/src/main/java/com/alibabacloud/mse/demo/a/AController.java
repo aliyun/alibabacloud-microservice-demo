@@ -1,6 +1,6 @@
-package com.alibabacloud.mse.demo;
+package com.alibabacloud.mse.demo.a;
 
-import com.alibabacloud.mse.demo.service.HelloServiceB;
+import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,9 +27,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 @Api(value = "/", tags = {"入口应用"})
 @RestController

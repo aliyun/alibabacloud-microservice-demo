@@ -1,7 +1,7 @@
-package com.alibabacloud.mse.demo;
+package com.alibabacloud.mse.demo.c;
 
-import com.alibabacloud.mse.demo.sql.User;
-import com.alibabacloud.mse.demo.sql.UserDao;
+import com.alibabacloud.mse.demo.c.sql.User;
+import com.alibabacloud.mse.demo.c.sql.UserDao;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;

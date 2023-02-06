@@ -1,6 +1,7 @@
-package com.alibabacloud.mse.demo.service;
+package com.alibabacloud.mse.demo.a.service;
 
 
+import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;

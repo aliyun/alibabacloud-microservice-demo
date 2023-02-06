@@ -1,4 +1,5 @@
-package com.alibabacloud.mse.demo;
+
+package com.alibabacloud.mse.demo.a;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
@@ -6,18 +7,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @author <a href="mailto:fangjian0423@gmail.com">Jim</a>
+ */
 @SpringBootApplication
-public class CApplication {
+@EnableSwagger2
+public class AApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CApplication.class, args);
+        SpringApplication.run(AApplication.class, args);
     }
 
     @Bean(name = "loadBalancedRestTemplate")
@@ -74,4 +81,16 @@ public class CApplication {
         }
         return tag;
     }
+
+    @Bean(name = "taskExecutor")
+    ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadNamePrefix("taskExecutor-default-");
+        executor.setCorePoolSize(5);
+        executor.setKeepAliveSeconds(30000);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(10);
+        return executor;
+    }
+
 }

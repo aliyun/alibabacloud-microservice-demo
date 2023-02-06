@@ -1,14 +1,17 @@
-package com.alibabacloud.mse.demo;
+package com.alibabacloud.mse.demo.a.mq;
 
-import com.alibabacloud.mse.demo.service.MqConsumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Configuration
@@ -24,7 +27,15 @@ public class RocketMqConfiguration {
     @Value("${rocketmq.consumer.topic}")
     private String topic;
 
-    private final MqConsumer mqConsumer;
+    @Autowired
+    @Qualifier("loadBalancedRestTemplate")
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private InetUtils inetUtils;
+
+    @Autowired
+    private String serviceTag;
 
     static {
         System.setProperty("rocketmq.client.log.loadconfig", "false");
@@ -37,6 +48,12 @@ public class RocketMqConfiguration {
         consumer.setNamesrvAddr(nameSrvAddr);
         consumer.subscribe(topic, "*");
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+
+        MqConsumer mqConsumer = new MqConsumer(
+                restTemplate,
+                inetUtils,
+                serviceTag
+        );
         consumer.registerMessageListener(mqConsumer);
         log.info("完成启动rocketMq的consumer,subscribe:{}", topic);
         return consumer;

@@ -1,4 +1,4 @@
-package com.alibabacloud.mse.demo;
+package com.alibabacloud.mse.demo.a;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
