@@ -10,7 +10,7 @@ mse-simple-demo是一个简单的微服务demo，架构如下：
 helm3 upgrade mse-simple-demo1 \
   helm/mse-simple-demo \
   --install \
-  --namesapce default \
+  --namespace default \
   --set registry=registry.cn-shanghai.aliyuncs.com/yizhan/ \
   --set mse.namespace=mse-test
 ```
