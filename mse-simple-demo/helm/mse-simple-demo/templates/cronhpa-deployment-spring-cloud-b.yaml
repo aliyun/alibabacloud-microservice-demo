@@ -1,3 +1,4 @@
+{{ if .Values.autoscaling }}
 apiVersion: autoscaling.alibabacloud.com/v1beta1
 kind: CronHorizontalPodAutoscaler
 metadata:
@@ -16,3 +17,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: spring-cloud-b
+{{ end }}

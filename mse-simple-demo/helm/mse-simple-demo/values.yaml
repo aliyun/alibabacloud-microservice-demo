@@ -9,3 +9,5 @@ nacos:
   host: nacos-server
   # 注册到Nacos的命名空间id
   namespace: public
+
+autoscaling: false
