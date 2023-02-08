@@ -8,10 +8,10 @@ spec:
   jobs:
   - name: 扩容
     schedule: 0 0/6 * * * *
-    targetSize: 5
+    targetSize: 6
   - name: 缩容
     schedule: 0 5/6 * * * *
-    targetSize: 1
+    targetSize: 2
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
