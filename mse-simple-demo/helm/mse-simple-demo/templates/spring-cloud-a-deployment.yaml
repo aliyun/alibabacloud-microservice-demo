@@ -25,6 +25,10 @@ spec:
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
           resources:
             requests:
               cpu: 1
@@ -35,6 +39,8 @@ spec:
           ports:
             - name: http-port
               containerPort: 20001
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
