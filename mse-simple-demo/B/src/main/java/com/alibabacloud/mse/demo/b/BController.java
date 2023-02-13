@@ -83,7 +83,7 @@ class BController {
 
     @GetMapping("/isolate")
     public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 20 + RANDOM.nextInt(5);
+        long sleepTime = 500 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
     }
