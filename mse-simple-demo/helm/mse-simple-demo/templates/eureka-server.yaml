@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+        msePilotAutoEnable: "off"
+    spec:
+      containers:
+        - image: 'registry.cn-shanghai.aliyuncs.com/yizhan/eureka:2.1.0.RELEASE'
+          imagePullPolicy: Always
+          name: eureka-server
+          env:
+            - name: ENVIRONMENT
+              value: "prod"
+          ports:
+            - containerPort: 8761
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '1'
+              memory: 2Gi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+spec:
+  ports:
+    - port: 8761
+      protocol: TCP
+      targetPort: 8761
+  selector:
+    app: eureka-server
+  type: ClusterIP
