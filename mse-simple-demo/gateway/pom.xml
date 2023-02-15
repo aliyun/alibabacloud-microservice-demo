@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>gateway</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.0-eureka</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -65,5 +65,3 @@
     </build>
 
 </project>
-
-
