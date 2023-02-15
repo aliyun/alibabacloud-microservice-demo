@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.3-labs
+# syntax=docker/dockerfile:1.4
 
 FROM maven:3-eclipse-temurin-8-alpine as build
 
