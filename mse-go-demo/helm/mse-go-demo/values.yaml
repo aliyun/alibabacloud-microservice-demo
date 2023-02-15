@@ -1,0 +1,5 @@
+# 镜像地址的前缀
+registry: registry.cn-shanghai.aliyuncs.com/yizhan/
+
+mse:
+  namePrefix: luyanbo

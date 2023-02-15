@@ -1,6 +1,6 @@
 
 
-### Introcution
+### Introduction
 
 This is a demo project to showcase running microservices on Alibaba Cloud.
 
@@ -15,7 +15,7 @@ This demo is powered by the following projects and products:
 
 ### Architecture
 
-This project contains the following applications (more applications are ong the way):
+This project contains the following applications (more applications are on the way):
 
 * frontend: A Java application with SpringMVC and thymeleaf as template engine.
 * cartservices: A Java application that  provides basic operations to add products to shopping carts, which is powered by [Apache Dubbo](https://github.com/apache/dubbo).
@@ -46,13 +46,13 @@ You need to go to the `src` directory, for each sub module, there is a `build.sh
 This project can be deployed to docker with the following command
 
 ```sh
-docker-compose -f docker-compose.yaml up
+docker-compose -f docker-compose.yml up
 ```
 
 If you want to undeploy, use the following command
 
 ```sh
-docker-compose -f docker-compose.yaml down
+docker-compose -f docker-compose.yml down
 ```
 
 #### Deploy to Kubernetes cluster

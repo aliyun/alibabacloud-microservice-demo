@@ -7,34 +7,43 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-c-gray
+      app: spring-cloud-c
+      version: gray
   template:
     metadata:
       labels:
-        alicloud.service.tag: gray
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-c"
-        app: "spring-cloud-c-gray"
+        msePilotCreateAppName: "spring-cloud-c"
+        mseNamespace: "{{ .Values.mse.namespace }}"
+        alicloud.service.tag: gray
+        app: "spring-cloud-c"
+        version: gray
     spec:
       containers:
         - name: spring-cloud-c
-          image: "{{ .Values.registry }}spring-cloud-c:1.1.0"
+          image: "{{ .Values.registry }}spring-cloud-c:1.2.0-jdk11"
           imagePullPolicy: Always
           env:
             - name: nacos.host
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
           resources:
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
             limits:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
           ports:
             - name: http-port
               containerPort: 20002
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

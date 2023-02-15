@@ -22,12 +22,11 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: tag2
       labels:
+        alicloud.service.tag: tag2
         app: frontend2
         armsPilotAutoEnable: "on"
-        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend2
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}frontend
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}frontend
     spec:
@@ -35,8 +34,6 @@ spec:
       - env:
         - name: LANG
           value: C.UTF-8
-        - name: JAVA_HOME
-          value: /usr/lib/jvm/java-1.8-openjdk/jre
         - name: demo_version
           value: "true"
         - name: spring.cloud.nacos.discovery.server-addr
@@ -47,7 +44,7 @@ spec:
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         - name: dubbo.consumer.check
           value: "false"
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/frontend:{{ .Values.images.version}}
+        image: {{ .Values.image.prefix }}frontend:{{ .Values.image.version }}
         imagePullPolicy: Always
         name: frontend-v2
         ports:

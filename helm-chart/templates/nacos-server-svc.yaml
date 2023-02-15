@@ -6,12 +6,15 @@ metadata:
   selfLink: /api/v1/namespaces/default/services/nacos-server
 spec:
   ports:
-  - port: 8848
-    protocol: TCP
-    targetPort: 8848
+    - name: port-8848
+      port: 8848
+      protocol: TCP
+      targetPort: 8848
+    - name: port-9848
+      port: 9848
+      protocol: TCP
+      targetPort: 9848
   selector:
     app: nacos-server
   sessionAffinity: None
   type: ClusterIP
-status:
-  loadBalancer: {}

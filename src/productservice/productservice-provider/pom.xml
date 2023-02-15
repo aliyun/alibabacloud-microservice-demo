@@ -17,9 +17,8 @@
         <project.reporting.outputEncoding>${java.encoding}</project.reporting.outputEncoding>
         <maven.compiler.encoding>${java.encoding}</maven.compiler.encoding>
         <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
-        <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
-        <dubbo.version>2.7.15</dubbo.version>
-        <dubbo.spring.version>2.7.4.1</dubbo.spring.version>
+        <spring.cloud.alibaba.version>2.2.7.RELEASE</spring.cloud.alibaba.version>
+        <dubbo.version>2.7.18</dubbo.version>
     </properties>
 
     <dependencyManagement>
@@ -92,18 +91,29 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--dubbo-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.dubbo</groupId>-->
-<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.dubbo</groupId>-->
-<!--            <artifactId>dubbo</artifactId>-->
-<!--        </dependency>-->
+        <!--  Dubbo -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-dubbo</artifactId>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-registry-nacos</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.spring</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>1.0.11</version>
         </dependency>
 
         <dependency>

@@ -47,7 +47,7 @@ spec:
           value: user=tag
         - name: VIEW_CART
           value: "true"
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/loadgenerator:2.0
+        image: {{ .Values.image.prefix }}loadgenerator:{{ .Values.image.version }}
         imagePullPolicy: IfNotPresent
         name: loadgenerator1
         resources:

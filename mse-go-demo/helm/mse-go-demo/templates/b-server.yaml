@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: b-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: b-server
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        appName: "{{ .Values.mse.namePrefix }}b-server"
+        app: "b-server"
+    spec:
+      containers:
+        - name: b-server
+          image: "{{ .Values.registry }}b-server:1.0.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          ports:
+            - name: port-1
+              containerPort: 50052
+              protocol: TCP
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
