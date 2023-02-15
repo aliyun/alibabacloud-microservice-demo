@@ -14,11 +14,7 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-<<<<<<< HEAD:mse-simple-demo/C/src/main/java/com/alibabacloud/mse/demo/service/HelloServiceCImpl.java
-@DubboService(version = "1.1.0")
-=======
 @DubboService(version = "1.2.0")
->>>>>>> master:mse-simple-demo/C/src/main/java/com/alibabacloud/mse/demo/c/service/HelloServiceCImpl.java
 @RequiredArgsConstructor
 public class HelloServiceCImpl implements HelloServiceC {
 
