@@ -1,4 +1,4 @@
-package com.alibabacloud.mse.demo.mq;
+package com.alibabacloud.mse.demo.c.mq;
 
 
 import lombok.RequiredArgsConstructor;

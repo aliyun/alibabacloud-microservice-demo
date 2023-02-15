@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -36,9 +37,8 @@ public class DemoController {
     @Value("${background.color:white}")
     private String backgroundColor;
 
-    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(6,
+    private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(16,
             new ThreadFactory() {
-
                 @Override
                 public Thread newThread(Runnable r) {
                     Thread thread = new Thread(r);
@@ -105,6 +105,127 @@ public class DemoController {
                     }
                 }
             }, 100, 10 * 1000000 / qps, TimeUnit.MICROSECONDS);
+
+            // 限流降级的流量发起
+            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/flow");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/flow");
+                        httpGet.addHeader("x-mse-tag", "gray");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-flow");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-flow");
+                        httpGet.addHeader("x-mse-tag", "gray");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate");
+                        httpGet.addHeader("x-mse-tag", "gray");
+                        httpClient.execute(httpGet);
+
+                    } catch (Exception ignore) {
+                    }
+
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
+//                        httpGet.addHeader("x-mse-tag", "gray");
+//                        httpClient.execute(httpGet);
+//
+//                    } catch (Exception ignore) {
+//                    }
+                }
+            }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+
+            // region 热点限流
+            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-params/hot");
+                        httpClient.execute(httpGet);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+            // endregion 热点限流
+
+            // region 隔离规则
+            for (int i = 0; i < 8; i++) {
+                int finalI = i;
+                FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                    @Override
+                    public void run() {
+                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                            HttpGet httpGet = new HttpGet("http://localhost:20000/A/isolate?i_id=" + finalI);
+                            httpClient.execute(httpGet);
+                        } catch (Exception ignore) {
+                        }
+                    }
+                }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+            }
+            // endregion 隔离规则
         }
 
 

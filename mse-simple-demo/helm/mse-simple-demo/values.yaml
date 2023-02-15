@@ -2,10 +2,12 @@
 registry: registry.cn-shanghai.aliyuncs.com/yizhan/
 
 mse:
-  namePrefix: luyanbo
+  namespace: default
 
 nacos:
   # Nacos地址
-  host: mse-xxxxx-p.nacos-ans.mse.aliyuncs.com
+  host: nacos-server
   # 注册到Nacos的命名空间id
   namespace: public
+
+autoscaling: false

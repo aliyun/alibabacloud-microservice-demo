@@ -1,9 +1,8 @@
-package com.alibabacloud.mse.demo.service;
+package com.alibabacloud.mse.demo.a.mq;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import com.alibabacloud.mse.demo.AApplication;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -19,14 +18,17 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MqConsumer implements MessageListenerConcurrently {
 
-    @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-    @Autowired
-    InetUtils inetUtils;
+    private InetUtils inetUtils;
 
-    @Autowired
-    String servcieTag;
+    private String serviceTag;
+
+    public MqConsumer(RestTemplate restTemplate, InetUtils inetUtils, String serviceTag) {
+        this.restTemplate = restTemplate;
+        this.inetUtils = inetUtils;
+        this.serviceTag = serviceTag;
+    }
 
     @SneakyThrows
     @Override
@@ -35,7 +37,7 @@ public class MqConsumer implements MessageListenerConcurrently {
             MessageExt messageExt = list.get(0);
             String topic = messageExt.getTopic();
             String messageString = new String(messageExt.getBody(), StandardCharsets.UTF_8);
-            String result =  "A"+ servcieTag+"[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+            String result = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                     restTemplate.getForObject("http://sc-B/b", String.class);
 
             log.info("topic:{},producer:{},invoke result:{}", topic, messageString, result);

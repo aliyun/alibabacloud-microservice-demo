@@ -10,13 +10,11 @@ mse-simple-demo是一个简单的微服务demo，架构如下：
 helm3 upgrade mse-simple-demo1 \
   helm/mse-simple-demo \
   --install \
+  --namespace default --create-namespace \
   --set registry=registry.cn-shanghai.aliyuncs.com/yizhan/ \
-  --set mse.namePrefix=mse-test- \
-  --set nacos.host=mse-xxxxx-p.nacos-ans.mse.aliyuncs.com \
-  --set nacos.namespace=public
+  --set mse.namespace=mse-test
 ```
 
-* `registry`: 容器镜像地址前缀
-* `mse.namePrefix`: 接入mse的应用名前缀，可以用来区分环境
-* `nacos.host`: 应用要注册到的nacos地址
-* `nacos.namespace`: nacos命名空间
+* `namespace`: 要安装到的k8s命名空间
+* `registry`: 容器镜像地址前缀（可选）
+* `mse.namespace`: 接入MSE微服务治理的微服务命名空间，可以用来区分环境
