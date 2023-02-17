@@ -6,11 +6,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>mse-simple-demo</artifactId>
-<<<<<<< HEAD
-    <version>1.1.0</version>
-=======
     <version>1.2.0</version>
->>>>>>> master
     <modules>
         <module>A</module>
         <module>B</module>
