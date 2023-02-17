@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "off"
+        app: nacos-server
+    spec:
+      containers:
+        - name: nacos-server
+          image: 'registry.cn-shanghai.aliyuncs.com/yizhan/nacos-server:v2.1.2'
+          env:
+            - name: MODE
+              value: standalone
+            - name: JVM_XMS
+              value: 512M
+            - name: JVM_XMX
+              value: 512M
+            - name: JVM_XMN
+              value: 256M
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8848
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            successThreshold: 1
+            tcpSocket:
+              port: 8848
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: '1'
+              memory: 2Gi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: nacos-server-8848-8848
+      port: 8848
+      protocol: TCP
+      targetPort: 8848
+    - name: nacos-server-9848-9848
+      port: 9848
+      protocol: TCP
+      targetPort: 9848
+  selector:
+    app: nacos-server
+

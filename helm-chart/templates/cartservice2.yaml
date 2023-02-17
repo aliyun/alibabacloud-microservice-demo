@@ -1,13 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "9"
   generation: 1
   labels:
     app: cartservice2
   name: cartservice2
-  selfLink: /apis/apps/v1/namespaces/default/deployments/cartservice2
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -21,10 +18,11 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: v2
       labels:
+        alicloud.service.tag: v2
         app: cartservice2
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}cartservice
     spec:
@@ -40,7 +38,7 @@ spec:
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         - name: dubbo.consumer.check
           value: "false"
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/cartservice:{{ .Values.images.version}}
+        image: {{ .Values.image.prefix }}cartservice:{{ .Values.image.version }}
         imagePullPolicy: Always
         name: cartservice2
         resources:

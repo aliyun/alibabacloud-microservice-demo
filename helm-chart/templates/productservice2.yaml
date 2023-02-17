@@ -48,7 +48,7 @@ spec:
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
         - name: dubbo.consumer.check
           value: "false"
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/productservice:{{ .Values.images.version}}
+        image: {{ .Values.image.prefix }}productservice:{{ .Values.image.version }}
         imagePullPolicy: Always
         name: productservice2
         resources:

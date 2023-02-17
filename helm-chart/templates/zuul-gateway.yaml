@@ -51,7 +51,7 @@ spec:
           value: "true"
         - name: JAVA_TOOL_OPTIONS
           value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
-        image: registry.cn-hangzhou.aliyuncs.com/mse-hz/zuul-gateway:{{ .Values.images.version}}
+        image: {{ .Values.image.prefix }}zuul-gateway:{{ .Values.image.version }}
         imagePullPolicy: IfNotPresent
         name: zuul-gateway
         ports:

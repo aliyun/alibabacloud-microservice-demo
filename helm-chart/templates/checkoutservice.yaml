@@ -1,9 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "9"
-  generation: 1
   labels:
     app: checkoutservice
   name: checkoutservice
@@ -21,9 +18,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: v2
       labels:
+        alicloud.service.tag: v2
         app: checkoutservice
         msePilotAutoEnable: "on"
         msePilotCreateAppName: {{ .Values.application.name.prefix}}checkoutservice
@@ -38,7 +34,7 @@ spec:
               value: ' -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 '
             - name: dubbo.consumer.check
               value: "false"
-          image: registry.cn-hangzhou.aliyuncs.com/mse-hz/checkoutservice:{{ .Values.images.version}}
+          image: {{ .Values.image.prefix }}checkoutservice:{{ .Values.image.version }}
           imagePullPolicy: Always
           name: checkoutservice
           resources:
@@ -52,4 +48,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}

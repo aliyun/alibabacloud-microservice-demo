@@ -4,7 +4,7 @@ metadata:
   name: spring-cloud-b
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: spring-cloud-b
@@ -12,28 +12,35 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-b"
+        msePilotCreateAppName: "spring-cloud-b"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-b"
     spec:
       containers:
         - name: spring-cloud-b
-          image: "{{ .Values.registry }}spring-cloud-b:1.1.0"
+          image: "{{ .Values.registry }}spring-cloud-b:1.2.0-jdk17"
           imagePullPolicy: Always
           env:
             - name: nacos.host
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
           resources:
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
             limits:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
           ports:
             - name: http-port
               containerPort: 20002
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

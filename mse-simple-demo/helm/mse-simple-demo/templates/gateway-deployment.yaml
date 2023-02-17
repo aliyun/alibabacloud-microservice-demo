@@ -10,31 +10,36 @@ spec:
       app: spring-cloud-zuul
   template:
     metadata:
-      annotations:
-        msePilotCreateAppName: spring-cloud-zuul
       labels:
         msePilotAutoEnable: "on"
-        appName: "{{ .Release.Namespace }}-spring-cloud-zuul"
+        msePilotCreateAppName: "spring-cloud-zuul"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
       containers:
-        - image: "{{ .Values.registry }}spring-cloud-zuul:1.1.0"
+        - image: "{{ .Values.registry }}spring-cloud-zuul:1.2.0-jdk17"
           imagePullPolicy: Always
           env:
             - name: nacos.host
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
           name: "spring-cloud-zuul"
           resources:
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
             limits:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
           ports:
             - containerPort: 20000
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

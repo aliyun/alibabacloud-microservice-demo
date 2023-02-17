@@ -3,5 +3,8 @@ set -e
 
 cd "$(dirname "$0")"
 
-mvn clean package
-docker build . -t registry.cn-zhangjiakou.aliyuncs.com/luyanbo-msc/spring-cloud-c:1.1.0-jdk17
+docker build . -t ${REGISTRY}spring-cloud-c:1.2.0-jdk17
+
+if [ -n "${REGISTRY}" ]; then
+    docker push ${REGISTRY}spring-cloud-c:1.2.0-jdk17
+fi

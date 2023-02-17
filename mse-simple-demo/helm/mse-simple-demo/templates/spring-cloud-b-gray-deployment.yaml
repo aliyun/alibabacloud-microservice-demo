@@ -10,16 +10,15 @@ spec:
       app: spring-cloud-b-gray
   template:
     metadata:
-      annotations:
-        alicloud.service.tag: gray
       labels:
         msePilotAutoEnable: "on"
         appName: "{{ .Release.Namespace }}-spring-cloud-b"
         app: "spring-cloud-b-gray"
+        alicloud.service.tag: gray
     spec:
       containers:
         - name: spring-cloud-b
-          image: "{{ .Values.registry }}spring-cloud-b:1.1.0"
+          image: "{{ .Values.registry }}spring-cloud-b:1.2.0-jdk17"
           imagePullPolicy: Always
           env:
             - name: nacos.host
