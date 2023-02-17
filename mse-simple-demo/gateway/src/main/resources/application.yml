@@ -1,0 +1,12 @@
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: path_route
+          uri: lb://sc-A
+          predicates:
+            - Path=/A/**
+          filters:
+            - StripPrefix=1
