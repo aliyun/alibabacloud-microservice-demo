@@ -17,11 +17,11 @@ public class HelloServiceAImpl implements HelloServiceA {
     private HelloServiceB helloServiceB;
 
     @Autowired
-    String servcieTag;
+    String serviceTag;
 
     @Override
     public String hello(String name) {
-        return "A" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello(name);
     }
 }

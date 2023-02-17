@@ -27,7 +27,7 @@ public class HelloServiceCImpl implements HelloServiceC {
     private String topic;
 
     @Autowired
-    String servcieTag;
+    String serviceTag;
 
     @Value("${throwException:false}")
     boolean throwException;
@@ -39,7 +39,7 @@ public class HelloServiceCImpl implements HelloServiceC {
             throw new RuntimeException();
         }
 
-        String value = "C" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        String value = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         String invokerTag="";
         String userData = RpcContext.getContext().getAttachment("__microservice_tag__");
         if (!StringUtils.isEmpty(userData)) {
@@ -60,7 +60,7 @@ public class HelloServiceCImpl implements HelloServiceC {
 
     @Override
     public String world(String name) {
-        return  "C" + servcieTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
+        return  "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
     }
 
 }
