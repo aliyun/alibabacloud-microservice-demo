@@ -1,9 +1,9 @@
 package com.alibabacloud.mse.demo;
 
 
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -68,7 +67,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
                         httpClient.execute(httpGet);
 
@@ -82,7 +81,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/a?name=xiaoming");
                         httpClient.execute(httpGet);
 
@@ -96,7 +95,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
                         httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
@@ -110,14 +109,14 @@ public class DemoController {
             FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/flow");
                         httpClient.execute(httpGet);
 
                     } catch (Exception ignore) {
                     }
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/flow");
                         httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
@@ -125,13 +124,13 @@ public class DemoController {
                     } catch (Exception ignore) {
                     }
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-flow");
                         httpClient.execute(httpGet);
 
                     } catch (Exception ignore) {
                     }
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-flow");
                         httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
@@ -139,13 +138,13 @@ public class DemoController {
                     } catch (Exception ignore) {
                     }
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate");
                         httpClient.execute(httpGet);
 
                     } catch (Exception ignore) {
                     }
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate");
                         httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
@@ -154,13 +153,13 @@ public class DemoController {
                     }
 
 //
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
 //                        httpClient.execute(httpGet);
 //
 //                    } catch (Exception ignore) {
 //                    }
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/flow-c");
 //                        httpGet.addHeader("x-mse-tag", "gray");
 //                        httpClient.execute(httpGet);
@@ -168,13 +167,13 @@ public class DemoController {
 //                    } catch (Exception ignore) {
 //                    }
 //
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
 //                        httpClient.execute(httpGet);
 //
 //                    } catch (Exception ignore) {
 //                    }
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/isolate-c");
 //                        httpGet.addHeader("x-mse-tag", "gray");
 //                        httpClient.execute(httpGet);
@@ -182,13 +181,13 @@ public class DemoController {
 //                    } catch (Exception ignore) {
 //                    }
 //
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
 //                        httpClient.execute(httpGet);
 //
 //                    } catch (Exception ignore) {
 //                    }
-//                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+//                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 //                        HttpGet httpGet = new HttpGet("http://localhost:20000/B/params-c/hot");
 //                        httpGet.addHeader("x-mse-tag", "gray");
 //                        httpClient.execute(httpGet);
@@ -202,7 +201,7 @@ public class DemoController {
             FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-params/hot");
                         httpClient.execute(httpGet);
                     } catch (Exception ignore) {
@@ -217,7 +216,7 @@ public class DemoController {
                 FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
                     @Override
                     public void run() {
-                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                             HttpGet httpGet = new HttpGet("http://localhost:20000/A/isolate?i_id=" + finalI);
                             httpClient.execute(httpGet);
                         } catch (Exception ignore) {
@@ -234,7 +233,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo");
                         httpClient.execute(httpGet);
 
@@ -248,7 +247,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo?name=xiaoming");
                         httpClient.execute(httpGet);
                     } catch (Exception ignore) {
@@ -260,7 +259,7 @@ public class DemoController {
                 @Override
                 public void run() {
 
-                    try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo");
                         httpGet.addHeader("x-mse-tag", "gray");
                         httpClient.execute(httpGet);
