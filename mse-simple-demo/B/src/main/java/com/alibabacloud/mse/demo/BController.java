@@ -1,5 +1,6 @@
 package com.alibabacloud.mse.demo;
 
+import com.alibabacloud.mse.demo.client.FeignDemoClient;
 import com.alibabacloud.mse.demo.service.HelloServiceC;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
@@ -20,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -46,6 +48,9 @@ class BController {
 
     private static final Random RANDOM = new Random();
 
+    @Autowired
+    private FeignDemoClient demoClient;
+
     @PostConstruct
     private void init() {
         try {
@@ -61,6 +66,41 @@ class BController {
             currentZone = EntityUtils.toString(response.getEntity());
         } catch (Exception e) {
             currentZone = e.getMessage();
+        }
+        new AutoTask().start();
+
+    }
+
+    private class AutoTask extends Thread {
+
+        private boolean stopped = false;
+
+        public AutoTask() {
+            setName("ahas-feign-auto-task");
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+
+
+                try {
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(30, 50));
+
+                    try {
+                        demoClient.flow();
+                    }catch (Throwable e){
+                        e.printStackTrace();
+                    }
+
+                } catch (InterruptedException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        public void stopTask() {
+            stopped = true;
         }
     }
 
