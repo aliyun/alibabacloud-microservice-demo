@@ -1,8 +1,13 @@
 # 镜像地址的前缀
-registry: registry.cn-shanghai.aliyuncs.com/yizhan/
+registry: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/
+
+images:
+  version: mse-2.0.1
 
 mse:
-  namespace: default
+  namespace: mse-demo
+  application:
+    prefix: demo
 
 nacos:
   # Nacos地址
@@ -11,3 +16,6 @@ nacos:
   namespace: public
 
 autoscaling: false
+
+resources:
+  enableRequests: false

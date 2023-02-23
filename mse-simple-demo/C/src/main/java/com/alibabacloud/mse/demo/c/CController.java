@@ -1,7 +1,5 @@
 package com.alibabacloud.mse.demo.c;
 
-import com.alibabacloud.mse.demo.c.sql.User;
-import com.alibabacloud.mse.demo.c.sql.UserDao;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -39,11 +37,6 @@ class CController {
 
     private static final Random RANDOM = new Random();
 
-    @Autowired
-    private UserDao userDao;
-
-    private AutoTask task = null;
-
     @PostConstruct
     private void init() {
         try {
@@ -60,74 +53,6 @@ class CController {
         } catch (Exception e) {
             currentZone = e.getMessage();
         }
-
-        if (task != null) {
-            return;
-        }
-        task = new AutoTask();
-        task.start();
-    }
-
-    private class AutoTask extends Thread {
-
-        private boolean stopped = false;
-
-        public AutoTask() {
-            setName("ahas-mybatis-auto-task");
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                if (stopped) {
-                    return;
-                }
-                try {
-                    autoDo();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(30, 50));
-                } catch (InterruptedException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        public void stopTask() {
-            stopped = true;
-        }
-    }
-
-    @Transactional
-    public void autoDo() {
-        String username = "foo_test_$$" + ThreadLocalRandom.current().nextInt(0, 100000);
-        int rand = ThreadLocalRandom.current().nextInt(10000000);
-        userDao.addUser(username, "abc" + rand + "@ss.com");
-        User user = userDao.findUserByName(username);
-        if (user != null) {
-            if (rand % 3 == 0) {
-                userDao.updateUsername(user.getId(), username + rand);
-            }
-            userDao.deleteUser(user.getId());
-        }
-
-//        try{
-//            Class.forName("com.mysql.jdbc.Driver");
-//            //2. 获得数据库连接
-//            Connection conn = DriverManager.getConnection("jdbc:h2:mem:test", "", "");
-//            //3.操作数据库，实现增删改查
-//            Statement stmt = conn.createStatement();
-//            ResultSet rs = stmt.executeQuery("SELECT username FROM user_test where username=" + username);
-//            //如果有数据，rs.next()返回true
-//            while(rs.next()){
-//                System.out.println(rs.getString("username"));
-//            }
-//
-//        }catch (Throwable e){
-//
-//        }
 
     }
 
@@ -157,21 +82,21 @@ class CController {
     public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
     }
 
     @GetMapping("/params/{hot}")
-    public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
+    public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime+":"+hot;
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot;
     }
 
     @GetMapping("/isolate")
     public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
     }
 
     private void silentSleep(long ms) {

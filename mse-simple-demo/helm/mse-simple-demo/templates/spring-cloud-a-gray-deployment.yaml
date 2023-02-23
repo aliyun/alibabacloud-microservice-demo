@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-a"
+        msePilotCreateAppName: "{{ .Values.mse.application.prefix}}-spring-cloud-a"
         mseNamespace: "{{ .Values.mse.namespace }}"
         alicloud.service.tag: gray
         app: "spring-cloud-a"
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: spring-cloud-a
-          image: "{{ .Values.registry }}spring-cloud-a:1.2.0"
+          image: "{{ .Values.registry }}spring-cloud-a:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -33,9 +33,11 @@ spec:
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           resources:
+            {{ if .Values.resources.enableRequests }}
             requests:
               cpu: 1
               memory: 2Gi
+            {{ end }}
             limits:
               cpu: 1
               memory: 2Gi

@@ -12,13 +12,13 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-c"
+        msePilotCreateAppName: "{{ .Values.mse.application.prefix}}-spring-cloud-c"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-c"
     spec:
       containers:
         - name: spring-cloud-c
-          image: "{{ .Values.registry }}spring-cloud-c:1.2.0"
+          image: "{{ .Values.registry }}spring-cloud-c:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -30,9 +30,11 @@ spec:
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           resources:
+            {{ if .Values.resources.enableRequests }}
             requests:
               cpu: 1
               memory: 2Gi
+            {{ end }}
             limits:
               cpu: 1
               memory: 2Gi
