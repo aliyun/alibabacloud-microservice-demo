@@ -16,3 +16,6 @@ nacos:
   namespace: public
 
 autoscaling: false
+
+resources:
+  enableRequests: false

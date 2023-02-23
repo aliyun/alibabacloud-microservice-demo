@@ -37,6 +37,15 @@ spec:
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           name: "spring-cloud-zuul"
+          resources:
+            {{ if .Values.resources.enableRequests }}
+            requests:
+              cpu: 1
+              memory: 2Gi
+            {{ end }}
+            limits:
+              cpu: 1
+              memory: 2Gi
           ports:
             - containerPort: 20000
       hostAliases:

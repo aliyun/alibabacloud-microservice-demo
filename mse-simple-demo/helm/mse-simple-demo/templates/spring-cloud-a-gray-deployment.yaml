@@ -32,6 +32,15 @@ spec:
             - name: MSE_DEBUG_HOST
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
+          resources:
+            {{ if .Values.resources.enableRequests }}
+            requests:
+              cpu: 1
+              memory: 2Gi
+            {{ end }}
+            limits:
+              cpu: 1
+              memory: 2Gi
           ports:
             - name: http-port
               containerPort: 20001
