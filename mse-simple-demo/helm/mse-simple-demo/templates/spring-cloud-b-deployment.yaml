@@ -34,10 +34,10 @@ spec:
             requests:
               cpu: 1
               memory: 2Gi
-            {{ end }}
             limits:
               cpu: 1
               memory: 2Gi
+            {{ end }}
           ports:
             - name: http-port
               containerPort: 20002

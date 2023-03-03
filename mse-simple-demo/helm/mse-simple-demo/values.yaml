@@ -2,7 +2,7 @@
 registry: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/
 
 images:
-  version: mse-2.0.1
+  version: 2.0.1
 
 mse:
   namespace: mse-demo
