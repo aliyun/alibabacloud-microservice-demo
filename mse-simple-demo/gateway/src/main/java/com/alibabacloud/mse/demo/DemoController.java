@@ -46,6 +46,9 @@ public class DemoController {
     @Value("${enable.sentinel.demo.flow:false}")
     private boolean enableSentinelFlow;
 
+    @Value("${enable.gray:false}")
+    private boolean enableGray;
+
     private static Random random = new Random();
 
     private static final ScheduledExecutorService FLOW_EXECUTOR = Executors.newScheduledThreadPool(16,
@@ -135,7 +138,9 @@ public class DemoController {
 
                     try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
-                        httpGet.addHeader("x-mse-tag", "gray");
+                        if (enableGray) {
+                            httpGet.addHeader("x-mse-tag", "gray");
+                        }
                         httpClient.execute(httpGet);
 
                     } catch (Exception ignore) {
@@ -157,7 +162,9 @@ public class DemoController {
 
                         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                             HttpGet httpGet = new HttpGet("http://localhost:20000/A/flow");
-                            httpGet.addHeader("x-mse-tag", "gray");
+                            if (enableGray) {
+                                httpGet.addHeader("x-mse-tag", "gray");
+                            }
                             httpClient.execute(httpGet);
 
                         } catch (Exception ignore) {
@@ -171,7 +178,9 @@ public class DemoController {
                         }
                         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                             HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-flow");
-                            httpGet.addHeader("x-mse-tag", "gray");
+                            if (enableGray) {
+                                httpGet.addHeader("x-mse-tag", "gray");
+                            }
                             httpClient.execute(httpGet);
 
                         } catch (Exception ignore) {
@@ -185,7 +194,9 @@ public class DemoController {
                         }
                         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                             HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate");
-                            httpGet.addHeader("x-mse-tag", "gray");
+                            if (enableGray) {
+                                httpGet.addHeader("x-mse-tag", "gray");
+                            }
                             httpClient.execute(httpGet);
 
                         } catch (Exception ignore) {
@@ -298,7 +309,9 @@ public class DemoController {
 
                         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                             HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo");
-                            httpGet.addHeader("x-mse-tag", "gray");
+                            if (enableGray) {
+                                httpGet.addHeader("x-mse-tag", "gray");
+                            }
                             httpClient.execute(httpGet);
 
                         } catch (Exception ignore) {
