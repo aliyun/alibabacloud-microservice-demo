@@ -42,10 +42,10 @@ spec:
             requests:
               cpu: 1
               memory: 2Gi
-            {{ end }}
             limits:
               cpu: 1
               memory: 2Gi
+            {{ end }}
           ports:
             - containerPort: 20000
       hostAliases:

@@ -31,19 +31,19 @@ public class DemoController {
     @Value("${demo.qps:100}")
     private int qps;
 
-    @Value("${enable.rpc.invoke:false}")
+    @Value("${enable.rpc.invoke:true}")
     private boolean enableRpcInvoke;
 
     @Value("${background.color:white}")
     private String backgroundColor;
 
-    @Value("${enable.sql:false}")
+    @Value("${enable.sql:true}")
     private boolean enableSql;
 
-    @Value("${enable.auto:false}")
+    @Value("${enable.auto:true}")
     private boolean enableAuto;
 
-    @Value("${enable.sentinel.demo.flow:false}")
+    @Value("${enable.sentinel.demo.flow:true}")
     private boolean enableSentinelFlow;
 
     @Value("${enable.gray:false}")
