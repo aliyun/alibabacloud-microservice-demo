@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "{{ .Values.mse.application.prefix}}-spring-cloud-zuul"
+        msePilotCreateAppName: "spring-cloud-zuul"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
