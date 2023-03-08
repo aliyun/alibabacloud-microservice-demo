@@ -6,8 +6,6 @@ images:
 
 mse:
   namespace: mse-demo
-  application:
-    prefix: demo
 
 nacos:
   # Nacos地址
