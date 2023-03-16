@@ -16,4 +16,10 @@ nacos:
 autoscaling: false
 
 resources:
-  enableRequests: false
+  enable: true
+  request:
+    cpu: 0.75
+    memory: 1.5Gi
+  limit:
+    cpu: 0.75
+    memory: 1.5Gi
