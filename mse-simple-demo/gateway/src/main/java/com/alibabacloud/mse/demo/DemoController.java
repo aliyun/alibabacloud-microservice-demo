@@ -250,28 +250,6 @@ public class DemoController {
                     }
                 }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
                 // endregion 热点限流
-
-                // region 隔离规则
-                for (int i = 0; i < 8; i++) {
-                    int finalI = i;
-                    FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
-                        @Override
-                        public void run() {
-                            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                                HttpGet httpGet = new HttpGet("http://localhost:20000/A/isolate?i_id=" + finalI);
-                                httpClient.execute(httpGet);
-                            } catch (Exception ignore) {
-                            }
-
-                            try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-                                HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-isolate?i_id=" + finalI);
-                                httpClient.execute(httpGet);
-                            } catch (Exception ignore) {
-                            }
-                        }
-                    }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
-                }
-                // endregion 隔离规则
             }
 
             if (enableSql) {
