@@ -3,6 +3,7 @@ package com.alibabacloud.mse.demo.b;
 import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.c.service.HelloServiceC;
 import com.alibabacloud.mse.demo.entity.User;
+import com.alibabacloud.mse.demo.common.TrafficAttribute;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -103,6 +104,32 @@ class BController {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
+    @GetMapping("/circuit-breaker-rt-b")
+    public String circuit_breaker_rt_b() {
+
+        Integer rt = TrafficAttribute.getInstance().getRt();
+        Integer ration = TrafficAttribute.getInstance().getSlowRation();
+
+        boolean isSlowRequest = RANDOM.nextInt(100) < ration ? true : false;
+        if (isSlowRequest) {
+            silentSleep(rt);
+        }
+
+        String slowMessage = isSlowRequest ? " RT:" + rt : "";
+
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + slowMessage;
+    }
+
+    @GetMapping("/circuit-breaker-exception-b")
+    public String circuit_breaker_exception_b() {
+        Integer ration = TrafficAttribute.getInstance().getExceptionRation();
+        boolean isExceptionRequest = RANDOM.nextInt(100) < ration ? true : false;
+        if (isExceptionRequest) {
+            throw new RuntimeException("TestCircuitBreakerException");
+        }
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+    }
+
     @GetMapping("/b-zone")
     public String bZone(HttpServletRequest request) {
         return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
@@ -147,6 +174,41 @@ class BController {
                 result = JSON.toJSONString(list);
         }
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " result:" + result;
+    }
+
+    @GetMapping("/set-traffic-attribute")
+    public String set_traffic_attribute(HttpServletRequest request) {
+        String slowRT = request.getParameter("rt");
+        String slowRation = request.getParameter("slowRation");
+        String exceptionRation = request.getParameter("exceptionRation");
+
+        String responseMessage = "";
+
+        try {
+            Integer iSlowRT = Integer.parseInt(slowRT);
+            responseMessage += "Adjust RT " + iSlowRT + "ms ";
+            TrafficAttribute.getInstance().setRt(iSlowRT);
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        try {
+            Integer iSlowRation = Integer.parseInt(slowRation);
+            TrafficAttribute.getInstance().setSlowRation(iSlowRation);
+            responseMessage += "Adjust slow ration to " + iSlowRation + "% ";
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        try {
+            Integer iExceptionRation = Integer.parseInt(exceptionRation);
+            TrafficAttribute.getInstance().setExceptionRation(iExceptionRation);
+            responseMessage += "Adjust exception ration to " + iExceptionRation + "% ";
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        return responseMessage;
     }
 
 
