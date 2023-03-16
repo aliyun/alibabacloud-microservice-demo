@@ -1,6 +1,6 @@
 package com.alibabacloud.mse.demo.a;
 
-import com.alibabacloud.mse.demo.a.service.FeignClient;
+import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +39,7 @@ class AController {
     private RestTemplate loadBalancedRestTemplate;
 
     @Autowired
-    private FeignClient feignClient;
+    private FeignClientTest feignClient;
 
     @Autowired
     @Qualifier("restTemplate")
@@ -280,6 +279,45 @@ class AController {
                 helloServiceB.hello("isolate");
     }
 
+    @ApiOperation(value = "熔断 rt 测试", tags = {"流量防护"})
+    @GetMapping("/circuit-breaker-rt")
+    public String circuit_breaker_rt(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+
+        String result = feignClient.circuit_breaker_rt_b();
+
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + result;
+    }
+
+    @ApiOperation(value = "熔断异常测试" , tags = {"流量防护"})
+    @GetMapping("/circuit-breaker-exception")
+    public String circuit_breaker_exception(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+
+        String result = feignClient.circuit_breaker_exception_b();
+
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                "[config=" + configValue + "]" + " -> " + result;
+    }
 
     @GetMapping("swagger-demo")
     @ApiOperation(value = "这是一个演示swagger的接口 ", tags = {"首页操作页面"})
@@ -287,5 +325,50 @@ class AController {
                           @ApiParam(name = "age", value = "我是年龄", required = true) int age,
                           @ApiParam(name = "aliware-products", value = "我是购买阿里云原生产品列表", required = true) List<String> aliwareProducts) {
         return "hello swagger";
+    }
+
+    @ApiOperation(value = "Dubbo rt 熔断测试", tags = {"入口应用"})
+    @GetMapping("/dubbo-circuit-breaker-rt")
+    public String dubbo_circuit_breaker_rt(HttpServletRequest request) {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceB.slow();
+    }
+
+    @ApiOperation(value = "Dubbo 异常熔断测试", tags = {"入口应用"})
+    @GetMapping("/dubbo-circuit-breaker-exception")
+    public String dubbo_circuit_breaker_exception(HttpServletRequest request) {
+
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+        String response = "";
+        try {
+            response = helloServiceB.exception();
+        } catch (Exception ex) {
+            if (ex.getClass().getName().contains("com.alibaba.csp.sentinel")) {
+                response = "Service is in abnormal status now, and block by mse circuit rule!";
+            } else {
+                response = "Service is in abnormal status and throws exception by itself!";
+            }
+        }
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + response;
     }
 }

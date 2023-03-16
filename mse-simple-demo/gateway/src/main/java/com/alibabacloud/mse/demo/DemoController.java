@@ -223,6 +223,34 @@ public class DemoController {
                 }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
                 // endregion 热点限流
 
+                // region 熔断规则
+                FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+                    @Override
+                    public void run() {
+                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                            HttpGet httpGet = new HttpGet("http://localhost:20000/A/circuit-breaker-rt");
+                            httpClient.execute(httpGet);
+                        } catch (Exception ignore) {
+                        }
+                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                            HttpGet httpGet = new HttpGet("http://localhost:20000/A/circuit-breaker-exception");
+                            httpClient.execute(httpGet);
+                        } catch (Exception ignore) {
+                        }
+                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                            HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-circuit-breaker-rt");
+                            httpClient.execute(httpGet);
+                        } catch (Exception ignore) {
+                        }
+                        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+                            HttpGet httpGet = new HttpGet("http://localhost:20000/A/dubbo-circuit-breaker-exception");
+                            httpClient.execute(httpGet);
+                        } catch (Exception ignore) {
+                        }
+                    }
+                }, 100, 1000000 / qps, TimeUnit.MICROSECONDS);
+                // endregion 热点限流
+
                 // region 隔离规则
                 for (int i = 0; i < 8; i++) {
                     int finalI = i;
