@@ -4,7 +4,7 @@ metadata:
   name: spring-cloud-c
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: spring-cloud-c
@@ -30,13 +30,13 @@ spec:
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           resources:
-            {{ if .Values.resources.enableRequests }}
+            {{ if .Values.resources.enable }}
             requests:
-              cpu: 1
-              memory: 2Gi
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
             limits:
-              cpu: 1
-              memory: 2Gi
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
             {{ end }}
           ports:
           - name: http-port
