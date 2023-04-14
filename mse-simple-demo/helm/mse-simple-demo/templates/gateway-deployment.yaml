@@ -29,7 +29,7 @@ spec:
             - name: enable.rpc.invoke
               value: "true"
             - name: enable.sql
-              value: "true"
+              value: "false"
             - name: enable.sentinel.demo.flow
               value: "true"
             {{ if .Values.MSE_DEBUG_HOST }}

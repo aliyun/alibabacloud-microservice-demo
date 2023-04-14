@@ -37,7 +37,7 @@ public class DemoController {
     @Value("${background.color:white}")
     private String backgroundColor;
 
-    @Value("${enable.sql:true}")
+    @Value("${enable.sql:false}")
     private boolean enableSql;
 
     @Value("${enable.auto:true}")
