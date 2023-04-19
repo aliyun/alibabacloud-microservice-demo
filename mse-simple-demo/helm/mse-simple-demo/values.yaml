@@ -18,8 +18,8 @@ autoscaling: false
 resources:
   enable: true
   request:
-    cpu: 0.75
-    memory: 1.5Gi
+    cpu: 1
+    memory: 2Gi
   limit:
-    cpu: 0.75
-    memory: 1.5Gi
+    cpu: 1
+    memory: 2Gi
