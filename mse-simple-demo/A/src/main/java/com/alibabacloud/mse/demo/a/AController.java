@@ -1,12 +1,12 @@
 package com.alibabacloud.mse.demo.a;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
