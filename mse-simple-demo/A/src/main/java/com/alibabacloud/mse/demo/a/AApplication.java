@@ -1,6 +1,7 @@
 
 package com.alibabacloud.mse.demo.a;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +25,7 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableSwagger2
 @EnableFeignClients
+@EnableDubbo
 public class AApplication {
 
     public static void main(String[] args) {

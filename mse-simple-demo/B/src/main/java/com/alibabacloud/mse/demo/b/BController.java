@@ -1,10 +1,10 @@
 package com.alibabacloud.mse.demo.b;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.c.service.HelloServiceC;
 import com.alibabacloud.mse.demo.entity.User;
 import com.alibabacloud.mse.demo.common.TrafficAttribute;
-import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;

@@ -48,7 +48,7 @@ class AController {
     @Autowired
     InetUtils inetUtils;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    @Reference(version = "1.2.0")
     private HelloServiceB helloServiceB;
 
     @Autowired

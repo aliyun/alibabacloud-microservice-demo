@@ -1,6 +1,7 @@
 
 package com.alibabacloud.mse.demo.b;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +25,7 @@ import java.util.Properties;
 @SpringBootApplication
 @MapperScan("com.alibabacloud.mse.demo.mapper")
 @EnableFeignClients
+@EnableDubbo
 public class BApplication {
 
     public static void main(String[] args) {

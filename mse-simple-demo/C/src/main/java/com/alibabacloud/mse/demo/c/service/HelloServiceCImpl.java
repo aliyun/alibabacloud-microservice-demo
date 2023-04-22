@@ -1,10 +1,10 @@
 package com.alibabacloud.mse.demo.c.service;
 
+import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.rpc.RpcContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dubbo.config.annotation.DubboService;
-import org.apache.dubbo.rpc.RpcContext;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@DubboService(version = "1.2.0")
+@Service(version = "1.2.0")
 @RequiredArgsConstructor
 public class HelloServiceCImpl implements HelloServiceC {
 

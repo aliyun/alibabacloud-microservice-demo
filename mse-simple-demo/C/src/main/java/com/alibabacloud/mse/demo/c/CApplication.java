@@ -1,6 +1,7 @@
 package com.alibabacloud.mse.demo.c;
 
-import com.alibaba.nacos.common.utils.StringUtils;
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableDubbo
 public class CApplication {
 
     public static void main(String[] args) {
