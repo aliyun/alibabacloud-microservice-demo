@@ -68,6 +68,7 @@ class AController {
                     .setConnectTimeout(1000)
                     .setSocketTimeout(1000)
                     .build();
+            //在阿里云中判断在哪个地区的内网服务地址，如杭州会输出cn-hangzhou-g
             HttpGet req = new HttpGet("http://100.100.100.200/latest/meta-data/zone-id");
             req.setConfig(requestConfig);
             HttpResponse response = client.execute(req);
@@ -81,6 +82,7 @@ class AController {
     @GetMapping("/a")
     public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
         StringBuilder headerSb = new StringBuilder();
+        //枚举创建完后无法更改
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
             String headerName = enumeration.nextElement();
@@ -90,7 +92,7 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
-
+        //这是rpc调用的方式
         String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
