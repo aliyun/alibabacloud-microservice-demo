@@ -1,6 +1,6 @@
 package com.alibabacloud.mse.demo.c.service;
 
 public interface HelloServiceCTwo {
-    String hello(String name);
-    String world(String name);
+    String hello2(String name);
+    String world2(String name);
 }
