@@ -1,5 +1,5 @@
 # 镜像地址的前缀
-registry: registry.cn-shanghai.aliyuncs.com/yizhan/
+registry: registry.cn-shanghai.aliyuncs.com/mse-governance-demo/
 
 mse:
   namespace: default
