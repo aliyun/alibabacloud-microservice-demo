@@ -249,7 +249,7 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceBTwo.hello2(JSON.toJSONString(request.getParameterMap()));
+                helloServiceBTwo.hello(JSON.toJSONString(request.getParameterMap()));
     }
 
     @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})
