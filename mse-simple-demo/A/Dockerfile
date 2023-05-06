@@ -36,6 +36,7 @@ FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-ext
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
 COPY --from=build /app/target/A.jar /app/target/A.jar
+#COPY  ./target/A.jar /app/target/A.jar
 
 EXPOSE 20001
 ENTRYPOINT ["sh", "-c"]

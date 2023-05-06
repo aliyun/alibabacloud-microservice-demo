@@ -3,6 +3,7 @@ package com.alibabacloud.mse.demo.a;
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import com.alibaba.fastjson.JSON;
+import com.alibabacloud.mse.demo.b.service.HelloServiceBTwo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,6 +52,9 @@ class AController {
     @Reference(application = "${dubbo.application.id}", version = "1.2.0")
     private HelloServiceB helloServiceB;
 
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    private HelloServiceBTwo helloServiceBTwo;
+
     @Autowired
     String serviceTag;
 
@@ -68,6 +72,7 @@ class AController {
                     .setConnectTimeout(1000)
                     .setSocketTimeout(1000)
                     .build();
+            //在阿里云中判断在哪个地区的内网服务地址，如杭州会输出cn-hangzhou-g
             HttpGet req = new HttpGet("http://100.100.100.200/latest/meta-data/zone-id");
             req.setConfig(requestConfig);
             HttpResponse response = client.execute(req);
@@ -81,6 +86,7 @@ class AController {
     @GetMapping("/a")
     public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
         StringBuilder headerSb = new StringBuilder();
+        //枚举创建完后无法更改
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
             String headerName = enumeration.nextElement();
@@ -90,7 +96,7 @@ class AController {
                 headerSb.append(headerName + ":" + headerVal + ",");
             }
         }
-
+        //这是rpc调用的方式
         String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
@@ -226,6 +232,24 @@ class AController {
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello(JSON.toJSONString(request.getParameterMap()));
+    }
+
+
+    @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
+    @GetMapping("/dubbo2")
+    public String dubbo2(HttpServletRequest request) {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceBTwo.hello(JSON.toJSONString(request.getParameterMap()));
     }
 
     @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})

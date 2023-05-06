@@ -1,23 +1,24 @@
+{{ if .Values.gateway.springcloud }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-zuul
+  name: spring-cloud-gateway
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-zuul
+      app: spring-cloud-gateway
   template:
     metadata:
       labels:
         msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-zuul"
+        msePilotCreateAppName: "spring-cloud-gateway"
         mseNamespace: "{{ .Values.mse.namespace }}"
-        app: spring-cloud-zuul
+        app: spring-cloud-gateway
     spec:
       containers:
-        - image: "{{ .Values.registry }}spring-cloud-zuul:{{ .Values.images.version }}"
+        - image: "{{ .Values.registry }}spring-cloud-gateway:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -36,7 +37,7 @@ spec:
             - name: MSE_DEBUG_HOST
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
-          name: "spring-cloud-zuul"
+          name: "spring-cloud-gateway"
           resources:
             {{ if .Values.resources.enable }}
             requests:
@@ -59,3 +60,4 @@ spec:
             - podAffinityTerm:
                 topologyKey: kubernetes.io/hostname
               weight: 100
+{{ end }}
