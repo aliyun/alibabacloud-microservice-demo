@@ -26,9 +26,9 @@ public class HelloServiceBTwoImpl implements HelloServiceBTwo {
     private static final Random RANDOM = new Random();
 
     @Override
-    public String hello(String name) {
+    public String hello2(String name) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + name + " -> " +
-                helloServiceCTwo.hello(name);
+                helloServiceCTwo.hello2(name);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
     boolean throwException;
 
     @Override
-    public String hello(String name) {
+    public String hello2(String name) {
 
         if (throwException) {
             throw new RuntimeException();
@@ -59,7 +59,7 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
     }
 
     @Override
-    public String world(String name) {
+    public String world2(String name) {
         return  "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
     }
 
