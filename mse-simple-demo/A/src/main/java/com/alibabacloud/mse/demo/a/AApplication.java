@@ -2,10 +2,12 @@
 package com.alibabacloud.mse.demo.a;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +25,7 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableWebMvc
 @EnableSwagger2
+@EnableFeignClients
 public class AApplication {
 
     public static void main(String[] args) {

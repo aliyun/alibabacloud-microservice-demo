@@ -7,3 +7,5 @@ cd "$(dirname "$0")"
 ./B/build.sh
 ./C/build.sh
 ./gateway/build.sh
+
+./mysql/build.sh

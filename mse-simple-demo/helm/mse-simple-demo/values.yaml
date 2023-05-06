@@ -1,8 +1,11 @@
 # 镜像地址的前缀
 registry: registry.cn-shanghai.aliyuncs.com/mse-governance-demo/
 
+images:
+  version: 2.0.3-jdk17
+
 mse:
-  namespace: default
+  namespace: mse-demo
 
 nacos:
   # Nacos地址
@@ -11,3 +14,12 @@ nacos:
   namespace: public
 
 autoscaling: false
+
+resources:
+  enable: true
+  request:
+    cpu: 1
+    memory: 2Gi
+  limit:
+    cpu: 1
+    memory: 2Gi

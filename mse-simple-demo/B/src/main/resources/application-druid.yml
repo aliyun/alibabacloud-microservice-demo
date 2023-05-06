@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    #1.JDBC
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://demo-mysql:3306/demo
+    username: root
+    password: root
+    druid:
+      #2.连接池配置
+      #初始化连接池的连接数量 大小，最小，最大
+      initial-size: 0
+      min-idle: 5
+      max-active: 20
+      #配置获取连接等待超时的时间
+      max-wait: 60000
+      break-after-acquire-failure: true

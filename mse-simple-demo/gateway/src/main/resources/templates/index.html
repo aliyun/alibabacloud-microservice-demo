@@ -8,13 +8,21 @@
 <body th:style="${'background-color:' + backgroundColor }">
 <div style="margin: 30px auto 0 30px;">
     <div id="inputSection">
-        <label>请输入网址：</label>
+        <label id="pleas_input_url">请输入网址：</label>
         <input id="inputArea" style="width: 200px;height: 20px;"/>
         <button id="btnStart">开始调用</button>
     </div>
     <div id="resultSection" style="margin-top: 30px; border-top: 1px solid #eaeaea;">
     </div>
 </div>
+
+<script charset="utf-8">
+    if (navigator.language.includes("en")) {
+        $('#pleas_input_url').text('Please enter the URL:');
+        $('#btnStart').text('call');
+    }
+</script>
+
 <script charset="utf-8">
     let isRequesting = true;
 

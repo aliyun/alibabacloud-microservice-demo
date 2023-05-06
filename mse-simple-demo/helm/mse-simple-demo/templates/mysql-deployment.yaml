@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-mysql
+spec:
+  selector:
+    matchLabels:
+      app: demo-mysql
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: demo-mysql
+    spec:
+      containers:
+        - args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          image: {{ .Values.registry }}demo-mysql:{{ .Values.images.version }}
+          name: demo-mysql
+          ports:
+            - containerPort: 3306
+          resources:
+            {{ if .Values.resources.enable }}
+            requests:
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
+            limits:
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}

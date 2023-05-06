@@ -1,6 +1,9 @@
 package com.alibabacloud.mse.demo.b;
 
+import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.c.service.HelloServiceC;
+import com.alibabacloud.mse.demo.entity.User;
+import com.alibabacloud.mse.demo.common.TrafficAttribute;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -18,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -69,54 +73,61 @@ class BController {
     public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
+        String result = loadBalancedRestTemplate.getForObject("http://sc-C/flow", String.class);
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
     @GetMapping("/params/{hot}")
-    public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
+    public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        helloServiceC.hello(hot);
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime+":"+hot;
+        String result = loadBalancedRestTemplate.getForObject("http://sc-C/params/" + hot, String.class);
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot + " -> " + result;
     }
 
     @GetMapping("/isolate")
     public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 500 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + sleepTime;
-    }
-
-
-    @GetMapping("/flow-c")
-    public String flow_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceC.hello("B");
-    }
-
-    @GetMapping("/params-c/{hot}")
-    public String params_c(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceC.hello(hot);
-    }
-
-    @GetMapping("/isolate-c")
-    public String isolate_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceC.hello("B");
-    }
-
-    @GetMapping("/rpc-c")
-    public String rpc_c(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceC.world("B");
+        String result = loadBalancedRestTemplate.getForObject("http://sc-C/isolate", String.class);
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
     @GetMapping("/b")
     public String b(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
+    }
+
+    @GetMapping("/bByFeign")
+    public String bByFeign(String s) {
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+    }
+
+    @GetMapping("/circuit-breaker-rt-b")
+    public String circuit_breaker_rt_b() {
+
+        Integer rt = TrafficAttribute.getInstance().getRt();
+        Integer ration = TrafficAttribute.getInstance().getSlowRation();
+
+        boolean isSlowRequest = RANDOM.nextInt(100) < ration ? true : false;
+        if (isSlowRequest) {
+            silentSleep(rt);
+        }
+
+        String slowMessage = isSlowRequest ? " RT:" + rt : "";
+
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + slowMessage;
+    }
+
+    @GetMapping("/circuit-breaker-exception-b")
+    public String circuit_breaker_exception_b() {
+        Integer ration = TrafficAttribute.getInstance().getExceptionRation();
+        boolean isExceptionRequest = RANDOM.nextInt(100) < ration ? true : false;
+        if (isExceptionRequest) {
+            throw new RuntimeException("TestCircuitBreakerException");
+        }
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
     @GetMapping("/b-zone")
@@ -129,6 +140,75 @@ class BController {
     public String spring_boot(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-c:20003/spring_boot", String.class);
+    }
+
+    @GetMapping("/sql")
+    public String sql(HttpServletRequest request) {
+        User user = new User();
+        String command = request.getParameter("command");
+        String result = "";
+        switch (command) {
+            case "query":
+                user.setId(Long.parseLong(request.getParameter("id")));
+                result = JSON.toJSONString(user.selectById());
+                break;
+            case "insert":
+                user.setName(request.getParameter("name"));
+                user.setAge(Integer.parseInt(request.getParameter("age")));
+                user.setEmail(request.getParameter("email"));
+                result = String.valueOf(user.insert());
+                break;
+            case "delete":
+                user.setId(Long.parseLong(request.getParameter("id")));
+                result = String.valueOf(user.deleteById());
+                break;
+            case "update":
+                user.setId(Long.parseLong(request.getParameter("id")));
+                user.setName(request.getParameter("name"));
+                user.setAge(Integer.parseInt(request.getParameter("age")));
+                user.setEmail(request.getParameter("email"));
+                result = String.valueOf(user.updateById());
+                break;
+            default:
+                List<User> list = user.selectAll();
+                result = JSON.toJSONString(list);
+        }
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " result:" + result;
+    }
+
+    @GetMapping("/set-traffic-attribute")
+    public String set_traffic_attribute(HttpServletRequest request) {
+        String slowRT = request.getParameter("rt");
+        String slowRation = request.getParameter("slowRation");
+        String exceptionRation = request.getParameter("exceptionRation");
+
+        String responseMessage = "";
+
+        try {
+            Integer iSlowRT = Integer.parseInt(slowRT);
+            responseMessage += "Adjust RT " + iSlowRT + "ms ";
+            TrafficAttribute.getInstance().setRt(iSlowRT);
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        try {
+            Integer iSlowRation = Integer.parseInt(slowRation);
+            TrafficAttribute.getInstance().setSlowRation(iSlowRation);
+            responseMessage += "Adjust slow ration to " + iSlowRation + "% ";
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        try {
+            Integer iExceptionRation = Integer.parseInt(exceptionRation);
+            TrafficAttribute.getInstance().setExceptionRation(iExceptionRation);
+            responseMessage += "Adjust exception ration to " + iExceptionRation + "% ";
+        } catch (NumberFormatException e) {
+            ;
+        }
+
+        return responseMessage;
     }
 
 

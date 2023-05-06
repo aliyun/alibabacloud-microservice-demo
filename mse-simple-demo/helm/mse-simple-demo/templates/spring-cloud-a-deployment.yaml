@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: spring-cloud-a
-          image: "{{ .Values.registry }}spring-cloud-a:1.2.0-jdk17"
+          image: "{{ .Values.registry }}spring-cloud-a:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -30,12 +30,14 @@ spec:
               value: {{ .Values.MSE_DEBUG_HOST }}
             {{ end }}
           resources:
+            {{ if .Values.resources.enable }}
             requests:
-              cpu: 1
-              memory: 2Gi
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
             limits:
-              cpu: 1
-              memory: 2Gi
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}
           ports:
             - name: http-port
               containerPort: 20001
