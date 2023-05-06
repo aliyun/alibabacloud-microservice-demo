@@ -30,9 +30,9 @@ FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-ext
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
-COPY --from=build /app/target/C.jar /app/target/C.jar
-#COPY ./target/C.jar /app/target/C.jar
+COPY --from=build /app/target/ZuulGateway.jar /app/target/ZuulGateway.jar
+#COPY ./target/ZuulGateway.jar /app/target/ZuulGateway.jar
 
-EXPOSE 20003
+EXPOSE 20000
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/C.jar"]
+CMD ["java -jar /app/target/ZuulGateway.jar"]

@@ -2,10 +2,17 @@
 registry: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/
 
 images:
-  version: 2.0.2
+  version: 3.0.1
 
 mse:
   namespace: mse-demo
+
+
+# 是否启动zuul、springcloud网关
+gateway:
+  zuul: true
+  springcloud: true
+
 
 nacos:
   # Nacos地址

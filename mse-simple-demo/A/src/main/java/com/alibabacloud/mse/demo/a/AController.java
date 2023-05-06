@@ -3,6 +3,7 @@ package com.alibabacloud.mse.demo.a;
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
 import com.alibaba.fastjson.JSON;
+import com.alibabacloud.mse.demo.b.service.HelloServiceBTwo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,6 +51,9 @@ class AController {
 
     @Reference(application = "${dubbo.application.id}", version = "1.2.0")
     private HelloServiceB helloServiceB;
+
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    private HelloServiceBTwo helloServiceBTwo;
 
     @Autowired
     String serviceTag;
@@ -228,6 +232,24 @@ class AController {
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello(JSON.toJSONString(request.getParameterMap()));
+    }
+
+
+    @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
+    @GetMapping("/dubbo2")
+    public String dubbo2(HttpServletRequest request) {
+        StringBuilder headerSb = new StringBuilder();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String headerName = enumeration.nextElement();
+            Enumeration<String> val = request.getHeaders(headerName);
+            while (val.hasMoreElements()) {
+                String headerVal = val.nextElement();
+                headerSb.append(headerName + ":" + headerVal + ",");
+            }
+        }
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+                helloServiceBTwo.hello(JSON.toJSONString(request.getParameterMap()));
     }
 
     @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})

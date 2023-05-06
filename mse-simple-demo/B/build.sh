@@ -1,9 +1,16 @@
 #!/bin/sh
 
+export REGISTRY=${REGISTRY}
+
+export appName=spring-cloud-b
+export version=3.0.1
+
+set -e
+
 cd "$(dirname "$0")"
 
-docker build --platform linux/amd64 . -t ${REGISTRY}spring-cloud-b:2.0.2
+docker build --platform linux/amd64 . -t ${REGISTRY}${appName}:${version}
 
 if [ -n "${REGISTRY}" ]; then
-    docker push ${REGISTRY}spring-cloud-b:2.0.2
+    docker push ${REGISTRY}${appName}:${version}
 fi

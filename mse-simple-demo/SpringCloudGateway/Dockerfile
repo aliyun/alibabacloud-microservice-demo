@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1.4
-
 FROM maven:3-eclipse-temurin-8-alpine as build
 
+# copy arthas
+COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
+
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN apk add wget unzip tcpdump ngrep iproute2-ss bind-tools
 
 COPY <<EOF /root/.m2/settings.xml
 <?xml version=\"1.0\"?>
@@ -25,13 +28,16 @@ COPY ./ ./
 RUN --mount=type=cache,target=/root/.m2/repository/ \
   mvn clean package --batch-mode
 
+
 FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-extended-ga-centos
+
 
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
-COPY --from=build /app/target/gateway.jar /app/target/gateway.jar
+COPY --from=build /target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
+#COPY ./target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
 
 EXPOSE 20000
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/gateway.jar"]
+CMD ["java -jar /app/target/SpringCloudGateway.jar"]
