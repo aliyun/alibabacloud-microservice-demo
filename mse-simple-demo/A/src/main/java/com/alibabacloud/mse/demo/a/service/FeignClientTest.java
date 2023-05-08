@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2023年02月21日
  */
 @Component
-@FeignClient(name = "sc-B", fallbackFactory = FeignClientFallback.class)
+@FeignClient(name = "sc-B")
 public interface FeignClientTest {
 
     @GetMapping("/bByFeign")
