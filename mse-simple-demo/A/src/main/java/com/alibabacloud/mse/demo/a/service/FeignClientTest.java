@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 //这是springcloud  RPCFeignClient的调用方式
 @Component
-@FeignClient(name = "sc-B", fallbackFactory = FeignClientFallback.class)
+@FeignClient(name = "sc-B")
 public interface FeignClientTest {
 
     @GetMapping("/bByFeign")

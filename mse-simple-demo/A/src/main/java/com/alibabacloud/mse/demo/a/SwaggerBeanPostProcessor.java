@@ -26,7 +26,7 @@ public class SwaggerBeanPostProcessor implements BeanPostProcessor {
 
     private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
         List<T> copy = mappings.stream()
-                .filter(mapping -> mapping.getPatternParser() == null)
+//                .filter(mapping -> mapping.pa() == null)
                 .collect(Collectors.toList());
         mappings.clear();
         mappings.addAll(copy);
