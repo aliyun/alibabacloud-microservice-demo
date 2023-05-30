@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-c
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-cloud-c
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: "spring-cloud-c"
+        mseNamespace: "mse-demo"
+        app: "spring-cloud-c"
+    spec:
+      containers:
+        - name: spring-cloud-c
+          image: "registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/spring-cloud-c:2.0.1"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "nacos-server"
+            - name: nacos.namespace
+              value: "public"
+          ports:
+          - name: http-port
+            containerPort: 20003
+
