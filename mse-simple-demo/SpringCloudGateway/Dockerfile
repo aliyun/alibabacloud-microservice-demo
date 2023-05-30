@@ -35,7 +35,7 @@ FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-ext
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
 
-COPY --from=build /target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
+COPY --from=build /app/target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
 #COPY ./target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
 
 EXPOSE 20000

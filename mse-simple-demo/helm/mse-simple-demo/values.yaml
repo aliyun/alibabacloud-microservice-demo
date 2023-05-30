@@ -1,5 +1,5 @@
 # 镜像地址的前缀
-registry: registry.cn-hangzhou.aliyuncs.com/mse-demo-hz/
+registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 
 images:
   version: 3.0.1

@@ -10,5 +10,5 @@ cd "$(dirname "$0")"
 ./B/build.sh
 ./C/build.sh
 ./ZuulGateway/build.sh
-./SpringCloudway/build.sh
+./SpringCloudGateway/build.sh
 ./mysql/build.sh
