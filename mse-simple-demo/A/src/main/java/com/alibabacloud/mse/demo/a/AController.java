@@ -7,6 +7,7 @@ import com.alibabacloud.mse.demo.b.service.HelloServiceBTwo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -22,11 +23,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 @Api(value = "/", tags = {"入口应用"})
 @RestController
 class AController {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AController.class);
 
     @Autowired
     @Qualifier("loadBalancedRestTemplate")
@@ -83,8 +87,14 @@ class AController {
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
-    @GetMapping("/a")
+    @RequestMapping("/a")
     public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
+        try {
+            String body = IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
+            log.info("body is {}", body);
+        } catch (Throwable e) {
+            log.warn("get body error", e);
+        }
         StringBuilder headerSb = new StringBuilder();
         //枚举创建完后无法更改
         Enumeration<String> enumeration = request.getHeaderNames();
