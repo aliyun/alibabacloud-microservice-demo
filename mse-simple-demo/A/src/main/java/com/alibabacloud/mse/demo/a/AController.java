@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -229,7 +226,7 @@ class AController {
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo")
-    public String dubbo(HttpServletRequest request) {
+    public String dubbo(HttpServletRequest request, @RequestParam(required = false) String param) {
         StringBuilder headerSb = new StringBuilder();
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
@@ -241,7 +238,7 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceB.hello(JSON.toJSONString(request.getParameterMap()));
+                helloServiceB.hello(param);
     }
 
 
