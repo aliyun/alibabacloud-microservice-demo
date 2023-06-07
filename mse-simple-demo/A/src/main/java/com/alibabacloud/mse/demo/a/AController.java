@@ -2,7 +2,6 @@ package com.alibabacloud.mse.demo.a;
 
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -213,7 +213,7 @@ class AController {
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo")
-    public String dubbo(HttpServletRequest request) {
+    public String dubbo(HttpServletRequest request, @RequestParam(required = false) String param) {
         StringBuilder headerSb = new StringBuilder();
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
@@ -225,7 +225,7 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceB.hello(JSON.toJSONString(request.getParameterMap()));
+                helloServiceB.hello(param);
     }
 
     @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})
