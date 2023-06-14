@@ -1,0 +1,67 @@
+apiVersion: mse.alibabacloud.com/v1alpha1
+kind: MseIngressConfig
+metadata:
+  name: mse-ingress-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  name: mse-ingress
+  common:
+    instance:
+      spec: 2c4g
+      replicas: 3
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: mse
+  namespace: {{ .Release.Namespace }}
+spec:
+  controller: mse.alibabacloud.com/ingress
+  parameters:
+    apiGroup: mse.alibabacloud.com
+    kind: MseIngressConfig
+    name: mse-ingress-config
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-cloud-a
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: mse
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: spring-cloud-a
+                port:
+                  number: 20001
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/canary: 'true'
+    nginx.ingress.kubernetes.io/canary-by-header: x-user-id
+    nginx.ingress.kubernetes.io/canary-by-header-value: '100'
+    nginx.ingress.kubernetes.io/canary-weight: '0'
+    mse.ingress.kubernetes.io/request-header-control-update: x-mse-tag gray
+  name: spring-cloud-a-gray
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: mse
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: spring-cloud-a-gray
+                port:
+                  number: 20001
+            path: /
+            pathType: ImplementationSpecific
