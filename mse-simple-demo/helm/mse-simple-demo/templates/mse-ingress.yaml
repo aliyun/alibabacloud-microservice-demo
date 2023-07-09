@@ -1,3 +1,4 @@
+{{ if .Values.gateway.mse.ingress }}
 apiVersion: mse.alibabacloud.com/v1alpha1
 kind: MseIngressConfig
 metadata:
@@ -65,3 +66,4 @@ spec:
                   number: 20001
             path: /
             pathType: ImplementationSpecific
+  {{ end }}
