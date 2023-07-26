@@ -7,12 +7,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,10 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 class CController {
+
+    @Autowired
+    @Qualifier("loadBalancedRestTemplate")
+    private RestTemplate loadBalancedRestTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -61,7 +67,8 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] ->"
+        + loadBalancedRestTemplate.getForObject("http://sc-D/d", String.class);
     }
 
     @GetMapping("/c-zone")
@@ -69,7 +76,7 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag + "[" + currentZone + "]";
+        return "C" + serviceTag + "[" + currentZone + "] -> " + loadBalancedRestTemplate.getForObject("http://sc-D/d-zone", String.class);
     }
 
     @GetMapping("/spring_boot")
