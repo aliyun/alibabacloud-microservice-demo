@@ -4,7 +4,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>SpringCloudGateway</artifactId>
-    <version>${all.project.version}</version>
+    <version>3.0.2</version>
     <packaging>jar</packaging>
 
     <parent>

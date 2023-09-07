@@ -3,7 +3,7 @@
 export REGISTRY=${REGISTRY}
 
 export appName=spring-cloud-zuul
-export version=3.0.1
+export version=3.0.2
 
 set -e
 

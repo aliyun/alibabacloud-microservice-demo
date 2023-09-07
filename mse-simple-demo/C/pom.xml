@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>C</artifactId>
-    <version>${all.project.version}</version>
+    <version>3.0.2</version>
     <packaging>jar</packaging>
 
     <name>C</name>

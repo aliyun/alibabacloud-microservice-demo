@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        msePilotAutoEnable: "on"
+        # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-gateway"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-gateway
