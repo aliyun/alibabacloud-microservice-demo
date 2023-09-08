@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: demo-mysql
+        msePilotAutoEnable: "off"
     spec:
       containers:
         - args:
