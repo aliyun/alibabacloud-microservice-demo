@@ -88,7 +88,7 @@ class AController {
     public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
         try {
             String body = IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
-            log.info("body is {}", body);
+            log.debug("body is {}", body);
         } catch (Throwable e) {
             log.warn("get body error", e);
         }
