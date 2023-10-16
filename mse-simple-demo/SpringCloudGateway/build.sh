@@ -2,7 +2,7 @@
 export REGISTRY=${REGISTRY}
 
 export appName=spring-cloud-gateway
-export version=3.0.2
+export version=3.0.3
 
 set -e
 
