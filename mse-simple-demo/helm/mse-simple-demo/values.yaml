@@ -11,7 +11,7 @@ mse:
 # 是否启动zuul、springcloud网关
 gateway:
   zuul: false
-  springcloud: false
+  springcloud: true
   mse:
     ingress: false
 
