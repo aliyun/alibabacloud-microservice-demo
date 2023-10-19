@@ -1,3 +1,4 @@
+{{ if .Values.prometheus.enable }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -32,3 +33,4 @@ spec:
   selector:
     matchLabels:
       app: spring-cloud-gateway
+{{ end }}
