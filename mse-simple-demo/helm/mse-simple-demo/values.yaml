@@ -2,7 +2,7 @@
 registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 
 images:
-  version: 3.0.2
+  version: 3.0.3
 
 mse:
   namespace: mse-demo
@@ -11,10 +11,12 @@ mse:
 # 是否启动zuul、springcloud网关
 gateway:
   zuul: false
-  springcloud: false
+  springcloud: true
   mse:
     ingress: false
 
+prometheus:
+  enable: false
 
 nacos:
   # Nacos地址

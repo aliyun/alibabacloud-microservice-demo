@@ -48,7 +48,8 @@ spec:
               memory: {{ .Values.resources.limit.memory }}
             {{ end }}
           ports:
-            - containerPort: 20000
+            - name: http-port
+              containerPort: 20000
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
