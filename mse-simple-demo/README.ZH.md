@@ -7,12 +7,11 @@ mse-simple-demo是一个简单的微服务demo，架构如下：
 # 如何部署
 
 ```sh
-helm3 upgrade mse-simple-demo1 \
+helm upgrade mse-simple-demo1 \
   helm/mse-simple-demo \
   --install \
   --namespace default --create-namespace \
-  --set registry=registry.cn-shanghai.aliyuncs.com/yizhan/ \
-  --set mse.namespace=mse-test
+  --values ./helm/mse-simple-demo/values.example.yaml
 ```
 
 * `namespace`: 要安装到的k8s命名空间
