@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
   mvn clean package --batch-mode
 
 
-FROM dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell:8-extended-ga-centos
+FROM eclipse-temurin:8-jdk-alpine
 
 
 # copy arthas
