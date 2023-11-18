@@ -2,7 +2,7 @@
 registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 
 images:
-  version: 3.0.4
+  version: 3.0.5
 
 mse:
   namespace: mse-demo
