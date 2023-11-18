@@ -2,7 +2,7 @@
 export REGISTRY=${REGISTRY}
 
 export appName=demo-mysql
-export VERSION="${VERSION:-3.0.4}"
+export VERSION="${VERSION:-3.0.5}"
 
 set -e
 
