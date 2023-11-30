@@ -4,14 +4,14 @@ metadata:
   name: spring-cloud-b
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: spring-cloud-b
   template:
     metadata:
       labels:
-        msePilotAutoEnable: "on"
+        # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-b"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-b"

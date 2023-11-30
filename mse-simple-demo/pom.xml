@@ -4,15 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <all.project.version>3.0.6</all.project.version>
+    </properties>
+
+
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>mse-simple-demo</artifactId>
-    <version>1.2.0</version>
+    <version>3.0.6</version>
     <modules>
         <module>A</module>
         <module>B</module>
         <module>C</module>
-        <module>gateway</module>
-
+        <module>ZuulGateway</module>
+        <module>SpringCloudGateway</module>
     </modules>
 
     <packaging>pom</packaging>

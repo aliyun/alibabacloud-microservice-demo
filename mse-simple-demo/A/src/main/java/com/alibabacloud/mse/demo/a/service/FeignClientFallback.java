@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FeignClientFallback implements FallbackFactory<FeignClientTest> {
 
+
     static class FeignClientTestFallback implements FeignClientTest {
 
         private final String finalMsg;
@@ -30,6 +31,7 @@ public class FeignClientFallback implements FallbackFactory<FeignClientTest> {
         }
     }
 
+    //
     @Override
     public FeignClientTest create(Throwable throwable) {
         if (throwable == null) {

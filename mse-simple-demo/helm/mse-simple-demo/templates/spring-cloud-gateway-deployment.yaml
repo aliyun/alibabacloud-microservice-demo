@@ -1,0 +1,64 @@
+{{ if .Values.gateway.springcloud }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-cloud-gateway
+  template:
+    metadata:
+      labels:
+        # msePilotAutoEnable: "on"
+        msePilotCreateAppName: "spring-cloud-gateway"
+        mseNamespace: "{{ .Values.mse.namespace }}"
+        app: spring-cloud-gateway
+    spec:
+      containers:
+        - image: "{{ .Values.registry }}spring-cloud-gateway:{{ .Values.images.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+            - name: enable.auto
+              value: "true"
+            - name: enable.rpc.invoke
+              value: "true"
+            - name: enable.sql
+              value: "false"
+            - name: enable.sentinel.demo.flow
+              value: "true"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
+          name: "spring-cloud-gateway"
+          resources:
+            {{ if .Values.resources.enable }}
+            requests:
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
+            limits:
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}
+          ports:
+            - name: http-port
+              containerPort: 20000
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 50
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+{{ end }}

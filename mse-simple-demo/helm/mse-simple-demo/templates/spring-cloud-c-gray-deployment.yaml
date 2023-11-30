@@ -7,16 +7,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-c
+      app: spring-cloud-c-gray
       version: gray
   template:
     metadata:
       labels:
-        msePilotAutoEnable: "on"
+        # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-c"
         mseNamespace: "{{ .Values.mse.namespace }}"
         alicloud.service.tag: gray
-        app: "spring-cloud-c"
+        app: "spring-cloud-c-gray"
         version: gray
     spec:
       containers:

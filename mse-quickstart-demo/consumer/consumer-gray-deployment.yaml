@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-gray
+spec:
+  selector:
+    matchLabels:
+      app: consumer-gray
+  template:
+    metadata:
+      labels:
+        app: consumer-gray
+        alicloud.service.tag: gray
+        msePilotCreateAppName: consumer
+        msePilotAutoEnable: 'on'
+    spec:
+      containers:
+        - env:
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-1.8-openjdk/jre
+            - name: dubbo.registry.address
+              value: nacos-server:8848
+            - name: spring.cloud.nacos.discovery.server-addr
+              value: nacos-server:8848
+            - name: spring.cloud.nacos.config.server-addr
+              value: nacos-server:8848
+          image: registry
+          imagePullPolicy: Always
+          name: consumer-gray
+          ports:
+            - containerPort: 20001

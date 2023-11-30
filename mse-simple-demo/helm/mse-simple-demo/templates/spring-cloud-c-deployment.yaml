@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        msePilotAutoEnable: "on"
+        # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-c"
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-c"

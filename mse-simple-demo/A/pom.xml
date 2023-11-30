@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>A</artifactId>
-    <version>2.0.2</version>
+    <version>3.0.6</version>
     <packaging>jar</packaging>
 
     <name>A</name>
@@ -110,6 +110,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
         </dependency>
     </dependencies>
 

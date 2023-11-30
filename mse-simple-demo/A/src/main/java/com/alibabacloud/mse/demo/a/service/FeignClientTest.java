@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author yushan
  * @date 2023年02月21日
  */
+//这是springcloud  RPCFeignClient的调用方式
 @Component
 @FeignClient(name = "sc-B", fallbackFactory = FeignClientFallback.class)
 public interface FeignClientTest {

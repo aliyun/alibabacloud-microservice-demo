@@ -1,10 +1,15 @@
 #!/bin/sh
+export REGISTRY=${REGISTRY}
+
+export appName=demo-mysql
+export VERSION="${VERSION:-3.0.6}"
+
 set -e
 
 cd "$(dirname "$0")"
 
-docker build --platform linux/amd64 . -t ${REGISTRY}demo-mysql:2.0.3-jdk17
+docker build --platform linux/amd64 . -t ${REGISTRY}${appName}:${VERSION}
 
 if [ -n "${REGISTRY}" ]; then
-    docker push ${REGISTRY}demo-mysql:2.0.3-jdk17
+    docker push ${REGISTRY}${appName}:${VERSION}
 fi
