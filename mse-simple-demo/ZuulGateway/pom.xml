@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>ZuulGateway</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.6-jdk17</version>
     <packaging>jar</packaging>
 
     <parent>

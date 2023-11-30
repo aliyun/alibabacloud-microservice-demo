@@ -1,7 +1,7 @@
 apiVersion: v2
 name: mse-simple-demo
-version: "3.0.6"
-appVersion: "3.0.6"
+version: "3.0.6-jdk17"
+appVersion: "3.0.6-jdk17"
 home: https://mse.console.aliyun.com/
 keywords:
   - mse
