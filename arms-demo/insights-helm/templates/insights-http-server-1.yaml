@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: insights-http-server-1
+  name: insights-http-server-1
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-http-server-1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: insights-http-server-1
+    spec:
+      containers:
+        - env:
+            - name: SERVICE_NAME
+              value: insights-http-server-1
+            - name: MOCK_SERVER_ID
+              value: '0'
+            - name: spring.redis.host
+              value: "{{ .Values.redis.host }}"
+            - name: spring.redis.password
+              value: "{{ .Values.redis.password }}"
+            - name: spring.datasource.url
+              value: "jdbc:mysql://{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/arms_mock?characterEncoding=utf-8&useSSL=false"
+            - name: spring.datasource.username
+              value: "{{ .Values.mysql.username }}"
+            - name: spring.datasource.password
+              value: {{ .Values.mysql.password }}
+          image: {{ .Values.server.image}}
+          imagePullPolicy: Always
+          name: insights-http-server-1
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi

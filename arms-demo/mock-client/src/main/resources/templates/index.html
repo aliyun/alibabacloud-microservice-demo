@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header.html :: commonHead"></head>
+
+<body>
+<script th:inline="javascript" th:if="${web_turn}">
+    /*<![CDATA[*/
+    !(function(c,b,d,a){c[a]||(c[a]={});c[a].config={pid:[[${pid}]],appType:"web",imgUrl:"https://arms-retcode.aliyuncs.com/r.png?",sendResource:true,enableLinkTrace:true,behavior:true, enableApiCors: true, enableRubm:true, rubmDebug:true};
+        with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)
+    })(window,document,"//dev.g.alicdn.com/dora/cloud-sdk/1.0.1-pre/bl.debug.js","__bl");
+    /*]]>*/
+</script>
+    <header th:replace="header.html :: pageHeader"></header>
+    <main role="main">
+        <section class="jumbotron text-center mb-0">
+            <div class="container">
+                <h1 class="jumbotron-heading">
+                    Good Shoes Make You Happy
+                </h1>
+                <p class="lead text-muted">
+                    Shoes come in all different types of styles, including sneakers, boots, loafers, sandals, heels and flats. Even with such a large variety, everyone has their unique, favorite pair.
+                </p>
+            </div>
+        </section>
+
+        <div class="py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div th:each="product: ${products}" class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <a th:href="@{'/product/' + ${product.id}}">
+                                <img class="card-img-top" alt =""
+                                     style="width: 100%; height: auto;"
+                                     th:src="${product.picture}">
+                            </a>
+                            <div class="card-body">
+                                <h5 arms-rubm-id="product-name" class="card-title" th:text="${product.name}"></h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a th:href="@{'/product/' + ${product.id}}">
+                                            <button arms-rubm-id='view-btn' th:arms-rubm-custom='|{"price":{"value":${product.price},"type":"measure"}}|' type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                                        </a>
+                                    </div>
+                                    <small arms-rubm-id='price-text' th:arms-rubm-custom='|{"price":{"value":${product.price},"type":"measure"}}|' class="text-muted" th:text="'CNY ' + ${product.price}">
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="row">-->
+<!--                    {{ with $.ad }}{{ template "text_ad" . }}{{ end}}-->
+<!--                </div>-->
+            </div>
+        </div>
+    </main>
+
+
+    <footer th:replace="footer.html :: pageFooter"></footer>
+    <script th:replace="footer.html :: footerScript"></script>
+</body>
+</html>

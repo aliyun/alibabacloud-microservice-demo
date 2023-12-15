@@ -1,0 +1,45 @@
+# dubbo出错传导至上游
+#
+#  0:local->1:redis->2:dubbo
+# curl -X POST "http://127.0.0.1:9080/testcase/run?name=case0&serverUrl=http%3A%2F%2F127.0.0.1%3A9190%2F&durationSeconds=86400&qps=0&parallel=2" -H "accept: */*" -H "Content-Type: application/json" -d "{\"children\":[{\"children\":[{\"component\":\"mysql\",\"method\":\"success\",\"service\":\"arms-mock-dev-2\"}],\"component\":\"redis\",\"method\":\"success\",\"service\":\"arms-mock-dev-1\"}],\"component\":\"local\",\"method\":\"success\",\"service\":\"arms-mock-dev-0\"}"
+POST http://127.0.0.1:9080/testcase/run?name=case0&serverUrl=http%3A%2F%2F127.0.0.1%3A9190%2F&durationSeconds=86400&qps=0&parallel=2
+accept: */*
+Content-Type: application/json
+
+{
+  "children": [
+    {
+      "children": [
+        {
+          "component": "dubbo",
+          "method": "success",
+          "service": "arms-mock-dev-2"
+        }
+      ],
+      "component": "redis",
+      "method": "success",
+      "service": "arms-mock-dev-1"
+    }
+  ],
+  "component": "local",
+  "method": "success",
+  "service": "arms-mock-dev-0"
+}
+
+###
+
+
+
+###
+# 注入故障,dubbo出错
+# curl -X POST "http://127.0.0.1:9190/trouble/make/error?fullMethodName=com.alibaba.arms.mock.server.service.DubboTroubleService%23success" -H "accept: */*" -d ""
+POST http://127.0.0.1:9190/trouble/make/error?fullMethodName=com.alibaba.arms.mock.server.service.DubboTroubleService%23success
+accept: */*
+Content-Type: application/x-www-form-urlencoded
+
+###
+
+
+
+
+

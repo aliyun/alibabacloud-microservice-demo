@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: insights-mysql-connection
+  name: insights-mysql-connection
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-mysql-connection
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        armsPilotAutoEnable: 'on'
+        armsPilotCreateAppName: insights-mysql-connection
+      labels:
+        app: insights-mysql-connection
+        armsPilotAutoEnable: 'on'
+        armsPilotCreateAppName: insights-mysql-connection
+    spec:
+      containers:
+        - env:
+            - name: SERVICE_NAME
+              value: insights-mysql-connection
+            - name: MOCK_SERVER_ID
+              value: '0'
+            - name: spring.redis.host
+              value: "{{ .Values.redis.host }}"
+            - name: spring.redis.password
+              value: "{{ .Values.redis.password }}"
+            - name: spring.datasource.url
+              value: "jdbc:mysql://{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/arms_mock?characterEncoding=utf-8&useSSL=false"
+            - name: spring.datasource.username
+              value: "{{ .Values.mysql.username }}"
+            - name: spring.datasource.password
+              value: {{ .Values.mysql.password }}
+          image: {{ .Values.server.image}}
+          imagePullPolicy: Always
+          name: insights-mysql-connection
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
