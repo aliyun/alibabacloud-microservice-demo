@@ -1,0 +1,9 @@
+FROM registry.cn-zhangjiakou.aliyuncs.com/arms-docker-repo/arms-j2sdk-image:b89
+RUN yum install coreutils && usermod -u 1000 admin && groupmod -g 1000 admin
+COPY --chown=admin:admin ../mock-client/target/sanmu-aiops-demo-client  /home/admin/sanmu-aiops-demo-client
+COPY --chown=admin:admin ../ArmsAgent  /home/admin/ArmsAgent/
+COPY --chown=admin:admin ../arthas  /home/admin/arthas/
+WORKDIR /home/admin/sanmu-aiops-demo-client
+USER admin:admin
+# official exp
+ENTRYPOINT ["./bin/app.sh", "start"]

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="1 minutes">
+
+    <property name="logMsgPattern" value="%d{'yyyy-MM-dd HH:mm:ss,SSS Z'}  %thread %F %-5level - %msg%n"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>${logMsgPattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/sanmu-aiops-demo-client/logs/main.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${user.home}/sanmu-aiops-demo-client/logs/main-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 7 days worth of history, but at most 2GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>${logMsgPattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="rolling"/>
+    </root>
+</configuration>
