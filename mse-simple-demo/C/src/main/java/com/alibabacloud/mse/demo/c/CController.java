@@ -61,7 +61,17 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
+            log.debug("Hello Sentinel!1");
+            try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
+                log.debug("Hello Sentinel!2");
+                return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+            } catch (BlockException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (BlockException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/c-zone")
