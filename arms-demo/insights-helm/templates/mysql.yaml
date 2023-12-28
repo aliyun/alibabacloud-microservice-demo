@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.mysql.name }}"
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Values.mysql.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.mysql.name }}"
+    spec:
+      containers:
+        - name: "{{ .Values.mysql.name }}"
+          image: "{{ .Values.mysql.image }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.mysql.port }}
+              hostPort: {{ .Values.mysql.port }}
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mysql.password }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/mysql/conf.d/my.cnf
+              subPath: my.cnf
+          lifecycle:
+            preStop:
+              exec:
+                command: ["bash", "echo 'nihao' "]
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mysql-config
+        - name: config-sql
+          configMap:
+            name: mysql-config
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.mysql.name }}"
+  namespace: {{ .Values.common.namespace}}
+spec:
+  type: NodePort
+  selector:
+    app: "{{ .Values.mysql.name }}"
+  ports:
+    - port: {{ .Values.mysql.port }}
+      targetPort: {{.Values.mysql.port}}
+---

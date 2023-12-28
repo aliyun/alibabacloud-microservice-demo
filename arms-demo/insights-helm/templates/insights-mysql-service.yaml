@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: insights-mysql-service
+  namespace: {{ .Values.common.namespace}}
+spec:
+  ports:
+    - name: insights-mysql-service
+      port: 9190
+      protocol: TCP
+      targetPort: 9190
+  type: ClusterIP
+  selector:
+    app: insights-mysql-server

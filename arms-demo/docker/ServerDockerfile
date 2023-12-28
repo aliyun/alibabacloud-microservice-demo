@@ -1,0 +1,13 @@
+FROM registry.cn-zhangjiakou.aliyuncs.com/arms-docker-repo/arms-j2sdk-image:b89
+RUN yum install coreutils && usermod -u 1000 admin && groupmod -g 1000 admin
+WORKDIR /home/admin/sanmu-aiops-demo-server
+USER admin:admin
+COPY --chown=admin:admin ../arthas  /home/admin/arthas/
+COPY --chown=admin:admin ../mock-server/target/sanmu-aiops-demo-server  /home/admin/sanmu-aiops-demo-server
+ARG ENV=prod
+COPY --chown=admin:admin ../ArmsAgent/prod-cn-hangzhou  /home/admin/ArmsAgent/
+# official exp
+ENV CURRENT_ENV ${ENV}
+ENTRYPOINT ["sh","./bin/bootstrap.sh"]
+
+

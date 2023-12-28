@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image }}
+          resources:
+            requests:
+              cpu: 100m              #限制cpu的数量为0.1个
+              memory: 100Mi      #限制内存为100M
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: {{ .Values.common.namespace}}
+spec:
+  type: NodePort
+  ports:
+    - port: 6379
+      nodePort: 30002
+  selector:
+    app: redis
+---
+

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: insights-client
+  name: insights-client
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-client
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: insights-client
+    spec:
+      containers:
+        - image: {{ .Values.client.image}}
+          imagePullPolicy: Always
+          name: insights-client
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+      restartPolicy: Always

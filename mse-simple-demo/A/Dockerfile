@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM maven:3-eclipse-temurin-17-focal as build
+FROM maven:3-eclipse-temurin-17 as build
 
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
   mvn clean package --batch-mode
 
 
-FROM eclipse-temurin:17-jdk-focal
+FROM eclipse-temurin:17-jdk
 
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas

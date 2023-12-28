@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: continuous-profiling
+  name: continuous-profiling
+  namespace: {{ .Values.common.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: continuous-profiling
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        armsPilotAutoEnable: 'on'
+        armsPilotCreateAppName: continuous-profiling
+      labels:
+        app: continuous-profiling
+        armsPilotAutoEnable: 'on'
+        armsPilotCreateAppName: continuous-profiling
+    spec:
+      containers:
+        - image: {{ .Values.profiling.image}}
+          imagePullPolicy: Always
+          name: continuous-profiling
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+      restartPolicy: Always

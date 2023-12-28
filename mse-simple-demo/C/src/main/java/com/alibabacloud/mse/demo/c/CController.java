@@ -1,5 +1,10 @@
 package com.alibabacloud.mse.demo.c;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -21,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @RestController
 class CController {
 
@@ -61,7 +67,17 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
+            log.debug("Hello Sentinel!1");
+            try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
+                log.debug("Hello Sentinel!2");
+                return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+            } catch (BlockException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (BlockException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/c-zone")
@@ -80,9 +96,19 @@ class CController {
 
     @GetMapping("/flow")
     public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+        try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
+            log.debug("Hello Sentinel!1");
+            try (Entry entry2 = SphU.entry("H\"elloWorld-c-flow-2", EntryType.IN)) {
+                log.debug("Hello Sentinel!2");
+                long sleepTime = 5 + RANDOM.nextInt(5);
+                silentSleep(sleepTime);
+                return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+            } catch (BlockException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (BlockException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/params/{hot}")

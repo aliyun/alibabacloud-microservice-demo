@@ -1,0 +1,11 @@
+FROM registry.cn-zhangjiakou.aliyuncs.com/arms-docker-repo/arms-j2sdk-image:b89
+COPY --from=https://paq60666.live.dynatrace.com/linux/oneagent-codemodules:java / /
+ENV LD_PRELOAD /opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
+RUN yum install coreutils && usermod -u 1000 admin && groupmod -g 1000 admin
+COPY --chown=admin:admin ../mock-server/target/sanmu-aiops-demo-server  /home/admin/sanmu-aiops-demo-server
+COPY --chown=admin:admin ../ArmsAgent  /home/admin/ArmsAgent/
+COPY --chown=admin:admin ../arthas  /home/admin/arthas/
+WORKDIR /home/admin/sanmu-aiops-demo-server
+USER admin:admin
+# official exp
+ENTRYPOINT ["./bin/app.sh", "start"]

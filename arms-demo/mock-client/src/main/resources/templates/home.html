@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <title>测试</title>
+</head>
+<body>
+<script th:inline="javascript" th:if="${web_turn}">
+    /*<![CDATA[*/
+    !(function(c,b,d,a){c[a]||(c[a]={});c[a].config={pid:[[${pid}]],appType:"web",imgUrl:"https://arms-retcode.aliyuncs.com/r.png?",sendResource:true,enableLinkTrace:true,behavior:true, enableApiCors: true, enableRubm:true, rubmDebug:true};
+        with(b)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("crossorigin","",src=d)
+    })(window,document,"//dev.g.alicdn.com/dora/cloud-sdk/1.0.1-pre/bl.debug.js","__bl");
+    /*]]>*/
+</script>
+<br/>
+<div class="panel panel-primary">
+   <!-- <div class="panel-heading">
+        <h3 class="panel-title">测试场景</h3>
+    </div>
+    <div class="panel-body">
+        <span>持续</span>
+    </div>
+    <br/>-->
+    <div th:if="${not #lists.isEmpty(myinfo)}">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">演示场景</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="item : ${myinfo}">
+                        <span th:text="' 【场景】：  '+ ${item.name}"></span>
+                        <button class="btn" th:value="${item.startUrl}" >启动</button>
+                        <button class="btn" th:value="${item.stopUrl}" >停止</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    //    var single = [[${singlePerson}]];
+    //    console.log(single.name+"/"+single.age);
+    $(function(){
+        $(".btn").click(function(e){
+            var urlT = e.target.getAttribute("value");
+            $.ajax({
+                type:"POST",
+                url:"" + urlT + "",
+                dataType:"json",
+                async:"true",
+                success:function(data){
+                    console.info(data)
+                    alert("请求发送成功")
+                },
+                error:function(jqXHR){
+                    alert("状态码："+ jqXHR.status);
+                }
+            });
+
+
+        });
+    });
+</script>
+</body>
+</html>
