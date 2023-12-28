@@ -77,11 +77,10 @@ public class DemoController {
 
     @PostConstruct
     private void flow() {
-        if (qps > 0 && enableAuto) {
-            FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
 
+        FLOW_EXECUTOR.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
                     try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
                         HttpGet httpGet = new HttpGet("http://localhost:20000/A/a");
                         httpClient.execute(httpGet);
@@ -372,5 +371,4 @@ public class DemoController {
 
             }
         }
-    }
 }

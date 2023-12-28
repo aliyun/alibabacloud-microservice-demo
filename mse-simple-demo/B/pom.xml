@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>B</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.6-semeru-8</version>
     <packaging>jar</packaging>
 
     <name>B</name>
@@ -49,19 +49,19 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>2.7.18</version>
+            <version>3.1.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>2.7.15</version>
+            <version>3.1.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-nacos</artifactId>
-            <version>2.7.15</version>
+            <version>3.1.1</version>
         </dependency>
 
         <dependency>

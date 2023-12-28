@@ -1,8 +1,8 @@
 package com.alibabacloud.mse.demo.a;
 
+import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
-import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.b.service.HelloServiceBTwo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

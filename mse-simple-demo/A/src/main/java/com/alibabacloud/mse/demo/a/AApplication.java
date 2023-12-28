@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.Properties;
  * @author <a href="mailto:fangjian0423@gmail.com">Jim</a>
  */
 @SpringBootApplication
+@EnableWebMvc
 @EnableSwagger2
 @EnableFeignClients
 public class AApplication {
@@ -85,15 +87,15 @@ public class AApplication {
         return tag;
     }
 
-    @Bean(name = "taskExecutor")
-    ThreadPoolTaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("taskExecutor-default-");
-        executor.setCorePoolSize(5);
-        executor.setKeepAliveSeconds(30000);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(10);
-        return executor;
-    }
+//    @Bean(name = "taskExecutor")
+//    ThreadPoolTaskExecutor taskExecutor() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setThreadNamePrefix("taskExecutor-default-");
+//        executor.setCorePoolSize(5);
+//        executor.setKeepAliveSeconds(30000);
+//        executor.setMaxPoolSize(10);
+//        executor.setQueueCapacity(10);
+//        return executor;
+//    }
 
 }

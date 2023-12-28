@@ -4,7 +4,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>SpringCloudGateway</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.6-semeru-8</version>
     <packaging>jar</packaging>
 
     <parent>
