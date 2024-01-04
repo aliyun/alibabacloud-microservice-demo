@@ -12,7 +12,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +29,6 @@ import java.util.concurrent.TimeUnit;
 class BController {
 
     @Autowired
-    @Qualifier("loadBalancedRestTemplate")
-    private RestTemplate loadBalancedRestTemplate;
-
-    @Autowired
-    @Qualifier("restTemplate")
     private RestTemplate restTemplate;
 
     @Reference(application = "${dubbo.application.id}", version = "1.2.0")
@@ -73,7 +67,7 @@ class BController {
     public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/flow", String.class);
+        String result = restTemplate.getForObject("http://sc-C/flow", String.class);
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
@@ -81,7 +75,7 @@ class BController {
     public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/params/" + hot, String.class);
+        String result = restTemplate.getForObject("http://sc-C/params/" + hot, String.class);
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot + " -> " + result;
     }
 
@@ -89,14 +83,14 @@ class BController {
     public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
         long sleepTime = 500 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/isolate", String.class);
+        String result = restTemplate.getForObject("http://sc-C/isolate", String.class);
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
     @GetMapping("/b")
     public String b(HttpServletRequest request) {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
+                restTemplate.getForObject("http://sc-C/c", String.class);
     }
 
     @GetMapping("/bByFeign")
@@ -133,13 +127,7 @@ class BController {
     @GetMapping("/b-zone")
     public String bZone(HttpServletRequest request) {
         return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
-                loadBalancedRestTemplate.getForObject("http://sc-C/c-zone", String.class);
-    }
-
-    @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-c:20003/spring_boot", String.class);
+                restTemplate.getForObject("http://sc-C/c-zone", String.class);
     }
 
     @GetMapping("/sql")

@@ -30,18 +30,10 @@ public class BApplication {
         SpringApplication.run(BApplication.class, args);
     }
 
-    @Bean(name = "loadBalancedRestTemplate")
+    @Bean
     @LoadBalanced
-    RestTemplate loadBalancedRestTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean(name = "restTemplate")
     RestTemplate restTemplate() {
-        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
-            request.getHeaders().add("Connection", "close");
-            return execution.execute(request, body);
-        })).build();
+        return new RestTemplate();
     }
 
     @Bean(name = "serviceTag")

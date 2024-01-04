@@ -15,8 +15,9 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatus;
@@ -34,18 +35,13 @@ import java.util.concurrent.ExecutionException;
 @Api(value = "/", tags = {"入口应用"})
 @RestController
 class AController {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AController.class);
+    private static final Logger log = LoggerFactory.getLogger(AController.class);
 
     @Autowired
-    @Qualifier("loadBalancedRestTemplate")
-    private RestTemplate loadBalancedRestTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
     private FeignClientTest feignClient;
-
-    @Autowired
-    @Qualifier("restTemplate")
-    private RestTemplate restTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -104,7 +100,7 @@ class AController {
             }
         }
         //这是rpc调用的方式
-        String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
+        String result = restTemplate.getForObject("http://sc-B/b", String.class);
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
@@ -125,9 +121,9 @@ class AController {
         }
 
         String resultB = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
+                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
         String resultA = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
+                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-C/c", String.class);
 
         return resultA + "\n" + resultB;
     }
@@ -156,7 +152,7 @@ class AController {
     @GetMapping("/flow")
     public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
 
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/flow", String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/flow", String.class);
         HttpStatus status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
@@ -168,7 +164,7 @@ class AController {
     @ApiOperation(value = "测试热点规则", tags = {"流量防护"})
     @GetMapping("/params/{hot}")
     public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/params/" + hot, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/params/" + hot, String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
@@ -180,7 +176,7 @@ class AController {
     @ApiOperation(value = "测试隔离规则", tags = { "流量防护"})
     @GetMapping("/isolate")
     public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/isolate", String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/isolate", String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
@@ -189,20 +185,11 @@ class AController {
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
-
-    @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
-        String result = restTemplate.getForObject("http://sc-b:20002/spring_boot", String.class);
-
-        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                " -> " + result;
-    }
-
     @GetMapping("/sql")
     public String sql(HttpServletRequest request) {
 
         String url = "http://sc-B/sql?" + request.getQueryString();
-        String result = loadBalancedRestTemplate.getForObject(url, String.class);
+        String result = restTemplate.getForObject(url, String.class);
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
@@ -221,7 +208,7 @@ class AController {
             }
         }
         return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
-                loadBalancedRestTemplate.getForObject("http://sc-B/b-zone", String.class);
+                restTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
