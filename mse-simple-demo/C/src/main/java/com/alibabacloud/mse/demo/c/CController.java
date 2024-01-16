@@ -14,16 +14,13 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -63,7 +60,7 @@ class CController {
     }
 
     @GetMapping("/c")
-    public String c(HttpServletRequest request) {
+    public String c() {
         if (throwException) {
             throw new RuntimeException();
         }
@@ -81,7 +78,7 @@ class CController {
     }
 
     @GetMapping("/c-zone")
-    public String cZone(HttpServletRequest request) {
+    public String cZone() {
         if (throwException) {
             throw new RuntimeException();
         }
@@ -89,13 +86,13 @@ class CController {
     }
 
     @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
+    public String spring_boot() {
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
 
     @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String flow() throws ExecutionException, InterruptedException {
         try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
             log.debug("Hello Sentinel!1");
             try (Entry entry2 = SphU.entry("H\"elloWorld-c-flow-2", EntryType.IN)) {
@@ -119,7 +116,7 @@ class CController {
     }
 
     @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String isolate() throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;

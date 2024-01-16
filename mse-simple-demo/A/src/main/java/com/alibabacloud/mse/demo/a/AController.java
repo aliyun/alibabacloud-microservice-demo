@@ -1,13 +1,12 @@
 package com.alibabacloud.mse.demo.a;
 
+import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.a.service.FeignClientTest;
 import com.alibabacloud.mse.demo.b.service.HelloServiceB;
-import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.b.service.HelloServiceBTwo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.io.IOUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -26,10 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
-import java.util.Enumeration;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Api(value = "/", tags = {"入口应用"})
@@ -81,24 +80,7 @@ class AController {
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
     @RequestMapping("/a")
-    public String a(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        try {
-            String body = IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
-            log.debug("body is {}", body);
-        } catch (Throwable e) {
-            log.warn("get body error", e);
-        }
-        StringBuilder headerSb = new StringBuilder();
-        //枚举创建完后无法更改
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String a() throws ExecutionException, InterruptedException {
         //这是rpc调用的方式
         String result = restTemplate.getForObject("http://sc-B/b", String.class);
 
@@ -108,17 +90,7 @@ class AController {
 
     @ApiOperation(value = "HTTP 全链路灰度入口 a调用b和c", tags = {"入口应用"})
     @GetMapping("/a2bc")
-    public String a2bc(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String a2bc() throws ExecutionException, InterruptedException {
 
         String resultB = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
@@ -130,17 +102,7 @@ class AController {
 
     @ApiOperation(value = "HTTP 全链路灰度入口 feign", tags = {"入口应用"})
     @GetMapping("/aByFeign")
-    public String aByFeign(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String aByFeign() throws ExecutionException, InterruptedException {
 
         String result = feignClient.bByFeign("test");
 
@@ -150,7 +112,7 @@ class AController {
 
     @ApiOperation(value = "测试防护规则" , tags = {"流量防护"})
     @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String flow() throws ExecutionException, InterruptedException {
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/flow", String.class);
         HttpStatus status = responseEntity.getStatusCode();
@@ -163,7 +125,7 @@ class AController {
 
     @ApiOperation(value = "测试热点规则", tags = {"流量防护"})
     @GetMapping("/params/{hot}")
-    public String params(HttpServletRequest request,@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
+    public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/params/" + hot, String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
@@ -175,7 +137,7 @@ class AController {
 
     @ApiOperation(value = "测试隔离规则", tags = { "流量防护"})
     @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String isolate() throws ExecutionException, InterruptedException {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/isolate", String.class);
 
         HttpStatus status = responseEntity.getStatusCode();
@@ -186,44 +148,30 @@ class AController {
     }
 
     @GetMapping("/sql")
-    public String sql(HttpServletRequest request) {
-
-        String url = "http://sc-B/sql?" + request.getQueryString();
-        String result = restTemplate.getForObject(url, String.class);
+    public String sql(@RequestParam Map<String, String> allRequestParams) throws UnsupportedEncodingException {
+        StringBuilder url = new StringBuilder("http://sc-B/sql?");
+        String enc = "UTF-8";
+        for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+            url.append(URLEncoder.encode(entry.getKey(), enc));
+            url.append("=");
+            url.append(URLEncoder.encode(entry.getValue(), enc));
+            url.append("&");
+        }
+        String result = restTemplate.getForObject(url.toString(), String.class);
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/a-zone")
-    public String aZone(HttpServletRequest request) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String aZone() {
         return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
                 restTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo")
-    public String dubbo(HttpServletRequest request, @RequestParam(required = false) String param) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo(@RequestParam(required = false) String param) {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello(param);
     }
@@ -231,85 +179,35 @@ class AController {
 
     @ApiOperation(value = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo2")
-    public String dubbo2(HttpServletRequest request) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo2(@RequestParam Map<String,String> allRequestParams) {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                helloServiceBTwo.hello2(JSON.toJSONString(request.getParameterMap()));
+                helloServiceBTwo.hello2(JSON.toJSONString(allRequestParams));
     }
 
     @ApiOperation(value = "Dubbo 限流测试", tags = {"入口应用"})
     @GetMapping("/dubbo-flow")
-    public String dubbo_flow(HttpServletRequest request) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo_flow() {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello("A");
     }
 
     @ApiOperation(value = "Dubbo 热点测试", tags = {"入口应用"})
     @GetMapping("/dubbo-params/{hot}")
-    public String dubbo_params(HttpServletRequest request, @PathVariable("hot") String hot) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo_params(@PathVariable("hot") String hot) {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + hot + " -> " +
                 helloServiceB.hello(hot);
     }
 
     @ApiOperation(value = "Dubbo 隔离测试", tags = {"入口应用"})
     @GetMapping("/dubbo-isolate")
-    public String dubbo_isolate(HttpServletRequest request) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo_isolate() {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello("isolate");
     }
 
     @ApiOperation(value = "熔断 rt 测试", tags = {"流量防护"})
     @GetMapping("/circuit-breaker-rt")
-    public String circuit_breaker_rt(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String circuit_breaker_rt() throws ExecutionException, InterruptedException {
 
         String result = feignClient.circuit_breaker_rt_b();
 
@@ -319,18 +217,7 @@ class AController {
 
     @ApiOperation(value = "熔断异常测试" , tags = {"流量防护"})
     @GetMapping("/circuit-breaker-exception")
-    public String circuit_breaker_exception(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
-
+    public String circuit_breaker_exception() throws ExecutionException, InterruptedException {
         String result = feignClient.circuit_breaker_exception_b();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
@@ -347,36 +234,14 @@ class AController {
 
     @ApiOperation(value = "Dubbo rt 熔断测试", tags = {"入口应用"})
     @GetMapping("/dubbo-circuit-breaker-rt")
-    public String dubbo_circuit_breaker_rt(HttpServletRequest request) {
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
-
+    public String dubbo_circuit_breaker_rt() {
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.slow();
     }
 
     @ApiOperation(value = "Dubbo 异常熔断测试", tags = {"入口应用"})
     @GetMapping("/dubbo-circuit-breaker-exception")
-    public String dubbo_circuit_breaker_exception(HttpServletRequest request) {
-
-        StringBuilder headerSb = new StringBuilder();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String headerName = enumeration.nextElement();
-            Enumeration<String> val = request.getHeaders(headerName);
-            while (val.hasMoreElements()) {
-                String headerVal = val.nextElement();
-                headerSb.append(headerName + ":" + headerVal + ",");
-            }
-        }
+    public String dubbo_circuit_breaker_exception() {
         String response = "";
         try {
             response = helloServiceB.exception();
