@@ -14,16 +14,14 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -63,39 +61,51 @@ class CController {
     }
 
     @GetMapping("/c")
-    public String c(HttpServletRequest request) {
+    public String c() {
         if (throwException) {
             throw new RuntimeException();
         }
         try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
-            log.debug("Hello Sentinel!1");
-            try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
-                log.debug("Hello Sentinel!2");
+            // 具体的业务逻辑
+            try {
                 return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
-            } catch (BlockException e) {
-                throw new RuntimeException(e);
+            } catch (Throwable e) {
+                // 标记此次资源调用失败
+                entry1.setError(e);
+                throw e;
+            }
+        } catch (BlockException e) {
+            // 处理限流发生后的逻辑
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/c-zone")
+    public String cZone() {
+        if (throwException) {
+            throw new RuntimeException();
+        }
+        try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
+            try {
+                log.debug("Hello Sentinel!2");
+                return "C" + serviceTag + "[" + currentZone + "]";
+            } catch (Throwable e) {
+                entry2.setError(e);
+                throw e;
             }
         } catch (BlockException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("/c-zone")
-    public String cZone(HttpServletRequest request) {
-        if (throwException) {
-            throw new RuntimeException();
-        }
-        return "C" + serviceTag + "[" + currentZone + "]";
-    }
-
     @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
+    public String spring_boot() {
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
 
     @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String flow() throws ExecutionException, InterruptedException {
         try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
             log.debug("Hello Sentinel!1");
             try (Entry entry2 = SphU.entry("H\"elloWorld-c-flow-2", EntryType.IN)) {
@@ -119,7 +129,7 @@ class CController {
     }
 
     @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String isolate() throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;

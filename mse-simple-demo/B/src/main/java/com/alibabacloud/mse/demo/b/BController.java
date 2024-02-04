@@ -2,8 +2,8 @@ package com.alibabacloud.mse.demo.b;
 
 import com.alibaba.fastjson.JSON;
 import com.alibabacloud.mse.demo.c.service.HelloServiceC;
-import com.alibabacloud.mse.demo.entity.User;
 import com.alibabacloud.mse.demo.common.TrafficAttribute;
+import com.alibabacloud.mse.demo.entity.User;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -64,7 +65,7 @@ class BController {
 
 
     @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String flow() throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         String result = restTemplate.getForObject("http://sc-C/flow", String.class);
@@ -80,7 +81,7 @@ class BController {
     }
 
     @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
+    public String isolate() throws ExecutionException, InterruptedException {
         long sleepTime = 500 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         String result = restTemplate.getForObject("http://sc-C/isolate", String.class);
@@ -88,7 +89,7 @@ class BController {
     }
 
     @GetMapping("/b")
-    public String b(HttpServletRequest request) {
+    public String b() {
         return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-C/c", String.class);
     }
@@ -125,36 +126,36 @@ class BController {
     }
 
     @GetMapping("/b-zone")
-    public String bZone(HttpServletRequest request) {
+    public String bZone() {
         return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
                 restTemplate.getForObject("http://sc-C/c-zone", String.class);
     }
 
     @GetMapping("/sql")
-    public String sql(HttpServletRequest request) {
+    public String sql(@RequestParam Map<String, String> allRequestParams) {
         User user = new User();
-        String command = request.getParameter("command");
+        String command = allRequestParams.get("command");
         String result = "";
         switch (command) {
             case "query":
-                user.setId(Long.parseLong(request.getParameter("id")));
+                user.setId(Long.parseLong(allRequestParams.get("id")));
                 result = JSON.toJSONString(user.selectById());
                 break;
             case "insert":
-                user.setName(request.getParameter("name"));
-                user.setAge(Integer.parseInt(request.getParameter("age")));
-                user.setEmail(request.getParameter("email"));
+                user.setName(allRequestParams.get("name"));
+                user.setAge(Integer.parseInt(allRequestParams.get("age")));
+                user.setEmail(allRequestParams.get("email"));
                 result = String.valueOf(user.insert());
                 break;
             case "delete":
-                user.setId(Long.parseLong(request.getParameter("id")));
+                user.setId(Long.parseLong(allRequestParams.get("id")));
                 result = String.valueOf(user.deleteById());
                 break;
             case "update":
-                user.setId(Long.parseLong(request.getParameter("id")));
-                user.setName(request.getParameter("name"));
-                user.setAge(Integer.parseInt(request.getParameter("age")));
-                user.setEmail(request.getParameter("email"));
+                user.setId(Long.parseLong(allRequestParams.get("id")));
+                user.setName(allRequestParams.get("name"));
+                user.setAge(Integer.parseInt(allRequestParams.get("age")));
+                user.setEmail(allRequestParams.get("email"));
                 result = String.valueOf(user.updateById());
                 break;
             default:
@@ -165,10 +166,10 @@ class BController {
     }
 
     @GetMapping("/set-traffic-attribute")
-    public String set_traffic_attribute(HttpServletRequest request) {
-        String slowRT = request.getParameter("rt");
-        String slowRation = request.getParameter("slowRation");
-        String exceptionRation = request.getParameter("exceptionRation");
+    public String set_traffic_attribute(@RequestParam Map<String, String> allRequestParams) {
+        String slowRT = allRequestParams.get("rt");
+        String slowRation = allRequestParams.get("slowRation");
+        String exceptionRation = allRequestParams.get("exceptionRation");
 
         String responseMessage = "";
 

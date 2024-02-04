@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -70,7 +69,7 @@ public class DemoController {
 
     @GetMapping("/spring_boot")
     @ResponseBody
-    public String spring_boot(HttpServletRequest request) {
+    public String spring_boot() {
         String result = restTemplate.getForObject("http://sc-a:20001/spring_boot", String.class);
         return result;
     }
