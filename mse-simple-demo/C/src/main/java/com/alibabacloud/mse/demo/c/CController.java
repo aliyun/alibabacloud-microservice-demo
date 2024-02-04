@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -65,14 +66,16 @@ class CController {
             throw new RuntimeException();
         }
         try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
-            log.debug("Hello Sentinel!1");
-            try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
-                log.debug("Hello Sentinel!2");
+            // 具体的业务逻辑
+            try {
                 return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
-            } catch (BlockException e) {
-                throw new RuntimeException(e);
+            } catch (Throwable e) {
+                // 标记此次资源调用失败
+                entry1.setError(e);
+                throw e;
             }
         } catch (BlockException e) {
+            // 处理限流发生后的逻辑
             throw new RuntimeException(e);
         }
     }
@@ -82,7 +85,17 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        return "C" + serviceTag + "[" + currentZone + "]";
+        try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
+            try {
+                log.debug("Hello Sentinel!2");
+                return "C" + serviceTag + "[" + currentZone + "]";
+            } catch (Throwable e) {
+                entry2.setError(e);
+                throw e;
+            }
+        } catch (BlockException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/spring_boot")
