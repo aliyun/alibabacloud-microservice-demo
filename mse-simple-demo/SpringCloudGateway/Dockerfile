@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
     mvn clean package --batch-mode
 
 
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 
 RUN apt-get update && apt-get install -y \
     vim unzip netcat telnet tcpdump iproute2 lsof \
