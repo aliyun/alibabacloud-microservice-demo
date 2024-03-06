@@ -18,7 +18,7 @@
         <spring-boot.version>3.2.3</spring-boot.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <spring-cloud-alibaba.version>2023.0.0.0-RC1</spring-cloud-alibaba.version>
-        <dubbo.version>2.7.18</dubbo.version>
+        <dubbo.version>3.2.11</dubbo.version>
         <rocketmq.version>4.5.2</rocketmq.version>
     </properties>
 
