@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.5</spring-cloud.version>
-        <dubbo.version>2.7.18</dubbo.version>
+        <dubbo.version>3.2.11</dubbo.version>
     </properties>
 
     <dependencies>
@@ -108,6 +108,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
         </dependency>
 
     </dependencies>
