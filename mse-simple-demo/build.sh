@@ -13,3 +13,4 @@ cd "$(dirname "$0")"
 ./ZuulGateway/build.sh
 ./SpringCloudGateway/build.sh
 ./mysql/build.sh
+./nacos-server/build.sh
