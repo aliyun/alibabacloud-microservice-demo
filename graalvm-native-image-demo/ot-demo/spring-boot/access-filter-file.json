@@ -1,0 +1,4 @@
+{ "rules": [
+    {"excludeClasses": "sun.launcher.LauncherHelper"}
+  ]
+}
