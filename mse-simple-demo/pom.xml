@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <all.project.version>3.0.8</all.project.version>
+        <all.project.version>3.0.8-sb3-jdk21</all.project.version>
     </properties>
 
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>mse-simple-demo</artifactId>
-    <version>3.0.8</version>
+    <version>3.0.8-sb3-jdk21</version>
     <modules>
         <module>A</module>
         <module>B</module>

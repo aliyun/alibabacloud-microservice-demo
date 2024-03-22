@@ -2,7 +2,7 @@
 registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 
 images:
-  version: 3.0.8
+  version: 3.0.8-sb3-jdk21
 
 # 是否启动zuul、springcloud网关
 gateway:

@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>B</artifactId>
-    <version>3.0.8</version>
+    <version>3.0.8-sb3-jdk21</version>
     <packaging>jar</packaging>
 
     <name>B</name>
