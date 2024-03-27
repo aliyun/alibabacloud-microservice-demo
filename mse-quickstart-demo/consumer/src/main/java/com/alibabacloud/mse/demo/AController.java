@@ -1,5 +1,6 @@
 package com.alibabacloud.mse.demo;
 
+import com.alibabacloud.mse.demo.bean.Consumer;
 import com.alibabacloud.mse.demo.service.HelloServiceB;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class AController {
     @Reference(application = "${dubbo.application.id}", version = "1.0.0")
     private HelloServiceB helloServiceB;
 
-    @Value("${name:123}")
-    private String name;
 
+    @Autowired
+    private Consumer consumer;
 
     @Autowired
     RestTemplate restTemplate;
@@ -50,7 +51,7 @@ public class AController {
         EXECUTOR_SERVICE.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                System.out.println(name);
+                System.out.println(consumer.getName());
             }
         },0,2, TimeUnit.SECONDS);
     }
