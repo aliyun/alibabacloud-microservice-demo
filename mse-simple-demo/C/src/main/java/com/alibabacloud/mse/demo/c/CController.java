@@ -85,7 +85,7 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        try (Entry entry2 = SphU.entry("H\"elloWorld-c-2", EntryType.IN)) {
+        try (Entry entry2 = SphU.entry("HelloWorld-c-2", EntryType.IN)) {
             try {
                 log.debug("Hello Sentinel!2");
                 return "C" + serviceTag + "[" + currentZone + "]";
@@ -108,7 +108,7 @@ class CController {
     public String flow() throws ExecutionException, InterruptedException {
         try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
             log.debug("Hello Sentinel!1");
-            try (Entry entry2 = SphU.entry("H\"elloWorld-c-flow-2", EntryType.IN)) {
+            try (Entry entry2 = SphU.entry("HelloWorld-c-flow-2", EntryType.IN)) {
                 log.debug("Hello Sentinel!2");
                 long sleepTime = 5 + RANDOM.nextInt(5);
                 silentSleep(sleepTime);
