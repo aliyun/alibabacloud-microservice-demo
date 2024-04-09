@@ -103,16 +103,21 @@ class CController {
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
-
     @GetMapping("/flow")
-    public String flow() throws ExecutionException, InterruptedException {
+    public String flow() {
         try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
             log.debug("Hello Sentinel!1");
             try (Entry entry2 = SphU.entry("HelloWorld-c-flow-2", EntryType.IN)) {
                 log.debug("Hello Sentinel!2");
-                long sleepTime = 5 + RANDOM.nextInt(5);
-                silentSleep(sleepTime);
-                return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+                try {
+                    long sleepTime = 5 + RANDOM.nextInt(5);
+                    silentSleep(sleepTime);
+                    return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+                } catch (Throwable throwable) {
+                    entry2.setError(throwable);
+                    entry1.setError(throwable);
+                    throw throwable;
+                }
             } catch (BlockException e) {
                 throw new RuntimeException(e);
             }
