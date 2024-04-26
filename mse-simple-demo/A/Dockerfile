@@ -24,10 +24,14 @@ WORKDIR /app
 COPY ./ ./
 
 RUN --mount=type=cache,target=/root/.m2/repository/ \
-  mvn clean package --batch-mode
+    mvn clean package --batch-mode
 
 
 FROM eclipse-temurin:8-jdk
+
+RUN apt-get update && apt-get install -y \
+    vim unzip netcat \
+    && rm -rf /var/lib/apt/lists/*
 
 # copy arthas
 COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
