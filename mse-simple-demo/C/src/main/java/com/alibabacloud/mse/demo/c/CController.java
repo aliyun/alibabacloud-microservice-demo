@@ -2,6 +2,7 @@ package com.alibabacloud.mse.demo.c;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +65,7 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
+        try (Entry entry1 = SphU.entry("HelloWorld-c-1", getResourceType(), getEntryType())) {
             // 具体的业务逻辑
             try {
                 return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
@@ -85,7 +85,7 @@ class CController {
         if (throwException) {
             throw new RuntimeException();
         }
-        try (Entry entry2 = SphU.entry("HelloWorld-c-2", EntryType.IN)) {
+        try (Entry entry2 = SphU.entry("HelloWorld-c-2", getResourceType(), getEntryType())) {
             try {
                 log.debug("Hello Sentinel!2");
                 return "C" + serviceTag + "[" + currentZone + "]";
@@ -105,9 +105,9 @@ class CController {
 
     @GetMapping("/flow")
     public String flow() {
-        try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", EntryType.IN)) {
+        try (Entry entry1 = SphU.entry("HelloWorld-c-flow-1", getResourceType(), getEntryType())) {
             log.debug("Hello Sentinel!1");
-            try (Entry entry2 = SphU.entry("HelloWorld-c-flow-2", EntryType.IN)) {
+            try (Entry entry2 = SphU.entry("HelloWorld-c-flow-2", getResourceType(), getEntryType())) {
                 log.debug("Hello Sentinel!2");
                 try {
                     long sleepTime = 5 + RANDOM.nextInt(5);
@@ -145,5 +145,36 @@ class CController {
             TimeUnit.MILLISECONDS.sleep(ms);
         } catch (InterruptedException ignored) {
         }
+    }
+
+    private int getResourceType() {
+        String resTypeStr = System.getenv("ResourceType");
+        if (resTypeStr == null) {
+            return 101;
+        }
+        try {
+            return Integer.parseInt(resTypeStr);
+        } catch (Exception e) {
+            return 101;
+        }
+    }
+
+    private EntryType getEntryType() {
+        String entryTypeStr = System.getenv("EntryType");
+        EntryType entryType = null;
+        if (entryTypeStr == null) {
+            entryType = EntryType.IN;
+        }
+        switch (entryTypeStr) {
+            case "OUT":
+                entryType = EntryType.OUT;
+                break;
+            case "IN":
+                entryType = EntryType.IN;
+                break;
+            default:
+                entryType = EntryType.IN;
+        }
+        return entryType;
     }
 }
