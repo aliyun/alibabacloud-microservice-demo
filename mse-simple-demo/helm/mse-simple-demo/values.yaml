@@ -4,10 +4,6 @@ registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 images:
   version: 3.0.7
 
-mse:
-  namespace: mse-demo
-
-
 # 是否启动zuul、springcloud网关
 gateway:
   zuul: false

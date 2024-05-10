@@ -13,7 +13,6 @@ spec:
       labels:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-a"
-        mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-a"
     spec:
       containers:

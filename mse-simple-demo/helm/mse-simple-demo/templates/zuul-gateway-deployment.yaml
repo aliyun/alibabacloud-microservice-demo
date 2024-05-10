@@ -14,7 +14,6 @@ spec:
       labels:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-zuul"
-        mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
       containers:

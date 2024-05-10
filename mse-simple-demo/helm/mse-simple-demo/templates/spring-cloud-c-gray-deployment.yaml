@@ -14,7 +14,6 @@ spec:
       labels:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-c"
-        mseNamespace: "{{ .Values.mse.namespace }}"
         alicloud.service.tag: gray
         app: "spring-cloud-c-gray"
         version: gray
