@@ -1,7 +1,7 @@
 #!/bin/sh
 # Select the correct warehouse prefix
 export REGISTRY=${REGISTRY}
-export VERSION="${VERSION:-3.0.7}"
+export VERSION="${VERSION:-3.0.8}"
 
 set -e
 
