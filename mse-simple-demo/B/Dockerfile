@@ -36,5 +36,4 @@ COPY --from=build /app/target/B.jar /app/target/B.jar
 #COPY ./target/B.jar /app/target/B.jar
 
 EXPOSE 20002
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/B.jar"]
+ENTRYPOINT ["java","-jar","/app/target/B.jar"]

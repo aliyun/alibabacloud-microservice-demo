@@ -36,5 +36,4 @@ COPY --from=build /app/target/ZuulGateway.jar /app/target/ZuulGateway.jar
 #COPY ./target/ZuulGateway.jar /app/target/ZuulGateway.jar
 
 EXPOSE 20000
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/ZuulGateway.jar"]
+ENTRYPOINT ["java","-jar","/app/target/ZuulGateway.jar"]

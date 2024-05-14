@@ -39,5 +39,4 @@ COPY --from=build /app/target/SpringCloudGateway.jar /app/target/SpringCloudGate
 #COPY ./target/SpringCloudGateway.jar /app/target/SpringCloudGateway.jar
 
 EXPOSE 20000
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar /app/target/SpringCloudGateway.jar"]
+ENTRYPOINT ["java","-jar","/app/target/SpringCloudGateway.jar"]
