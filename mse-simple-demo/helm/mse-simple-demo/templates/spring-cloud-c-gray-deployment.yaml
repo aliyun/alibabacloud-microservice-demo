@@ -47,10 +47,5 @@ spec:
         {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                topologyKey: failure-domain.beta.kubernetes.io/zone
-              weight: 50
-            - podAffinityTerm:
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: topology.kubernetes.io/zone
