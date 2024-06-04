@@ -1,6 +1,5 @@
 package com.alibabacloud.mse.demo.c;
 
-import com.alibaba.nacos.common.utils.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -37,7 +36,7 @@ public class CApplication {
     @Bean(name = "serviceTag")
     String serviceTag() {
         String tag = parseServiceTag("/etc/podinfo/labels");
-        if (StringUtils.isNotEmpty(tag)) {
+        if (tag != null && !tag.isEmpty()) {
             return tag;
         }
         return parseServiceTag("/etc/podinfo/annotations");
