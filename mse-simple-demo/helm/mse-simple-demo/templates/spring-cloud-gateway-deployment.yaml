@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       app: spring-cloud-gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:

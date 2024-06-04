@@ -9,6 +9,11 @@ spec:
     matchLabels:
       app: spring-cloud-a-gray
       version: gray
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
