@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
 FROM eclipse-temurin:8-jdk
 
 RUN apt-get update && apt-get install -y \
-    vim unzip netcat \
+    vim unzip netcat telnet tcpdump iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # copy arthas

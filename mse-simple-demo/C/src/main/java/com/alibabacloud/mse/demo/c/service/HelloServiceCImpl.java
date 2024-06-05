@@ -39,7 +39,7 @@ public class HelloServiceCImpl implements HelloServiceC {
             throw new RuntimeException();
         }
 
-        String value = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + name;
+        String value = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " param:" + name;
         String invokerTag="";
         String userData = RpcContext.getContext().getAttachment("__microservice_tag__");
         if (!StringUtils.isEmpty(userData)) {
