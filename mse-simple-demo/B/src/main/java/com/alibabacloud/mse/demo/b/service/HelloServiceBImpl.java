@@ -9,7 +9,7 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Service(version = "1.2.0")
+@Service(version = "1.2.0", group = "DEFAULT_GROUP")
 public class HelloServiceBImpl implements HelloServiceB {
 
     @Autowired
@@ -18,7 +18,7 @@ public class HelloServiceBImpl implements HelloServiceB {
     @Autowired
     String serviceTag;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0", group = "DEFAULT_GROUP")
     private HelloServiceC helloServiceC;
 
     private static final Random RANDOM = new Random();

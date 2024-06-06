@@ -1,6 +1,5 @@
 package com.alibabacloud.mse.demo.b.service;
 
-import com.alibabacloud.mse.demo.c.service.HelloServiceC;
 import com.alibabacloud.mse.demo.c.service.HelloServiceCTwo;
 import com.alibabacloud.mse.demo.common.TrafficAttribute;
 import org.apache.dubbo.config.annotation.Reference;
@@ -11,7 +10,7 @@ import org.springframework.cloud.commons.util.InetUtils;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Service(version = "1.2.0")
+@Service(version = "1.2.0", group = "DEFAULT_GROUP")
 public class HelloServiceBTwoImpl implements HelloServiceBTwo {
 
     @Autowired
@@ -20,7 +19,7 @@ public class HelloServiceBTwoImpl implements HelloServiceBTwo {
     @Autowired
     String serviceTag;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0", group = "DEFAULT_GROUP")
     private HelloServiceCTwo helloServiceCTwo;
 
     private static final Random RANDOM = new Random();

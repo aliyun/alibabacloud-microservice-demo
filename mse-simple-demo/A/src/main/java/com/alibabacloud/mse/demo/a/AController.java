@@ -45,10 +45,10 @@ class AController {
     @Autowired
     InetUtils inetUtils;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0", group = "DEFAULT_GROUP")
     private HelloServiceB helloServiceB;
 
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
+    @Reference(application = "${dubbo.application.id}", version = "1.2.0", group = "DEFAULT_GROUP")
     private HelloServiceBTwo helloServiceBTwo;
 
     @Autowired
