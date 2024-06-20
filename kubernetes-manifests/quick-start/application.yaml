@@ -9,7 +9,6 @@ spec:
   template:
     metadata:
       annotations:
-        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "productservice"
         ahasPilotAutoEnable: "on"
@@ -47,7 +46,6 @@ spec:
   template:
     metadata:
       annotations:
-        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "cartservice"
         ahasPilotAutoEnable: "on"
@@ -85,7 +83,6 @@ spec:
   template:
     metadata:
       annotations:
-        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "checkoutservice"
         ahasPilotAutoEnable: "on"
@@ -124,7 +121,6 @@ spec:
   template:
     metadata:
       annotations:
-        jfrPilotEnable: 'on'
         armsPilotAutoEnable: "on"
         armsPilotCreateAppName: "frontend"
         ahasPilotAutoEnable: "on"
