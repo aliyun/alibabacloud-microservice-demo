@@ -30,7 +30,7 @@ spec:
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
             - name: enable.auto
-              value: "true"
+              value: "false"
             - name: enable.rpc.invoke
               value: "true"
             - name: enable.sql

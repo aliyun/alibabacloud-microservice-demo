@@ -4,7 +4,7 @@ metadata:
   name: spring-cloud-a-gray
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: spring-cloud-a-gray
