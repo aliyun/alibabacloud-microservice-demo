@@ -17,6 +17,8 @@ spec:
     metadata:
       labels:
         # msePilotAutoEnable: "on"
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "spring-cloud-c"
         msePilotCreateAppName: "spring-cloud-c"
         app: "spring-cloud-c"
     spec:

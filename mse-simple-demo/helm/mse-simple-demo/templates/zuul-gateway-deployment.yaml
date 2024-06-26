@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         # msePilotAutoEnable: "on"
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "spring-cloud-gateway"
         msePilotCreateAppName: "spring-cloud-zuul"
         app: spring-cloud-zuul
     spec:

@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         # msePilotAutoEnable: "on"
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "spring-cloud-c"
         msePilotCreateAppName: "spring-cloud-c"
         alicloud.service.tag: gray
         app: "spring-cloud-c-gray"
