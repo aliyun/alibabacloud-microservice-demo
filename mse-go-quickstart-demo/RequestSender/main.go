@@ -34,7 +34,7 @@ func doHttpRequest() {
 			targetDomain = lbDomain
 		}
 
-		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%s/greet1?name=coder", targetDomain), nil)
+		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%s/greet1a?name=coder", targetDomain), nil)
 		if err != nil {
 			fmt.Printf("[doHttpRequest] new request err: %v\n", err)
 			continue

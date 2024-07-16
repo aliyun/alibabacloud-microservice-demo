@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: request-sender
-          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/request-sender:1.0
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/requestsender:1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
