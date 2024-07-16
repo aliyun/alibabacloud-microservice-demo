@@ -28,6 +28,9 @@ func doHttpRequest() {
 		Timeout: 5 * time.Second,
 	}
 	for {
+		randN := rand.Intn(100)
+		time.Sleep(time.Duration(randN) * time.Millisecond)
+
 		targetDomain := "mse-go-demo-a"
 		lbDomain := os.Getenv("MSE_GATEWAY_DOMAIN")
 		if lbDomain != "" {
@@ -40,7 +43,6 @@ func doHttpRequest() {
 			continue
 		}
 
-		randN := rand.Intn(100)
 		if randN > 50 {
 			req.Header.Set("x-mse-tag", "gray")
 		}
@@ -56,6 +58,5 @@ func doHttpRequest() {
 		}
 
 		fmt.Printf("doHttpRequest do request success, resp is %v\n", resp)
-		time.Sleep(time.Duration(randN) * time.Millisecond)
 	}
 }
