@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mse-go-demo-c-base
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mse-go-demo-c
+  template:
+    metadata:
+      labels:
+        app: C
+        alicloud.service.tag: base
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo
+        msePilotCreateAppName: "mse-go-demo-c"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: mse-go-demo-c
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/gin-server-c:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mse-go-demo-c-gray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mse-go-demo-c
+  template:
+    metadata:
+      labels:
+        app: C
+        alicloud.service.tag: gray
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo
+        msePilotCreateAppName: "mse-go-demo-c"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: mse-go-demo-c
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/gin-server-c:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mse-go-demo-c
+spec:
+  selector:
+    app: mse-go-demo-c
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

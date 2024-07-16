@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-sender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: request-sender
+  template:
+    metadata:
+      labels:
+        app: request-sender
+    spec:
+      containers:
+        - name: request-sender
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/request-sender:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
