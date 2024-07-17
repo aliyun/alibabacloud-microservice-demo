@@ -1,7 +1,7 @@
 apiVersion: v2
 name: mse-simple-demo
-version: "3.0.8-sca-2022"
-appVersion: "3.0.8-sca-2022"
+version: "3.0.8-sca-2023"
+appVersion: "3.0.8-sca-2023"
 home: https://mse.console.aliyun.com/
 keywords:
   - mse

@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>B</artifactId>
-    <version>3.0.8-sca-2022</version>
+    <version>3.0.8-sca-2023</version>
     <packaging>jar</packaging>
 
     <name>B</name>
@@ -15,9 +15,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <spring-boot.version>3.0.13</spring-boot.version>
-        <spring-cloud.version>2022.0.5</spring-cloud.version>
-        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+        <spring-boot.version>3.2.7</spring-boot.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <spring-cloud-alibaba.version>2023.0.1.2</spring-cloud-alibaba.version>
         <dubbo.version>3.2.14</dubbo.version>
     </properties>
 
