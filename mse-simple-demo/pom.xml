@@ -16,7 +16,6 @@
         <module>A</module>
         <module>B</module>
         <module>C</module>
-        <module>ZuulGateway</module>
         <module>SpringCloudGateway</module>
     </modules>
 

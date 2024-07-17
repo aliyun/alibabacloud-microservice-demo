@@ -21,5 +21,4 @@ helm upgrade mse-simple-demo helm/mse-simple-demo \
 - `mse.namespace`: 接入MSE微服务治理的微服务命名空间，可以用来区分环境（默认值为mse-demo）
 - `autoscaling`：是否开启自动伸缩（默认值为false）
 - `resources.enableRequests`：是否设置resources的requests配置（默认值为true）
-- `gateway.zuul`：是否开启zuul网关
 - `gateway.springcloud`：是否开启springcloud网关

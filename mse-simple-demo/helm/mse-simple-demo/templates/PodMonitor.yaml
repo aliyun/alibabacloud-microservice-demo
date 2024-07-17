@@ -33,21 +33,4 @@ spec:
   selector:
     matchLabels:
       app: spring-cloud-gateway
----
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
-  name: spring-cloud-zuul
-  namespace: {{ .Release.Namespace }}
-spec:
-  podMetricsEndpoints:
-    - interval: 30s
-      port: http-port
-      path: /actuator/prometheus
-  namespaceSelector:
-    matchNames:
-      - {{ .Release.Namespace }}
-  selector:
-    matchLabels:
-      app: spring-cloud-zuul
 {{ end }}
