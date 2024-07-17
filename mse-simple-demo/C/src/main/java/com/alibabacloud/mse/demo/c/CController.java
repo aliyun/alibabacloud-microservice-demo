@@ -3,6 +3,7 @@ package com.alibabacloud.mse.demo.c;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
@@ -99,6 +100,7 @@ class CController {
     }
 
     @GetMapping("/spring_boot")
+    @SentinelResource("sca_spring_boot")
     public String spring_boot() {
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
