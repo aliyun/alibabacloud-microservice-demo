@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM maven:3-eclipse-temurin-8 as build
+FROM maven:3-eclipse-temurin-17 as build
 
 COPY <<EOF /root/.m2/settings.xml
 <?xml version=\"1.0\"?>
@@ -23,7 +23,7 @@ COPY ./ ./
 RUN --mount=type=cache,target=/root/.m2/repository/ \
     mvn clean package --batch-mode
 
-FROM eclipse-temurin:8-jdk
+FROM eclipse-temurin:17-jdk
 
 RUN apt-get update && apt-get install -y \
     vim unzip netcat telnet tcpdump iproute2 lsof \

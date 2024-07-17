@@ -3,7 +3,7 @@
 export REGISTRY=${REGISTRY}
 
 export appName=spring-cloud-a
-export VERSION="${VERSION:-3.0.8}"
+export VERSION="${VERSION:-3.0.8-sca-2022}"
 
 set -e
 

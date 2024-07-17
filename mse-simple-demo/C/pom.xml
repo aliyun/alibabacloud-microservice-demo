@@ -5,7 +5,7 @@
 
     <groupId>com.alibabacloud.mse.demo</groupId>
     <artifactId>C</artifactId>
-    <version>3.0.8</version>
+    <version>3.0.8-sca-2022</version>
     <packaging>jar</packaging>
 
     <name>C</name>
@@ -14,11 +14,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>8</java.version>
-        <spring-boot.version>1.5.1.RELEASE</spring-boot.version>
-        <spring-cloud.version>Edgware.SR2</spring-cloud.version>
-        <spring-cloud-alibaba.version>1.5.0.RELEASE</spring-cloud-alibaba.version>
-        <dubbo.version>2.7.18</dubbo.version>
+        <java.version>17</java.version>
+        <spring-boot.version>3.0.13</spring-boot.version>
+        <spring-cloud.version>2022.0.5</spring-cloud.version>
+        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+        <dubbo.version>3.2.14</dubbo.version>
         <rocketmq.version>4.5.2</rocketmq.version>
     </properties>
 

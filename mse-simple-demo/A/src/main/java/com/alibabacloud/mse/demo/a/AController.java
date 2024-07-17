@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -115,7 +116,7 @@ class AController {
     public String flow() throws ExecutionException, InterruptedException {
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/flow", String.class);
-        HttpStatus status = responseEntity.getStatusCode();
+        HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
@@ -128,7 +129,7 @@ class AController {
     public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/params/" + hot, String.class);
 
-        HttpStatus status = responseEntity.getStatusCode();
+        HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
@@ -140,7 +141,7 @@ class AController {
     public String isolate() throws ExecutionException, InterruptedException {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/isolate", String.class);
 
-        HttpStatus status = responseEntity.getStatusCode();
+        HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
