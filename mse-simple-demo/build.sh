@@ -1,7 +1,7 @@
 #!/bin/sh
 # Select the correct warehouse prefix
 export REGISTRY=${REGISTRY}
-export VERSION="${VERSION:-3.0.8-sb3-jdk21}"
+export VERSION="${VERSION:-3.0.8-sca-2023}"
 
 set -e
 
