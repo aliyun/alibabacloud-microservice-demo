@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: B
+        app: mse-go-demo-a
         alicloud.service.tag: base
         msePilotAutoEnable: "on"
         mseNamespace: mse-go-demo

@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: A
+        app: mse-go-demo-a
         alicloud.service.tag: base
         msePilotAutoEnable: "on"
         mseNamespace: mse-go-demo
@@ -36,7 +36,7 @@ spec:
   template:
     metadata:
       labels:
-        app: A
+        app: mse-go-demo-a
         alicloud.service.tag: gray
         msePilotAutoEnable: "on"
         mseNamespace: mse-go-demo
