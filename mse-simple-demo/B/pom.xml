@@ -18,7 +18,7 @@
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
         <spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
-        <dubbo.version>2.7.18</dubbo.version>
+        <dubbo.version>2.7.23</dubbo.version>
     </properties>
 
     <dependencies>
