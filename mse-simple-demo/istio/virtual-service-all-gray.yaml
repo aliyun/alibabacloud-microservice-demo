@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: sc-a
+spec:
+  hosts:
+    - sc-a
+  http:
+    - route:
+        - destination:
+            host: sc-a
+            subset: gray
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: sc-c
+spec:
+  hosts:
+    - sc-c
+  http:
+    - route:
+        - destination:
+            host: sc-c
+            subset: gray

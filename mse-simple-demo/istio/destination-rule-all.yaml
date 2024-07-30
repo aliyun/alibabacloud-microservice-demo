@@ -1,0 +1,42 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sc-a
+spec:
+  host: sc-a
+  subsets:
+    - name: base
+      labels:
+        version: base
+    - name: gray
+      labels:
+        version: gray
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sc-b
+spec:
+  host: sc-b
+  subsets:
+    - name: base
+      labels:
+        version: base
+    - name: gray
+      labels:
+        version: gray
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sc-c
+spec:
+  host: sc-c
+  subsets:
+    - name: base
+      labels:
+        version: base
+    - name: gray
+      labels:
+        version: gray
