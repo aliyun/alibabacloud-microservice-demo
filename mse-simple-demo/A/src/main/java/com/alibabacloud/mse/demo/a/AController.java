@@ -14,9 +14,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatusCode;
@@ -34,13 +33,18 @@ import java.util.concurrent.ExecutionException;
 @Tag(name = "入口应用")
 @RestController
 class AController {
-    private static final Logger log = LoggerFactory.getLogger(AController.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AController.class);
 
     @Autowired
-    private RestTemplate restTemplate;
+    @Qualifier("loadBalancedRestTemplate")
+    private RestTemplate loadBalancedRestTemplate;
 
     @Autowired
     private FeignClientTest feignClient;
+
+    @Autowired
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
 
     @Autowired
     InetUtils inetUtils;
@@ -82,7 +86,7 @@ class AController {
     @RequestMapping("/a")
     public String a() throws ExecutionException, InterruptedException {
         //这是rpc调用的方式
-        String result = restTemplate.getForObject("http://sc-B/b", String.class);
+        String result = loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
 
         return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
@@ -93,9 +97,9 @@ class AController {
     public String a2bc() throws ExecutionException, InterruptedException {
 
         String resultB = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
+                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-B/b", String.class);
         String resultA = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-C/c", String.class);
+                "[config=" + configValue + "]" + " -> " + loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
 
         return resultA + "\n" + resultB;
     }
@@ -112,9 +116,9 @@ class AController {
 
     @Operation(summary = "测试防护规则", tags = {"流量防护"})
     @GetMapping("/flow")
-    public String flow() throws ExecutionException, InterruptedException {
+    public String flow() {
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://sc-B/flow", String.class);
+        ResponseEntity<String> responseEntity = loadBalancedRestTemplate.getForEntity("http://sc-B/flow", String.class);
         HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
@@ -147,6 +151,14 @@ class AController {
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
+
+    @GetMapping("/spring_boot")
+    public String spring_boot() {
+        String result = restTemplate.getForObject("http://sc-b:20002/spring_boot", String.class);
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+                " -> " + result;
+    }
+
     @GetMapping("/sql")
     public String sql(@RequestParam Map<String, String> allRequestParams) throws UnsupportedEncodingException {
         StringBuilder url = new StringBuilder("http://sc-B/sql?");
@@ -166,7 +178,7 @@ class AController {
     @GetMapping("/a-zone")
     public String aZone() {
         return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
-                restTemplate.getForObject("http://sc-B/b-zone", String.class);
+                loadBalancedRestTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
     @Operation(summary = "Dubbo 全链路灰度入口", tags = {"入口应用"})

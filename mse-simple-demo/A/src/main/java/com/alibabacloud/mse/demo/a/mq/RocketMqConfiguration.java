@@ -28,6 +28,7 @@ public class RocketMqConfiguration {
     private String topic;
 
     @Autowired
+    @Qualifier("loadBalancedRestTemplate")
     private RestTemplate restTemplate;
 
     @Autowired

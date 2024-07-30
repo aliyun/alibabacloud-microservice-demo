@@ -8,6 +8,7 @@ spec:
   selector:
     matchLabels:
       app: spring-cloud-c
+      version: base
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -19,6 +20,7 @@ spec:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-c"
         app: "spring-cloud-c"
+        version: base
     spec:
       containers:
         - name: spring-cloud-c

@@ -12,6 +12,7 @@ spec:
       labels:
         msePilotAutoEnable: "off"
         app: nacos-server
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
         - name: nacos-server

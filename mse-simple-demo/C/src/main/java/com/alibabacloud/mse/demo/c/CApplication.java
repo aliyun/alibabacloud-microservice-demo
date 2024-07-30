@@ -1,5 +1,6 @@
 package com.alibabacloud.mse.demo.c;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -10,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 @SpringBootApplication
@@ -34,12 +37,12 @@ public class CApplication {
     }
 
     @Bean(name = "serviceTag")
-    String serviceTag() {
+    String serviceTag() throws UnknownHostException {
         String tag = parseServiceTag("/etc/podinfo/labels");
-        if (tag != null && !tag.isEmpty()) {
+        if (StringUtils.isNotEmpty(tag)) {
             return tag;
         }
-        return parseServiceTag("/etc/podinfo/annotations");
+        return InetAddress.getLocalHost().getHostName();
     }
 
     private String parseServiceTag(String path) {

@@ -18,7 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 @SpringBootApplication
@@ -30,19 +32,27 @@ public class BApplication {
         SpringApplication.run(BApplication.class, args);
     }
 
-    @Bean
+    @Bean(name = "loadBalancedRestTemplate")
     @LoadBalanced
-    RestTemplate restTemplate() {
+    RestTemplate loadBalancedRestTemplate() {
         return new RestTemplate();
     }
 
+    @Bean(name = "restTemplate")
+    RestTemplate restTemplate() {
+        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
+            request.getHeaders().add("Connection", "close");
+            return execution.execute(request, body);
+        })).build();
+    }
+
     @Bean(name = "serviceTag")
-    String serviceTag() {
+    String serviceTag() throws UnknownHostException {
         String tag = parseServiceTag("/etc/podinfo/labels");
         if (StringUtils.isNotEmpty(tag)) {
             return tag;
         }
-        return parseServiceTag("/etc/podinfo/annotations");
+        return InetAddress.getLocalHost().getHostName();
     }
 
     private String parseServiceTag(String path) {

@@ -10,6 +10,7 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +25,8 @@ public class MqConsumer implements MessageListenerConcurrently {
 
     private String serviceTag;
 
-    public MqConsumer(RestTemplate restTemplate, InetUtils inetUtils, String serviceTag) {
+    public MqConsumer(
+            @Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate, InetUtils inetUtils, String serviceTag) {
         this.restTemplate = restTemplate;
         this.inetUtils = inetUtils;
         this.serviceTag = serviceTag;

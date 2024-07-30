@@ -7,7 +7,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-a-gray
+      app: spring-cloud-a
       version: gray
   strategy:
     rollingUpdate:
@@ -20,7 +20,7 @@ spec:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-a"
         alicloud.service.tag: gray
-        app: "spring-cloud-a-gray"
+        app: "spring-cloud-a"
         version: gray
     spec:
       containers:
