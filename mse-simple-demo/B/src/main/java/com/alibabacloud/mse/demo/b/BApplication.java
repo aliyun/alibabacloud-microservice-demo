@@ -47,12 +47,8 @@ public class BApplication {
     }
 
     @Bean(name = "serviceTag")
-    String serviceTag() throws UnknownHostException {
-        String tag = parseServiceTag("/etc/podinfo/labels");
-        if (StringUtils.isNotEmpty(tag)) {
-            return tag;
-        }
-        return InetAddress.getLocalHost().getHostName();
+    String serviceTag() {
+        return parseServiceTag("/etc/podinfo/labels");
     }
 
     private String parseServiceTag(String path) {
