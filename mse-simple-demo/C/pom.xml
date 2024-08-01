@@ -18,8 +18,8 @@
         <spring-boot.version>1.5.1.RELEASE</spring-boot.version>
         <spring-cloud.version>Edgware.SR2</spring-cloud.version>
         <spring-cloud-alibaba.version>1.5.0.RELEASE</spring-cloud-alibaba.version>
-        <dubbo.version>2.7.18</dubbo.version>
-        <rocketmq.version>4.5.2</rocketmq.version>
+        <dubbo.version>2.7.23</dubbo.version>
+        <rocketmq.version>4.9.8</rocketmq.version>
     </properties>
 
     <dependencies>
