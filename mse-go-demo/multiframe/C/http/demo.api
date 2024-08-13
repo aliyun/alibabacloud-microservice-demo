@@ -1,0 +1,21 @@
+syntax = "v1"
+
+type (
+	GreetReq {
+		Name     string `json:"name",form:"name",query:"name"`
+		CallType string `json:"callType",form:"callType",query:"callType"`
+	}
+	GreetResp {
+		Message   string `json:"message"`
+		CallChain string `json:"callChain"`
+	}
+)
+
+service Greet {
+	@handler greet1c
+	get /greet1c (GreetReq) returns (GreetResp)
+
+	@handler greet2c
+	post /greet2c (GreetReq) returns (GreetResp)
+}
+

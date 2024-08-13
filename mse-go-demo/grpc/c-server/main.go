@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/c-server/proto"
+	pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/grpc/c-server/proto"
 )
 
 const (

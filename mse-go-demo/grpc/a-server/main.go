@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"time"
 
-	b_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/a-server/proto/b_api"
+	b_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/grpc/a-server/proto/b_api"
 	"google.golang.org/grpc"
 )
 

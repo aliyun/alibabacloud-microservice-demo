@@ -1,0 +1,25 @@
+// 声明 proto 语法版本，固定值
+syntax = "proto3";
+
+// proto 包名
+package greet;
+
+// 生成 golang 代码后的包名
+option go_package = "./";
+
+// 定义请求体
+message CSayHelloReq {
+  string name = 1;
+  string callType = 2;
+}
+// 定义响应体
+message CSayHelloResp {
+  string message = 1;
+  string callChain = 2;
+}
+
+// 定义 Greet 服务
+service CGreeter {
+  // 定义一个 SayHello 一元 rpc 方法，请求体和响应体必填。
+  rpc CSayHello(CSayHelloReq) returns (CSayHelloResp);
+}

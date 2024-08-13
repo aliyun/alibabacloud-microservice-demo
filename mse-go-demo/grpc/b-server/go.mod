@@ -1,4 +1,4 @@
-module github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/a-server
+module github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/grpc/b-server
 
 go 1.19
 
