@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package helloworld;
+
+import "google/api/annotations.proto";
+
+option go_package = "mse-go-integration-test-demo/kratos/C/proto/b_api";
+
+// The greeting service definition.
+service BGreeter {
+  // Sends a greeting
+  rpc BSayHello (BHelloRequest) returns (BHelloReply)  {
+    option (google.api.http) = {
+      get: "/greet1b",
+      additional_bindings {
+        post: "/greet2b",
+        body: "*",
+      }
+    };
+  }
+}
+
+// The request message containing the user's name.
+message BHelloRequest {
+  string name = 1;
+  string callType = 2;
+}
+
+// The response message containing the greetings
+message BHelloReply {
+  string message = 1;
+  string CallChain = 2;
+}

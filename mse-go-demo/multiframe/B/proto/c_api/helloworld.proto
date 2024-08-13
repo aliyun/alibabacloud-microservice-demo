@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package helloworld;
+
+import "google/api/annotations.proto";
+
+option go_package = "mse-go-integration-test-demo/kratos/C/proto/c_api";
+
+// The greeting service definition.
+service CGreeter {
+  // Sends a greeting
+  rpc CSayHello (CHelloRequest) returns (CHelloReply)  {
+    option (google.api.http) = {
+      get: "/greet1c",
+      additional_bindings {
+        post: "/greet2c",
+        body: "*",
+      }
+    };
+  }
+}
+
+// The request message containing the user's name.
+message CHelloRequest {
+  string name = 1;
+  string callType = 2;
+}
+
+// The response message containing the greetings
+message CHelloReply {
+  string message = 1;
+  string CallChain = 2;
+}

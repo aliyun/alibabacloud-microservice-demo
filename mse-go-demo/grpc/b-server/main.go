@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	b_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/b-server/proto/b_api"
-	c_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/b-server/proto/c_api"
+	b_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/grpc/b-server/proto/b_api"
+	c_api_pb "github.com/aliyun/alibabacloud-microservice-demo/mse-go-demo/grpc/b-server/proto/c_api"
 )
 
 const (
