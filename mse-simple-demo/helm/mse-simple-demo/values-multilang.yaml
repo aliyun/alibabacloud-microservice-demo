@@ -12,7 +12,7 @@ gateway:
     ingress: false
 
 goapp:
-  enable: false
+  enable: true
 
 prometheus:
   enable: false

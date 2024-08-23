@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-cloud-a
+  name: spring-cloud-c
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-    - port: 20001
+    - port: 20003
       protocol: TCP
-      targetPort: 20001
+      targetPort: 20003
   selector:
-    app: spring-cloud-a
+    app: spring-cloud-c
   type: ClusterIP

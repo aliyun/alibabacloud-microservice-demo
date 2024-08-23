@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-cloud-a-gray
+  name: spring-cloud-b
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-    - port: 20001
+    - port: 20002
       protocol: TCP
-      targetPort: 20001
+      targetPort: 20002
   selector:
-    app: spring-cloud-a-gray
+    app: spring-cloud-b
   type: ClusterIP
