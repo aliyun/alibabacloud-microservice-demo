@@ -68,7 +68,7 @@ class CController {
         try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
             // 具体的业务逻辑
             try {
-                return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+                return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
             } catch (Throwable e) {
                 // 标记此次资源调用失败
                 entry1.setError(e);
@@ -88,7 +88,7 @@ class CController {
         try (Entry entry2 = SphU.entry("HelloWorld-c-2", EntryType.IN)) {
             try {
                 log.debug("Hello Sentinel!2");
-                return "C" + serviceTag + "[" + currentZone + "]";
+                return "C[tag=" + serviceTag + "][" + currentZone + "]";
             } catch (Throwable e) {
                 entry2.setError(e);
                 throw e;
@@ -100,7 +100,7 @@ class CController {
 
     @GetMapping("/spring_boot")
     public String spring_boot() {
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
     @GetMapping("/flow")
@@ -112,7 +112,7 @@ class CController {
                 try {
                     long sleepTime = 5 + RANDOM.nextInt(5);
                     silentSleep(sleepTime);
-                    return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+                    return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
                 } catch (Throwable throwable) {
                     entry2.setError(throwable);
                     entry1.setError(throwable);
@@ -130,14 +130,14 @@ class CController {
     public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot;
+        return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot;
     }
 
     @GetMapping("/isolate")
     public String isolate() throws ExecutionException, InterruptedException {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
+        return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
     }
 
     private void silentSleep(long ms) {
