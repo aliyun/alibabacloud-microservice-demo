@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        # msePilotAutoEnable: "on"
+        msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-a"
         app: "spring-cloud-a"
     spec:

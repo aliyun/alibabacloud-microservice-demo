@@ -17,8 +17,9 @@ spec:
   template:
     metadata:
       labels:
-        # msePilotAutoEnable: "on"
+        msePilotAutoEnable: "on"
         msePilotCreateAppName: "go-app"
+        aliyun.com/app-language: golang
         app: "go-app"
     spec:
       containers:

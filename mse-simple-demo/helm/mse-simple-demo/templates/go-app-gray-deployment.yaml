@@ -18,8 +18,9 @@ spec:
   template:
     metadata:
       labels:
-        # msePilotAutoEnable: "on"
+        msePilotAutoEnable: "on"
         msePilotCreateAppName: "go-app"
+        aliyun.com/app-language: golang
         alicloud.service.tag: gray
         app: "go-app"
         version: gray
