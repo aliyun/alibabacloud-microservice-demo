@@ -7,7 +7,7 @@ spec:
   replicas: 0
   selector:
     matchLabels:
-      app: spring-cloud-b-gray
+      app: spring-cloud-b
       version: gray
   strategy:
     rollingUpdate:
@@ -17,10 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        # msePilotAutoEnable: "on"
+        msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-b"
         alicloud.service.tag: gray
-        app: "spring-cloud-b-gray"
+        app: "spring-cloud-b"
         version: gray
     spec:
       containers:
@@ -47,7 +47,7 @@ spec:
             {{ end }}
           ports:
             - name: http-port
-              containerPort: 20001
+              containerPort: 20002
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:

@@ -1,13 +1,14 @@
+{{ if .Values.goapp.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-cloud-a-gray
+  name: go-app-gray
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-cloud-a
+      app: go-app
       version: gray
   strategy:
     rollingUpdate:
@@ -17,15 +18,15 @@ spec:
   template:
     metadata:
       labels:
-        msePilotAutoEnable: "on"
-        msePilotCreateAppName: "spring-cloud-a"
+        # msePilotAutoEnable: "on"
+        msePilotCreateAppName: "go-app"
         alicloud.service.tag: gray
-        app: "spring-cloud-a"
+        app: "go-app"
         version: gray
     spec:
       containers:
-        - name: spring-cloud-a
-          image: "{{ .Values.registry }}spring-cloud-a:{{ .Values.images.version }}"
+        - name: go-app
+          image: "{{ .Values.registry }}gin-server-a:{{ .Values.images.version }}"
           imagePullPolicy: Always
           env:
             - name: nacos.host
@@ -47,10 +48,11 @@ spec:
             {{ end }}
           ports:
             - name: http-port
-              containerPort: 20001
+              containerPort: 8080
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - topologyKey: topology.kubernetes.io/zone
+ {{ end }}
