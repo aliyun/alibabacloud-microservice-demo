@@ -16,6 +16,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        alicloud.service.tag: gray
       labels:
         msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-a"
