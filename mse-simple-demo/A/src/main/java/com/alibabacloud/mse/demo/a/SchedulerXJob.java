@@ -16,7 +16,7 @@ public class SchedulerXJob extends JavaProcessor {
         System.out.println(context);
 
         String result = aController.a();
-        System.out.println(result)
+        System.out.println(result);
 
         return new ProcessResult(true);
     }
