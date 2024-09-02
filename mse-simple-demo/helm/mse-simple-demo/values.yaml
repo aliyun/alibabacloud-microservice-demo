@@ -6,8 +6,8 @@ images:
 
 # 是否启动zuul、springcloud网关
 gateway:
-  zuul: false
-  springcloud: true
+  zuul: true
+  springcloud: false
   mse:
     ingress: false
 
