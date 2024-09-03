@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 @Api(value = "/", tags = {"入口应用"})
 @RestController
+@RefreshScope
 class AController {
     private static final Logger log = LoggerFactory.getLogger(AController.class);
 
@@ -253,5 +254,11 @@ class AController {
             }
         }
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + response;
+    }
+
+    @ApiOperation(value = "Nacos灰度配置", tags = {"入口应用"})
+    @RequestMapping("/custom-config")
+    public String a() throws ExecutionException, InterruptedException {
+        return this.configValue;
     }
 }
