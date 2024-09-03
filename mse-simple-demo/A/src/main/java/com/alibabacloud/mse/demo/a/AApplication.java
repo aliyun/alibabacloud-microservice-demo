@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,6 +25,7 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableSwagger2
 @EnableFeignClients
+@NacosPropertySource(dataId = "mse-simple-demo-a", autoRefreshed = true)
 public class AApplication {
 
     public static void main(String[] args) {
