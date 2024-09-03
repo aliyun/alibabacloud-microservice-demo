@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+import com.alibaba.nacos.api.config.annotation.NacosValue;
 
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
@@ -34,7 +34,6 @@ import java.util.concurrent.ExecutionException;
 
 @Api(value = "/", tags = {"入口应用"})
 @RestController
-@RefreshScope
 class AController {
     private static final Logger log = LoggerFactory.getLogger(AController.class);
 
@@ -56,7 +55,7 @@ class AController {
     @Autowired
     String serviceTag;
 
-    @Value("${custom.config.value}")
+    @NacosValue(value = "${custom.config.value:default}", autoRefreshed = true)
     private String configValue;
 
     private String currentZone;
