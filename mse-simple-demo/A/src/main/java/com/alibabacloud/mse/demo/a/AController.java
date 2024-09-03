@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
@@ -258,7 +259,7 @@ class AController {
 
     @ApiOperation(value = "Nacos灰度配置", tags = {"入口应用"})
     @RequestMapping("/custom-config")
-    public String a() throws ExecutionException, InterruptedException {
+    public String getCustomConfig() throws ExecutionException, InterruptedException {
         return this.configValue;
     }
 }
