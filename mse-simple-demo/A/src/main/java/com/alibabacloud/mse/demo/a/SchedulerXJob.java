@@ -5,6 +5,7 @@ import com.alibaba.schedulerx.worker.domain.JobContext;
 import com.alibaba.schedulerx.worker.processor.JavaProcessor;
 import com.alibaba.schedulerx.worker.processor.ProcessResult;
 import com.alibabacloud.mse.demo.a.AController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class SchedulerXJob extends JavaProcessor {
