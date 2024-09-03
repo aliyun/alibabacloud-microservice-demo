@@ -63,9 +63,9 @@
 
         <!-- Nacos Config and Discovery -->
         <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>nacos-config-spring-boot-starter</artifactId>
-            <version>0.2.6</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <version>2021.0.4.0</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
