@@ -56,7 +56,7 @@ class AController {
     @Autowired
     String serviceTag;
 
-    @Value("${configValue:default}")
+    @Value("${dynamicConfig:default}")
     private String configValue;
 
     private String currentZone;
@@ -87,7 +87,7 @@ class AController {
         String result = restTemplate.getForObject("http://sc-B/b", String.class);
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口 a调用b和c", tags = {"入口应用"})
@@ -95,9 +95,9 @@ class AController {
     public String a2bc() throws ExecutionException, InterruptedException {
 
         String resultB = "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
+                "[dynamicConfig=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
         String resultA = "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-C/c", String.class);
+                "[dynamicConfig=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-C/c", String.class);
 
         return resultA + "\n" + resultB;
     }
@@ -109,7 +109,7 @@ class AController {
         String result = feignClient.bByFeign("test");
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "测试防护规则" , tags = {"流量防护"})
@@ -121,7 +121,7 @@ class AController {
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
 
@@ -134,7 +134,7 @@ class AController {
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " params:" + hot + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " params:" + hot + " -> " + result;
     }
 
     @ApiOperation(value = "测试隔离规则", tags = { "流量防护"})
@@ -146,7 +146,7 @@ class AController {
         String result = responseEntity.getBody() + " code:" + status.value();
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @GetMapping("/sql")
@@ -161,7 +161,7 @@ class AController {
         }
         String result = restTemplate.getForObject(url.toString(), String.class);
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "HTTP 全链路灰度入口", tags = {"入口应用"})
@@ -214,7 +214,7 @@ class AController {
         String result = feignClient.circuit_breaker_rt_b();
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @ApiOperation(value = "熔断异常测试" , tags = {"流量防护"})
@@ -223,7 +223,7 @@ class AController {
         String result = feignClient.circuit_breaker_exception_b();
 
         return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
-                "[config=" + configValue + "]" + " -> " + result;
+                "[dynamicConfig=" + configValue + "]" + " -> " + result;
     }
 
     @GetMapping("swagger-demo")
@@ -258,8 +258,8 @@ class AController {
     }
 
     @ApiOperation(value = "Nacos灰度配置", tags = {"入口应用"})
-    @RequestMapping("/custom-config")
-    public String getCustomConfig() throws ExecutionException, InterruptedException {
+    @RequestMapping("/dynamic-config")
+    public String getDynamicConfig() throws ExecutionException, InterruptedException {
         return this.configValue;
     }
 }
