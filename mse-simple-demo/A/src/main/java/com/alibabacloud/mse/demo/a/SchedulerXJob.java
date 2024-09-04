@@ -18,9 +18,9 @@ public class SchedulerXJob extends JavaProcessor {
 
     @Override
     public ProcessResult process(JobContext context) throws Exception {
-        log.Info("shceduler x job context is: {}", context)
+        log.Info("shceduler x job context is: {}", context);
         String result = aController.a();
-        log.Info("scheduler x job run result is: {}", result)
+        log.Info("scheduler x job run result is: {}", result);
         return new ProcessResult(true);
     }
 }
