@@ -40,4 +40,4 @@ COPY --from=build /app/target/A.jar /app/target/A.jar
 #COPY  ./target/A.jar /app/target/A.jar
 
 EXPOSE 20001
-ENTRYPOINT ["java","-jar","/app/target/A.jar"]
+ENTRYPOINT ["java","-Dnacos.config.gray.label=","-jar","/app/target/A.jar"]
