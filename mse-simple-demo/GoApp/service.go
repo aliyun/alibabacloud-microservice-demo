@@ -24,6 +24,9 @@ func init() {
 		Transport: http.DefaultTransport,
 	}
 	tag = os.Getenv("MSE_ALICLOUD_SERVICE_TAG")
+	if tag == "base" {
+		tag = ""
+	}
 	ip = getIp()
 }
 
