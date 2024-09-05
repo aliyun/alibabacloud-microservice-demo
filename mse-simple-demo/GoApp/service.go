@@ -82,7 +82,7 @@ func toApp(ctx context.Context, host string, path string) (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("GoApp[tag=%s][%s][config=%s]", tag, ip, "") + " -> " + string(b), nil
+	return fmt.Sprintf("GoApp[tag=%s][%s]", tag, ip) + " -> " + string(b), nil
 }
 
 func toA(ctx context.Context) (string, error) {
