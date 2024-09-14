@@ -20,7 +20,7 @@
         <spring-cloud-alibaba.version>2021.0.6.0</spring-cloud-alibaba.version>
         <dubbo.version>3.2.14</dubbo.version>
         <rocketmq.version>4.5.0</rocketmq.version>
-        <schedulerx2.version>1.11.5</schedulerx2.version>
+        <schedulerx2.version>1.12.0-SNAPSHOT</schedulerx2.version>
         <schedulerx2-plugin-kubernetes.version>1.0.7</schedulerx2-plugin-kubernetes.version>
     </properties>
 
