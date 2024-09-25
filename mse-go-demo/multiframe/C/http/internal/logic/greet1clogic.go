@@ -31,12 +31,18 @@ func (l *Greet1cLogic) Greet1c(req *types.GreetReq) (resp *types.GreetResp, err 
 		Message: fmt.Sprintf("hello %s", req.Name),
 	}
 
+	content, err := GreetD(context.Background(), req.Name)
+	if err != nil {
+		logx.Errorf("[Greet1cLogic.Greet1c] call d error: %v", err)
+		return nil, err
+	}
+
 	tag := os.Getenv("MSE_ALICLOUD_SERVICE_TAG")
 	if tag == "" {
 		tag = "base"
 	}
 	ip := os.Getenv("KUBERNETES_POD_IP")
-	resp.CallChain = fmt.Sprintf("C:%s:%s", tag, ip)
+	resp.CallChain = fmt.Sprintf("C:%s:%s -(grpc)- %s", tag, ip, content)
 	fmt.Printf("[Greet1cLogic.Greet1c] response: %v\n", resp)
 	return
 }

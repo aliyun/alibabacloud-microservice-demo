@@ -1,0 +1,255 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-gin-demo-a-base
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-gin-demo-a
+  template:
+    metadata:
+      labels:
+        app: go-gin-demo-a
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-gin-demo-a"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: go-gin-demo-a
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/gin-server-a:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-gin-demo-a-gray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-gin-demo-a
+  template:
+    metadata:
+      labels:
+        app: go-gin-demo-a
+        alicloud.service.tag: gray
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-gin-demo-a"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: go-gin-demo-a-base
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/gin-server-a:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-gin-demo-a
+spec:
+  selector:
+    app: go-gin-demo-a
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-kratos-demo-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-kratos-demo-b
+  template:
+    metadata:
+      labels:
+        app: go-kratos-demo-b
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-kratos-demo-b"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: go-kratos-demo-b
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/go-kratos-demo-b:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+              name: http
+            - containerPort: 9001
+              name: grpc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-kratos-demo-b
+spec:
+  selector:
+    app: go-kratos-demo-b
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8001
+      name: http
+    - protocol: TCP
+      port: 9001
+      targetPort: 9001
+      name: grpc
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-zero-demo-c-base
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-zero-demo-c
+  template:
+    metadata:
+      labels:
+        app: go-zero-demo-c
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-zero-demo-c"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: go-zero-demo-c
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/go-zero-demo-c:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8882
+              name: http
+            - containerPort: 8892
+              name: grpc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-zero-demo-c-gray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-zero-demo-c
+  template:
+    metadata:
+      labels:
+        app: go-zero-demo-c
+        alicloud.service.tag: gray
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-zero-demo-c"
+        aliyun.com/app-language: golang
+    spec:
+      containers:
+        - name: go-zero-demo-c
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/go-zero-demo-c:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8882
+              name: http
+            - containerPort: 8892
+              name: grpc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-zero-demo-c
+spec:
+  selector:
+    app: go-zero-demo-c
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8882
+      name: http
+    - protocol: TCP
+      port: 8892
+      targetPort: 8892
+      name: grpc
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-grpc-demo-d-base
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-grpc-demo-d
+  template:
+    metadata:
+      labels:
+        app: go-grpc-demo-d
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-grpc-demo-d"
+        aliyun.com/app-language: golang
+        #armsPilotAutoEnable: "on"
+        #armsPilotCreateAppName: "go-grpc-demo-d"
+    spec:
+      containers:
+        - name: go-grpc-demo-d
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/go-grpc-demo-d:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 50053
+              name: grpc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-grpc-demo-d-gray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-grpc-demo-d
+  template:
+    metadata:
+      labels:
+        app: go-grpc-demo-d
+        alicloud.service.tag: gray
+        msePilotAutoEnable: "on"
+        mseNamespace: mse-go-demo-multiframe
+        msePilotCreateAppName: "go-grpc-demo-d"
+        aliyun.com/app-language: golang
+        #armsPilotAutoEnable: "on"
+        #armsPilotCreateAppName: "go-grpc-demo-d"
+    spec:
+      containers:
+        - name: go-grpc-demo-d
+          image: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/go-grpc-demo-d:1.0-multiframe
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 50053
+              name: grpc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-grpc-demo-d
+spec:
+  selector:
+    app: go-grpc-demo-d
+  ports:
+    - protocol: TCP
+      port: 50053
+      targetPort: 50053
+      name: grpc
+  type: ClusterIP
