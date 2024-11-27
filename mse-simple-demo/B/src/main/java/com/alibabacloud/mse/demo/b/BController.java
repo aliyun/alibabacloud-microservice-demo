@@ -1,44 +1,14 @@
 package com.alibabacloud.mse.demo.b;
 
-import com.alibaba.fastjson.JSON;
-import com.alibabacloud.mse.demo.c.service.HelloServiceC;
-import com.alibabacloud.mse.demo.entity.User;
-import com.alibabacloud.mse.demo.common.TrafficAttribute;
-import org.apache.dubbo.config.annotation.Reference;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import com.alibabacloud.mse.demo.Executor;
+import com.alibabacloud.mse.demo.b.service.FeignClientTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 class BController {
-
-    @Autowired
-    @Qualifier("loadBalancedRestTemplate")
-    private RestTemplate loadBalancedRestTemplate;
-
-    @Autowired
-    @Qualifier("restTemplate")
-    private RestTemplate restTemplate;
-
-    @Reference(application = "${dubbo.application.id}", version = "1.2.0")
-    private HelloServiceC helloServiceC;
 
     @Autowired
     InetUtils inetUtils;
@@ -46,177 +16,262 @@ class BController {
     @Autowired
     String serviceTag;
 
-    private String currentZone;
+    @Autowired
+    private FeignClientTest feignClient;
 
-    private static final Random RANDOM = new Random();
-
-    @PostConstruct
-    private void init() {
-        try {
-            HttpClient client = HttpClientBuilder.create().build();
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectionRequestTimeout(1000)
-                    .setConnectTimeout(1000)
-                    .setSocketTimeout(1000)
-                    .build();
-            HttpGet req = new HttpGet("http://100.100.100.200/latest/meta-data/zone-id");
-            req.setConfig(requestConfig);
-            HttpResponse response = client.execute(req);
-            currentZone = EntityUtils.toString(response.getEntity());
-        } catch (Exception e) {
-            currentZone = e.getMessage();
-        }
+    @GetMapping("/httpTest1")
+    public String httpTest1() {
+        return genResult() + feignClient.feignTest1();
     }
 
-
-    @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/flow", String.class);
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
+    @GetMapping("/httpTest2")
+    public String httpTest2() {
+        return genResult() + feignClient.feignTest2();
     }
 
-    @GetMapping("/params/{hot}")
-    public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/params/" + hot, String.class);
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot + " -> " + result;
+    @GetMapping("/httpTest3")
+    public String httpTest3() {
+        return genResult() + feignClient.feignTest3();
     }
 
-    @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 500 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        String result = loadBalancedRestTemplate.getForObject("http://sc-C/isolate", String.class);
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
+    @GetMapping("/httpTest4")
+    public String httpTest4() {
+        return genResult() + feignClient.feignTest4();
     }
 
-    @GetMapping("/b")
-    public String b(HttpServletRequest request) {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                loadBalancedRestTemplate.getForObject("http://sc-C/c", String.class);
+    @GetMapping("/httpTest5")
+    public String httpTest5() {
+        return genResult() + feignClient.feignTest5();
     }
 
-    @GetMapping("/bByFeign")
-    public String bByFeign(String s) {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+    @GetMapping("/httpTest6")
+    public String httpTest6() {
+        return genResult() + feignClient.feignTest6();
     }
 
-    @GetMapping("/circuit-breaker-rt-b")
-    public String circuit_breaker_rt_b() {
-
-        Integer rt = TrafficAttribute.getInstance().getRt();
-        Integer ration = TrafficAttribute.getInstance().getSlowRation();
-
-        boolean isSlowRequest = RANDOM.nextInt(100) < ration ? true : false;
-        if (isSlowRequest) {
-            silentSleep(rt);
-        }
-
-        String slowMessage = isSlowRequest ? " RT:" + rt : "";
-
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + slowMessage;
+    @GetMapping("/httpTest7")
+    public String httpTest7() {
+        return genResult() + feignClient.feignTest7();
     }
 
-    @GetMapping("/circuit-breaker-exception-b")
-    public String circuit_breaker_exception_b() {
-        Integer ration = TrafficAttribute.getInstance().getExceptionRation();
-        boolean isExceptionRequest = RANDOM.nextInt(100) < ration ? true : false;
-        if (isExceptionRequest) {
-            throw new RuntimeException("TestCircuitBreakerException");
-        }
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+    @GetMapping("/httpTest8")
+    public String httpTest8() {
+        return genResult() + feignClient.feignTest8();
     }
 
-    @GetMapping("/b-zone")
-    public String bZone(HttpServletRequest request) {
-        return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
-                loadBalancedRestTemplate.getForObject("http://sc-C/c-zone", String.class);
+    @GetMapping("/httpTest9")
+    public String httpTest9() {
+        return genResult() + feignClient.feignTest9();
     }
 
-    @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                restTemplate.getForObject("http://sc-c:20003/spring_boot", String.class);
+    @GetMapping("/httpTest10")
+    public String httpTest10() {
+        return genResult() + feignClient.feignTest10();
     }
 
-    @GetMapping("/sql")
-    public String sql(HttpServletRequest request) {
-        User user = new User();
-        String command = request.getParameter("command");
-        String result = "";
-        switch (command) {
-            case "query":
-                user.setId(Long.parseLong(request.getParameter("id")));
-                result = JSON.toJSONString(user.selectById());
-                break;
-            case "insert":
-                user.setName(request.getParameter("name"));
-                user.setAge(Integer.parseInt(request.getParameter("age")));
-                user.setEmail(request.getParameter("email"));
-                result = String.valueOf(user.insert());
-                break;
-            case "delete":
-                user.setId(Long.parseLong(request.getParameter("id")));
-                result = String.valueOf(user.deleteById());
-                break;
-            case "update":
-                user.setId(Long.parseLong(request.getParameter("id")));
-                user.setName(request.getParameter("name"));
-                user.setAge(Integer.parseInt(request.getParameter("age")));
-                user.setEmail(request.getParameter("email"));
-                result = String.valueOf(user.updateById());
-                break;
-            default:
-                List<User> list = user.selectAll();
-                result = JSON.toJSONString(list);
-        }
-        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " result:" + result;
+    @GetMapping("/httpTest11")
+    public String httpTest11() {
+        return genResult() + feignClient.feignTest11();
     }
 
-    @GetMapping("/set-traffic-attribute")
-    public String set_traffic_attribute(HttpServletRequest request) {
-        String slowRT = request.getParameter("rt");
-        String slowRation = request.getParameter("slowRation");
-        String exceptionRation = request.getParameter("exceptionRation");
-
-        String responseMessage = "";
-
-        try {
-            Integer iSlowRT = Integer.parseInt(slowRT);
-            responseMessage += "Adjust RT " + iSlowRT + "ms ";
-            TrafficAttribute.getInstance().setRt(iSlowRT);
-        } catch (NumberFormatException e) {
-            ;
-        }
-
-        try {
-            Integer iSlowRation = Integer.parseInt(slowRation);
-            TrafficAttribute.getInstance().setSlowRation(iSlowRation);
-            responseMessage += "Adjust slow ration to " + iSlowRation + "% ";
-        } catch (NumberFormatException e) {
-            ;
-        }
-
-        try {
-            Integer iExceptionRation = Integer.parseInt(exceptionRation);
-            TrafficAttribute.getInstance().setExceptionRation(iExceptionRation);
-            responseMessage += "Adjust exception ration to " + iExceptionRation + "% ";
-        } catch (NumberFormatException e) {
-            ;
-        }
-
-        return responseMessage;
+    @GetMapping("/httpTest12")
+    public String httpTest12() {
+        return genResult() + feignClient.feignTest12();
     }
 
+    @GetMapping("/httpTest13")
+    public String httpTest13() {
+        return genResult() + feignClient.feignTest13();
+    }
 
-    private void silentSleep(long ms) {
-        try {
-            TimeUnit.MILLISECONDS.sleep(ms);
-        } catch (InterruptedException ignored) {
-        }
+    @GetMapping("/httpTest14")
+    public String httpTest14() {
+        return genResult() + feignClient.feignTest14();
+    }
+
+    @GetMapping("/httpTest15")
+    public String httpTest15() {
+        return genResult() + feignClient.feignTest15();
+    }
+
+    @GetMapping("/httpTest16")
+    public String httpTest16() {
+        return genResult() + feignClient.feignTest16();
+    }
+
+    @GetMapping("/httpTest17")
+    public String httpTest17() {
+        return genResult() + feignClient.feignTest17();
+    }
+
+    @GetMapping("/httpTest18")
+    public String httpTest18() {
+        return genResult() + feignClient.feignTest18();
+    }
+
+    @GetMapping("/httpTest19")
+    public String httpTest19() {
+        return genResult() + feignClient.feignTest19();
+    }
+
+    @GetMapping("/httpTest20")
+    public String httpTest20() {
+        return genResult() + feignClient.feignTest20();
+    }
+
+    @GetMapping("/httpTest21")
+    public String httpTest21() {
+        return genResult() + feignClient.feignTest21();
+    }
+
+    @GetMapping("/httpTest22")
+    public String httpTest22() {
+        return genResult() + feignClient.feignTest22();
+    }
+
+    @GetMapping("/httpTest23")
+    public String httpTest23() {
+        return genResult() + feignClient.feignTest23();
+    }
+
+    @GetMapping("/httpTest24")
+    public String httpTest24() {
+        return genResult() + feignClient.feignTest24();
+    }
+
+    @GetMapping("/httpTest25")
+    public String httpTest25() {
+        return genResult() + feignClient.feignTest25();
+    }
+
+    @GetMapping("/httpTest26")
+    public String httpTest26() {
+        return genResult() + feignClient.feignTest26();
+    }
+
+    @GetMapping("/httpTest27")
+    public String httpTest27() {
+        return genResult() + feignClient.feignTest27();
+    }
+
+    @GetMapping("/httpTest28")
+    public String httpTest28() {
+        return genResult() + feignClient.feignTest28();
+    }
+
+    @GetMapping("/httpTest29")
+    public String httpTest29() {
+        return genResult() + feignClient.feignTest29();
+    }
+
+    @GetMapping("/httpTest30")
+    public String httpTest30() {
+        return genResult() + feignClient.feignTest30();
+    }
+
+    @GetMapping("/httpTest31")
+    public String httpTest31() {
+        return genResult() + feignClient.feignTest31();
+    }
+
+    @GetMapping("/httpTest32")
+    public String httpTest32() {
+        return genResult() + feignClient.feignTest32();
+    }
+
+    @GetMapping("/httpTest33")
+    public String httpTest33() {
+        return genResult() + feignClient.feignTest33();
+    }
+
+    @GetMapping("/httpTest34")
+    public String httpTest34() {
+        return genResult() + feignClient.feignTest34();
+    }
+
+    @GetMapping("/httpTest35")
+    public String httpTest35() {
+        return genResult() + feignClient.feignTest35();
+    }
+
+    @GetMapping("/httpTest36")
+    public String httpTest36() {
+        return genResult() + feignClient.feignTest36();
+    }
+
+    @GetMapping("/httpTest37")
+    public String httpTest37() {
+        return genResult() + feignClient.feignTest37();
+    }
+
+    @GetMapping("/httpTest38")
+    public String httpTest38() {
+        return genResult() + feignClient.feignTest38();
+    }
+
+    @GetMapping("/httpTest39")
+    public String httpTest39() {
+        return genResult() + feignClient.feignTest39();
+    }
+
+    @GetMapping("/httpTest40")
+    public String httpTest40() {
+        return genResult() + feignClient.feignTest40();
+    }
+
+    @GetMapping("/httpTest41")
+    public String httpTest41() {
+        return genResult() + feignClient.feignTest41();
+    }
+
+    @GetMapping("/httpTest42")
+    public String httpTest42() {
+        return genResult() + feignClient.feignTest42();
+    }
+
+    @GetMapping("/httpTest43")
+    public String httpTest43() {
+        return genResult() + feignClient.feignTest43();
+    }
+
+    @GetMapping("/httpTest44")
+    public String httpTest44() {
+        return genResult() + feignClient.feignTest44();
+    }
+
+    @GetMapping("/httpTest45")
+    public String httpTest45() {
+        return genResult() + feignClient.feignTest45();
+    }
+
+    @GetMapping("/httpTest46")
+    public String httpTest46() {
+        return genResult() + feignClient.feignTest46();
+    }
+
+    @GetMapping("/httpTest47")
+    public String httpTest47() {
+        return genResult() + feignClient.feignTest47();
+    }
+
+    @GetMapping("/httpTest48")
+    public String httpTest48() {
+        return genResult() + feignClient.feignTest48();
+    }
+
+    @GetMapping("/httpTest49")
+    public String httpTest49() {
+        return genResult() + feignClient.feignTest49();
+    }
+
+    @GetMapping("/httpTest50")
+    public String httpTest50() {
+        return genResult() + feignClient.feignTest50();
+    }
+
+    public String genResult() {
+        Executor.Instance().doExecute();
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> ";
     }
 
 }

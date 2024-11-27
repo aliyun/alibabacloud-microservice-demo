@@ -17,22 +17,4 @@ public class SpringCloudGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringCloudGatewayApplication.class, args);
     }
-
-    @Bean(name = "restTemplate")
-    RestTemplate restTemplate() {
-        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
-            request.getHeaders().add("Connection", "close");
-            return execution.execute(request, body);
-        })).build();
-    }
-
-    @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .build();
-    }
-    @Bean
-    public ConversionService conversionService() {
-        return new DefaultConversionService();
-    }
 }

@@ -31,12 +31,4 @@ public class ZuulApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZuulApplication.class, args);
     }
-
-    @Bean(name = "restTemplate")
-    RestTemplate restTemplate() {
-        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
-            request.getHeaders().add("Connection", "close");
-            return execution.execute(request, body);
-        })).build();
-    }
 }

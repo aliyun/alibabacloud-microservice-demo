@@ -2,7 +2,6 @@
 package com.alibabacloud.mse.demo.b;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -22,26 +21,11 @@ import java.net.URI;
 import java.util.Properties;
 
 @SpringBootApplication
-@MapperScan("com.alibabacloud.mse.demo.mapper")
 @EnableFeignClients
 public class BApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BApplication.class, args);
-    }
-
-    @Bean(name = "loadBalancedRestTemplate")
-    @LoadBalanced
-    RestTemplate loadBalancedRestTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean(name = "restTemplate")
-    RestTemplate restTemplate() {
-        return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
-            request.getHeaders().add("Connection", "close");
-            return execution.execute(request, body);
-        })).build();
     }
 
     @Bean(name = "serviceTag")

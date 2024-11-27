@@ -53,13 +53,6 @@
             <version>1.18.24</version>
         </dependency>
 
-        <!-- MQ -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>4.5.2</version>
-        </dependency>
-
         <!--  Dubbo -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>
@@ -77,12 +70,6 @@
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-nacos</artifactId>
             <version>2.7.15</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
         </dependency>
 
         <dependency>

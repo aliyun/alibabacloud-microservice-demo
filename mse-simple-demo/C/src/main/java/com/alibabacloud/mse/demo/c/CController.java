@@ -1,5 +1,6 @@
 package com.alibabacloud.mse.demo.c;
 
+import com.alibabacloud.mse.demo.c.utils.DBExecutor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,79 +35,265 @@ class CController {
     @Autowired
     String serviceTag;
 
-    @Value("${throwException:false}")
-    boolean throwException;
+    @Autowired
+    DBExecutor dbExecutor;
 
-    private String currentZone;
-
-    private static final Random RANDOM = new Random();
-
-    @PostConstruct
-    private void init() {
-        try {
-            HttpClient client = HttpClientBuilder.create().build();
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectionRequestTimeout(1000)
-                    .setConnectTimeout(1000)
-                    .setSocketTimeout(1000)
-                    .build();
-            HttpGet req = new HttpGet("http://100.100.100.200/latest/meta-data/zone-id");
-            req.setConfig(requestConfig);
-            HttpResponse response = client.execute(req);
-            currentZone = EntityUtils.toString(response.getEntity());
-        } catch (Exception e) {
-            currentZone = e.getMessage();
-        }
-
+    @GetMapping("/httpTest1")
+    public String httpTest1() {
+        return genResult();
     }
 
-    @GetMapping("/c")
-    public String c(HttpServletRequest request) {
-        if (throwException) {
-            throw new RuntimeException();
+    @GetMapping("/httpTest2")
+    public String httpTest2() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest3")
+    public String httpTest3() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest4")
+    public String httpTest4() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest5")
+    public String httpTest5() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest6")
+    public String httpTest6() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest7")
+    public String httpTest7() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest8")
+    public String httpTest8() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest9")
+    public String httpTest9() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest10")
+    public String httpTest10() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest11")
+    public String httpTest11() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest12")
+    public String httpTest12() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest13")
+    public String httpTest13() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest14")
+    public String httpTest14() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest15")
+    public String httpTest15() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest16")
+    public String httpTest16() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest17")
+    public String httpTest17() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest18")
+    public String httpTest18() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest19")
+    public String httpTest19() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest20")
+    public String httpTest20() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest21")
+    public String httpTest21() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest22")
+    public String httpTest22() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest23")
+    public String httpTest23() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest24")
+    public String httpTest24() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest25")
+    public String httpTest25() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest26")
+    public String httpTest26() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest27")
+    public String httpTest27() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest28")
+    public String httpTest28() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest29")
+    public String httpTest29() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest30")
+    public String httpTest30() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest31")
+    public String httpTest31() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest32")
+    public String httpTest32() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest33")
+    public String httpTest33() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest34")
+    public String httpTest34() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest35")
+    public String httpTest35() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest36")
+    public String httpTest36() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest37")
+    public String httpTest37() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest38")
+    public String httpTest38() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest39")
+    public String httpTest39() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest40")
+    public String httpTest40() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest41")
+    public String httpTest41() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest42")
+    public String httpTest42() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest43")
+    public String httpTest43() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest44")
+    public String httpTest44() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest45")
+    public String httpTest45() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest46")
+    public String httpTest46() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest47")
+    public String httpTest47() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest48")
+    public String httpTest48() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest49")
+    public String httpTest49() {
+        return genResult();
+    }
+
+    @GetMapping("/httpTest50")
+    public String httpTest50() {
+        return genResult();
+    }
+
+    public String genResult(){
+        try {
+            dbExecutor.doDBExecute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
-    }
-
-    @GetMapping("/c-zone")
-    public String cZone(HttpServletRequest request) {
-        if (throwException) {
-            throw new RuntimeException();
-        }
-        return "C" + serviceTag + "[" + currentZone + "]";
-    }
-
-    @GetMapping("/spring_boot")
-    public String spring_boot(HttpServletRequest request) {
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
-    }
-
-
-    @GetMapping("/flow")
-    public String flow(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
-    }
-
-    @GetMapping("/params/{hot}")
-    public String params(@PathVariable("hot") String hot) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot;
-    }
-
-    @GetMapping("/isolate")
-    public String isolate(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        long sleepTime = 5 + RANDOM.nextInt(5);
-        silentSleep(sleepTime);
-        return "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime;
-    }
-
-    private void silentSleep(long ms) {
-        try {
-            TimeUnit.MILLISECONDS.sleep(ms);
-        } catch (InterruptedException ignored) {
-        }
     }
 }

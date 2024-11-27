@@ -1,4 +1,4 @@
-package com.alibabacloud.mse.demo.a.service;
+package com.alibabacloud.mse.demo.b.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 //这是springcloud  RPCFeignClient的调用方式
 @Component
-@FeignClient(name = "sc-B", fallbackFactory = FeignClientFallback.class)
+@FeignClient(name = "sc-C", fallbackFactory = FeignClientFallback.class)
 public interface FeignClientTest {
     @GetMapping("/httpTest1")
     String feignTest1();

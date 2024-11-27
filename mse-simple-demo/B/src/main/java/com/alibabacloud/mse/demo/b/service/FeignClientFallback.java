@@ -1,6 +1,6 @@
-package com.alibabacloud.mse.demo.a.service;
+package com.alibabacloud.mse.demo.b.service;
 
-import org.springframework.cloud.openfeign.FallbackFactory;
+import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 @Component
