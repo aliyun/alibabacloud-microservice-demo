@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-class AController {
+public class AController {
     private static final Logger log = LoggerFactory.getLogger(AController.class);
 
     @Autowired
@@ -82,7 +82,7 @@ class AController {
         //这是rpc调用的方式
         String result = restTemplate.getForObject("http://sc-B/b", String.class);
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -90,9 +90,9 @@ class AController {
     @GetMapping("/a2bc")
     public String a2bc() throws ExecutionException, InterruptedException {
 
-        String resultB = "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        String resultB = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-B/b", String.class);
-        String resultA = "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        String resultA = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + restTemplate.getForObject("http://sc-C/c", String.class);
 
         return resultA + "\n" + resultB;
@@ -104,7 +104,7 @@ class AController {
 
         String result = feignClient.bByFeign("test");
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -116,7 +116,7 @@ class AController {
         HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -129,7 +129,7 @@ class AController {
         HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " params:" + hot + " -> " + result;
     }
 
@@ -141,7 +141,7 @@ class AController {
         HttpStatusCode status = responseEntity.getStatusCode();
         String result = responseEntity.getBody() + " code:" + status.value();
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -156,21 +156,21 @@ class AController {
             url.append("&");
         }
         String result = restTemplate.getForObject(url.toString(), String.class);
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
     @Operation(summary = "HTTP 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/a-zone")
     public String aZone() {
-        return "A[tag=" + serviceTag + "][" + currentZone + "]" + " -> " +
+        return "A" + serviceTag + "[" + currentZone + "]" + " -> " +
                 restTemplate.getForObject("http://sc-B/b-zone", String.class);
     }
 
     @Operation(summary = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo")
     public String dubbo(@RequestParam(required = false) String param) {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello(param);
     }
 
@@ -178,28 +178,28 @@ class AController {
     @Operation(summary = "Dubbo 全链路灰度入口", tags = {"入口应用"})
     @GetMapping("/dubbo2")
     public String dubbo2(@RequestParam Map<String,String> allRequestParams) {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceBTwo.hello2(JSON.toJSONString(allRequestParams));
     }
 
     @Operation(summary = "Dubbo 限流测试", tags = {"入口应用"})
     @GetMapping("/dubbo-flow")
     public String dubbo_flow() {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello("A");
     }
 
     @Operation(summary = "Dubbo 热点测试", tags = {"入口应用"})
     @GetMapping("/dubbo-params/{hot}")
     public String dubbo_params(@PathVariable("hot") String hot) {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + hot + " -> " +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + hot + " -> " +
                 helloServiceB.hello(hot);
     }
 
     @Operation(summary = "Dubbo 隔离测试", tags = {"入口应用"})
     @GetMapping("/dubbo-isolate")
     public String dubbo_isolate() {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "["  + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.hello("isolate");
     }
 
@@ -209,7 +209,7 @@ class AController {
 
         String result = feignClient.circuit_breaker_rt_b();
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -218,7 +218,7 @@ class AController {
     public String circuit_breaker_exception() throws ExecutionException, InterruptedException {
         String result = feignClient.circuit_breaker_exception_b();
 
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +
                 "[config=" + configValue + "]" + " -> " + result;
     }
 
@@ -233,7 +233,7 @@ class AController {
     @Operation(summary = "Dubbo rt 熔断测试", tags = {"入口应用"})
     @GetMapping("/dubbo-circuit-breaker-rt")
     public String dubbo_circuit_breaker_rt() {
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 helloServiceB.slow();
     }
 
@@ -250,6 +250,6 @@ class AController {
                 response = "Service is in abnormal status and throws exception by itself!";
             }
         }
-        return "A[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + response;
+        return "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " + response;
     }
 }
