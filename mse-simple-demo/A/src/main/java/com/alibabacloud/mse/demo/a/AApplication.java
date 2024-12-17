@@ -1,6 +1,7 @@
 
 package com.alibabacloud.mse.demo.a;
 
+import com.alibaba.schedulerx.worker.SchedulerxWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +29,19 @@ public class AApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AApplication.class, args);
+    }
+
+    @Bean
+    public SchedulerxWorker initSchedulerxWorker() throws Exception {
+        SchedulerxWorker schedulerxWorker = new SchedulerxWorker();
+        schedulerxWorker.setEndpoint("addr-hz-internal.edas.aliyun.com");
+        schedulerxWorker.setNamespace("2b1db5e5-a0d2-41f6-86e6-12e81756297d");
+        schedulerxWorker.setGroupId("sc-a");
+        //1.2.1及以上版本需要设置应用key
+        schedulerxWorker.setAppKey("YEAP5ZgJMicZX4nCynRZOUA");
+        schedulerxWorker.setLabel(System.getenv("version"));
+
+        return schedulerxWorker;
     }
 
     @Bean

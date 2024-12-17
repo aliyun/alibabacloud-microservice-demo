@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,9 @@ class BController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Value("${custom.config.value:base}")
+    private String configValue;
 
     @Reference(application = "${dubbo.application.id}", version = "1.2.0")
     private HelloServiceC helloServiceC;

@@ -15,14 +15,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
-        <spring-boot.version>1.5.1.RELEASE</spring-boot.version>
-        <spring-cloud.version>Edgware.SR2</spring-cloud.version>
-        <spring-cloud-alibaba.version>1.5.0.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
         <dubbo.version>2.7.23</dubbo.version>
-        <rocketmq.version>4.9.8</rocketmq.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version> <!-- 请根据需要选择版本 -->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -32,24 +39,19 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
-
-        <!-- MQ -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>${rocketmq.version}</version>
-        </dependency>
-
 
         <!--  Dubbo -->
         <dependency>
@@ -107,10 +109,32 @@
             <artifactId>sentinel-core</artifactId>
             <version>1.8.7</version>
         </dependency>
+
+
+
+        <!-- MQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client-java</artifactId>
+            <version>5.0.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.99.Final</version> <!-- 确保使用正确的版本号 -->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>4.1.99.Final</version> <!-- 使用所需的 Netty 版本 -->
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -128,7 +152,7 @@
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
+                <version>2021.0.5.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -159,4 +183,5 @@
 
 
 </project>
+
 

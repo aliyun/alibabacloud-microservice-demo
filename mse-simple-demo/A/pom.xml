@@ -17,9 +17,11 @@
         <java.version>8</java.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring-cloud.version>2021.0.4</spring-cloud.version>
-        <spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
         <dubbo.version>2.7.23</dubbo.version>
-        <rocketmq.version>4.5.0</rocketmq.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <schedulerx2.version>1.12.2</schedulerx2.version>
     </properties>
 
     <dependencies>
@@ -51,13 +53,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
-        </dependency>
-
-        <!-- MQ -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>${rocketmq.version}</version>
         </dependency>
 
         <!--  Dubbo -->
@@ -112,6 +107,43 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version> <!-- 请根据需要选择版本 -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.schedulerx</groupId>
+            <artifactId>schedulerx2-worker</artifactId>
+            <version>${schedulerx2.version}</version>
+            <!--如果用的是logback，需要把log4j和log4j2排除掉 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- MQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client-java</artifactId>
+            <version>5.0.7</version>
         </dependency>
     </dependencies>
 

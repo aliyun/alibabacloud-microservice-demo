@@ -2,11 +2,11 @@ package com.alibabacloud.mse.demo.c.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.rpc.RpcContext;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.client.apis.ClientServiceProvider;
+import org.apache.rocketmq.client.apis.message.Message;
+import org.apache.rocketmq.client.apis.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
@@ -18,7 +18,9 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class HelloServiceCTwoImpl implements HelloServiceCTwo {
 
-    private final DefaultMQProducer producer;
+    private final ClientServiceProvider provider = ClientServiceProvider.loadService();
+
+    private final Producer producer;
 
     @Autowired
     InetUtils inetUtils;
@@ -42,17 +44,20 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
         String value = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + name;
         String invokerTag="";
         String userData = RpcContext.getContext().getAttachment("__microservice_tag__");
-        if (!StringUtils.isEmpty(userData)) {
-            invokerTag = StringUtils.substringBefore(userData,",").split("\"")[3];
+        if (!isEmpty(userData)) {
+            invokerTag = substringBefore(userData,",").split("\"")[3];
         }
 
         try {
-            Message msg = new Message();
-            msg.setTopic(topic);
-            msg.setBody(value.getBytes(StandardCharsets.UTF_8));
-            producer.send(msg);
-            log.info("topic:{},messageString:{},__microservice_tag__:{}", topic, value, StringUtils.trimToNull(invokerTag));
-        } catch (Exception ignore) {
+            final Message message = provider.newMessageBuilder()
+                    // Set topic for the current message.
+                    .setTopic(topic)
+                    .setBody(value.getBytes(StandardCharsets.UTF_8))
+                    .build();
+
+            producer.send(message);
+        } catch (Exception e) {
+            log.error("error:", e);
         }
 
         return value;
@@ -61,6 +66,23 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
     @Override
     public String world2(String name) {
         return  "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "] -> " + name;
+    }
+
+    public static boolean isEmpty(CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    public static String substringBefore(String str, String separator) {
+        if (!isEmpty(str) && separator != null) {
+            if (separator.isEmpty()) {
+                return "";
+            } else {
+                int pos = str.indexOf(separator);
+                return pos == -1 ? str : str.substring(0, pos);
+            }
+        } else {
+            return str;
+        }
     }
 
 }

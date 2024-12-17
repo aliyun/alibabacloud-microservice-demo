@@ -1,51 +1,41 @@
 package com.alibabacloud.mse.demo.a.mq;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
-import org.apache.rocketmq.common.message.MessageExt;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.commons.util.InetUtils;
+import org.apache.rocketmq.client.apis.consumer.ConsumeResult;
+import org.apache.rocketmq.client.apis.consumer.MessageListener;
+import org.apache.rocketmq.client.apis.message.MessageView;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * @author zhujy
+ */
 @Slf4j
 @Component
-public class MqConsumer implements MessageListenerConcurrently {
-
-    private RestTemplate restTemplate;
-
-    private InetUtils inetUtils;
-
-    private String serviceTag;
-
-    public MqConsumer(RestTemplate restTemplate, InetUtils inetUtils, String serviceTag) {
-        this.restTemplate = restTemplate;
-        this.inetUtils = inetUtils;
-        this.serviceTag = serviceTag;
-    }
+public class MqConsumer implements MessageListener {
 
     @SneakyThrows
     @Override
-    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-        try {
-            MessageExt messageExt = list.get(0);
-            String topic = messageExt.getTopic();
-            String messageString = new String(messageExt.getBody(), StandardCharsets.UTF_8);
-            String result = "A" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
-                    restTemplate.getForObject("http://sc-B/b", String.class);
+    public ConsumeResult consume(MessageView messageView) {
+        try{
 
-            log.info("topic:{},producer:{},invoke result:{}", topic, messageString, result);
+            String topic = messageView.getTopic();
+            String tags = messageView.getTag().orElse(null);
+            String userProperty = messageView.getProperties().get("__microservice_tag__");
 
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-        } finally {
-//            BusinessContext.clear();
+            ByteBuffer bodyBuffer = messageView.getBody();
+            String value = StandardCharsets.UTF_8.decode(bodyBuffer).toString();
+
+
+            log.info("messageView:{}, topic:{},tags:{},messageString:{},userProperty:{}", messageView, topic, tags, value, userProperty);
+
+            return ConsumeResult.SUCCESS;
+        } catch (Throwable t){
+            t.printStackTrace();
+            return ConsumeResult.SUCCESS;
         }
     }
-
 }

@@ -14,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
+@RefreshScope
 class CController {
 
     @Autowired
@@ -33,6 +35,9 @@ class CController {
 
     @Autowired
     String serviceTag;
+
+    @Value("${custom.config.value:base}")
+    private String configValue;
 
     @Value("${throwException:false}")
     boolean throwException;
@@ -68,7 +73,7 @@ class CController {
         try (Entry entry1 = SphU.entry("HelloWorld-c-1", EntryType.IN)) {
             // 具体的业务逻辑
             try {
-                return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+                return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]"+  "[config=" + configValue + "]";
             } catch (Throwable e) {
                 // 标记此次资源调用失败
                 entry1.setError(e);
@@ -100,7 +105,7 @@ class CController {
 
     @GetMapping("/spring_boot")
     public String spring_boot() {
-        return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "C[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" +  "[config=" + configValue + "]";
     }
 
     @GetMapping("/flow")
