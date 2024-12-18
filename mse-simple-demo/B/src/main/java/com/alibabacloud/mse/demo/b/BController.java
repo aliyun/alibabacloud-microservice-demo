@@ -69,7 +69,7 @@ class BController {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         String result = restTemplate.getForObject("http://sc-C/flow", String.class);
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
     @GetMapping("/params/{hot}")
@@ -77,7 +77,7 @@ class BController {
         long sleepTime = 5 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         String result = restTemplate.getForObject("http://sc-C/params/" + hot, String.class);
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot + " -> " + result;
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " params:" + hot + " -> " + result;
     }
 
     @GetMapping("/isolate")
@@ -85,18 +85,18 @@ class BController {
         long sleepTime = 500 + RANDOM.nextInt(5);
         silentSleep(sleepTime);
         String result = restTemplate.getForObject("http://sc-C/isolate", String.class);
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " sleepTime:" + sleepTime + " -> " + result;
     }
 
     @GetMapping("/b")
     public String b() {
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " -> " +
                 restTemplate.getForObject("http://sc-C/c", String.class);
     }
 
     @GetMapping("/bByFeign")
     public String bByFeign(String s) {
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
     @GetMapping("/circuit-breaker-rt-b")
@@ -112,7 +112,7 @@ class BController {
 
         String slowMessage = isSlowRequest ? " RT:" + rt : "";
 
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + slowMessage;
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + slowMessage;
     }
 
     @GetMapping("/circuit-breaker-exception-b")
@@ -122,12 +122,12 @@ class BController {
         if (isExceptionRequest) {
             throw new RuntimeException("TestCircuitBreakerException");
         }
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
     }
 
     @GetMapping("/b-zone")
     public String bZone() {
-        return "B[tag=" + serviceTag + "][" + currentZone + "]" + " -> " +
+        return "B" + serviceTag + "[" + currentZone + "]" + " -> " +
                 restTemplate.getForObject("http://sc-C/c-zone", String.class);
     }
 
@@ -162,7 +162,7 @@ class BController {
                 List<User> list = user.selectAll();
                 result = JSON.toJSONString(list);
         }
-        return "B[tag=" + serviceTag + "][" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " result:" + result;
+        return "B" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " result:" + result;
     }
 
     @GetMapping("/set-traffic-attribute")

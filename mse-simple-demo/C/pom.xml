@@ -141,9 +141,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.alibabacloud.mse.demo.c.CApplication</mainClass>
-                </configuration>
                 <executions>
                     <execution>
                         <id>repackage</id>

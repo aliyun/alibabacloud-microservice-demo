@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nacos-server
-          image: "{{ .Values.registry }}nacos-server:v2.1.2"
+          image: "{{ .Values.registry }}nacos-server:v2.4.3"
           env:
             - name: MODE
               value: standalone
