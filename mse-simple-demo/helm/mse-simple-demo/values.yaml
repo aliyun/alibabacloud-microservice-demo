@@ -12,9 +12,6 @@ gateway:
     ingress: false
 
 goapp:
-  enable: true
-
-prometheus:
   enable: false
 
 nacos:
