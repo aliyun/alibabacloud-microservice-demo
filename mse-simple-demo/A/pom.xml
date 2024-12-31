@@ -19,7 +19,7 @@
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version>
         <dubbo.version>3.3.0</dubbo.version>
-        <rocketmq.version>4.5.0</rocketmq.version>
+        <rocketmq.version>4.9.8</rocketmq.version>
     </properties>
 
     <dependencies>
