@@ -39,6 +39,7 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
             throw new RuntimeException();
         }
 
+        String mqvalue = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]";
         String value = "C" + serviceTag + "[" + inetUtils.findFirstNonLoopbackAddress().getHostAddress() + "]" + " params:" + name;
         String invokerTag="";
         String userData = RpcContext.getContext().getAttachment("__microservice_tag__");
@@ -49,9 +50,9 @@ public class HelloServiceCTwoImpl implements HelloServiceCTwo {
         try {
             Message msg = new Message();
             msg.setTopic(topic);
-            msg.setBody(value.getBytes(StandardCharsets.UTF_8));
+            msg.setBody(mqvalue.getBytes(StandardCharsets.UTF_8));
             producer.send(msg);
-            log.info("topic:{},messageString:{},__microservice_tag__:{}", topic, value, StringUtils.trimToNull(invokerTag));
+            log.info("topic:{},messageString:{},__microservice_tag__:{}", topic, mqvalue, StringUtils.trimToNull(invokerTag));
         } catch (Exception ignore) {
         }
 
