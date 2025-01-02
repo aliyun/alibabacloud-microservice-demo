@@ -49,7 +49,7 @@ public class RocketMqConfiguration {
         System.setProperty("rocketmq.client.log.loadconfig", "false");
     }
 
-    @Bean(initMethod = "start", destroyMethod = "shutdown")
+    @Bean(destroyMethod = "shutdown")
     public DefaultMQPushConsumer mqPushConsumer() throws MQClientException {
         log.info("正在启动rocketMq的consumer");
 
@@ -68,7 +68,12 @@ public class RocketMqConfiguration {
 
         MqConsumer mqConsumer = new MqConsumer(restTemplate, inetUtils, serviceTag);
         consumer.registerMessageListener(mqConsumer);
-        log.info("完成启动rocketMq的consumer,subscribe:{}", topic);
+        try {
+            consumer.start();
+            log.info("完成启动rocketMq的consumer,subscribe:{}", topic);
+        } catch (Throwable t) {
+            log.error("RocketMQ Consumer 启动失败,已忽略此错误,", t);
+        }
         return consumer;
     }
 }
