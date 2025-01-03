@@ -29,6 +29,16 @@ spec:
               value: "{{ .Values.nacos.host }}"
             - name: nacos.namespace
               value: "{{ .Values.nacos.namespace }}"
+            - name: middleware.mq.address
+              value: "{{ .Values.middleware.mq.address }}"
+            {{ if .Values.middleware.mq.ak }}
+            - name: middleware.mq.ak
+              value: "{{ .Values.middleware.mq.ak }}"
+            {{ end }}
+            {{ if .Values.middleware.mq.sk }}
+            - name: middleware.mq.sk
+              value: "{{ .Values.middleware.mq.sk }}"
+            {{ end }}
             {{ if .Values.MSE_DEBUG_HOST }}
             - name: MSE_DEBUG_HOST
               value: {{ .Values.MSE_DEBUG_HOST }}

@@ -20,6 +20,10 @@ nacos:
   # 注册到Nacos的命名空间id
   namespace: public
 
+middleware:
+  mq:
+    address: mqnamesrv:9876
+
 autoscaling: false
 
 resources:
