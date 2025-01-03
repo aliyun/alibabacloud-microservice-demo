@@ -41,11 +41,11 @@ spec:
         - name: FUNCTION_MODE
           value: all
         - name: JAVA_HOME
-          value: /usr/lib/jvm/java-1.8.0-openjdk
+          value: /usr/lib/jvm/java-1.8-openjdk
         - name: NACOS_USER
           value: nacos
         - name: JAVA
-          value: /usr/lib/jvm/java-1.8.0-openjdk/bin/java
+          value: /usr/lib/jvm/java-1.8-openjdk/bin/java
         - name: JVM_XMS
           value: 2g
         - name: JVM_XMX
