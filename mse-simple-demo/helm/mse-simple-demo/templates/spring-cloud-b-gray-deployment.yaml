@@ -19,6 +19,7 @@ spec:
       labels:
         msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-b"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         alicloud.service.tag: gray
         app: "spring-cloud-b"
         version: gray
@@ -50,7 +51,3 @@ spec:
               containerPort: 20002
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: topology.kubernetes.io/zone

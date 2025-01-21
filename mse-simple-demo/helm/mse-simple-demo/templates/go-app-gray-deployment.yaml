@@ -52,8 +52,4 @@ spec:
               containerPort: 8080
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: topology.kubernetes.io/zone
  {{ end }}

@@ -19,6 +19,7 @@ spec:
       labels:
         # msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-zuul"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: spring-cloud-zuul
     spec:
       containers:
@@ -56,8 +57,4 @@ spec:
               containerPort: 20000
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: topology.kubernetes.io/zone
 {{ end }}

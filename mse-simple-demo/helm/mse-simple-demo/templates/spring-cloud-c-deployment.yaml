@@ -18,6 +18,7 @@ spec:
       labels:
         msePilotAutoEnable: "on"
         msePilotCreateAppName: "spring-cloud-c"
+        mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-c"
     spec:
       containers:
@@ -57,7 +58,3 @@ spec:
             containerPort: 20003
       hostAliases:
         {{ toYaml .Values.hostAliases | nindent 8 }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: topology.kubernetes.io/zone

@@ -14,6 +14,9 @@ gateway:
 goapp:
   enable: false
 
+mse:
+  namespace: default
+
 nacos:
   # Nacos地址
   host: nacos-server
