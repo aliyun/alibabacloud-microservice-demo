@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.m2/repository/ \
 FROM eclipse-temurin:17-jdk
 
 RUN apt-get update && apt-get install -y \
-    vim unzip netcat-openbsd telnet tcpdump iproute2 lsof \
+    vim unzip netcat-openbsd telnet tcpdump iproute2 lsof ngrep \
     && rm -rf /var/lib/apt/lists/*
 
 # copy arthas
