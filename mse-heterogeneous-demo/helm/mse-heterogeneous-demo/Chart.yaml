@@ -1,0 +1,8 @@
+apiVersion: v2
+name: mse-heterogeneous-demo
+version: "3.1.0"
+appVersion: "3.1.0"
+home: https://mse.console.aliyun.com/
+keywords:
+  - mse
+  - category:microservice

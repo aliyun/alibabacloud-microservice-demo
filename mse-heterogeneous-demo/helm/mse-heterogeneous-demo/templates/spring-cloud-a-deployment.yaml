@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-a
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-cloud-a
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: "spring-cloud-a"
+        mseNamespace: "{{ .Values.mse.namespace }}"
+        app: "spring-cloud-a"
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+        - name: spring-cloud-a
+          image: "{{ .Values.registry }}spring-cloud-a:{{ .Values.images.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
+          resources:
+            {{ if .Values.resources.enable }}
+            requests:
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
+            limits:
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}
+          ports:
+            - name: http-port
+              containerPort: 20001
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}

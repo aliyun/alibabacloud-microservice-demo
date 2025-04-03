@@ -1,0 +1,32 @@
+# 镜像地址的前缀
+registry: zyx-heterogeneous-demo-registry.cn-hangzhou.cr.aliyuncs.com/mse-demo/
+
+images:
+  version: 3.1.0-heterogeneous
+
+# 是否启动zuul、springcloud网关
+gateway:
+  springcloud: false
+
+goapp:
+  enable: true
+
+mse:
+  namespace: mse-heterogeneous-demo
+
+nacos:
+  # Nacos地址
+  host: nacos-server
+  # 注册到Nacos的命名空间id
+  namespace: public
+
+autoscaling: false
+
+resources:
+  enable: true
+  request:
+    cpu: 1
+    memory: 2Gi
+  limit:
+    cpu: 1
+    memory: 2Gi

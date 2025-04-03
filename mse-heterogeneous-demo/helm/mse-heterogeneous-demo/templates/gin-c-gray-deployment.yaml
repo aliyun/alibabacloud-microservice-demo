@@ -1,0 +1,57 @@
+{{ if .Values.goapp.enable }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gin-c-gray
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gin-c
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: "gin-c"
+        mseNamespace: "{{ .Values.mse.namespace }}"
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "gin-c"
+        aliyun.com/app-language: golang
+        alicloud.service.tag: gray
+        app: "gin-c"
+        sidecar.istio.io/inject: 'true'
+    spec:
+      containers:
+        - name: gin-c
+          image: "{{ .Values.registry }}gin-c:{{ .Values.images.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
+          resources:
+            {{ if .Values.resources.enable }}
+            requests:
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
+            limits:
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}
+          ports:
+            - name: http-port
+              containerPort: 20003
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
+ {{ end }}
