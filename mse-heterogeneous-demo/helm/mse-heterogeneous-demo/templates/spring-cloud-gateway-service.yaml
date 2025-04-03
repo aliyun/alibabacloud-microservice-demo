@@ -1,0 +1,18 @@
+{{ if .Values.gateway.springcloud }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
+    service.beta.kubernetes.io/alicloud-loadbalancer-address-type: internet
+  name: spring-cloud-gateway-slb
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 20000
+  selector:
+    app: spring-cloud-gateway
+  type: LoadBalancer
+
+{{ end }}

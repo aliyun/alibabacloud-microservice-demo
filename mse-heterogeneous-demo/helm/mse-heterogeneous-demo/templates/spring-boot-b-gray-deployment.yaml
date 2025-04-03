@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-b-gray
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-b
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        msePilotAutoEnable: "on"
+        msePilotCreateAppName: "spring-boot-b"
+        mseNamespace: "{{ .Values.mse.namespace }}"
+        alicloud.service.tag: gray
+        app: "spring-boot-b"
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+        - name: spring-boot-b
+          image: "{{ .Values.registry }}spring-boot-b:{{ .Values.images.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: nacos.host
+              value: "{{ .Values.nacos.host }}"
+            - name: nacos.namespace
+              value: "{{ .Values.nacos.namespace }}"
+            {{ if .Values.MSE_DEBUG_HOST }}
+            - name: MSE_DEBUG_HOST
+              value: {{ .Values.MSE_DEBUG_HOST }}
+            {{ end }}
+          resources:
+            {{ if .Values.resources.enable }}
+            requests:
+              cpu: {{ .Values.resources.request.cpu }}
+              memory: {{ .Values.resources.request.memory }}
+            limits:
+              cpu: {{ .Values.resources.limit.cpu }}
+              memory: {{ .Values.resources.limit.memory }}
+            {{ end }}
+          ports:
+            - name: http-port
+              containerPort: 20002
+      hostAliases:
+        {{ toYaml .Values.hostAliases | nindent 8 }}
