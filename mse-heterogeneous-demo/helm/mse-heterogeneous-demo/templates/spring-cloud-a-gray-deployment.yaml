@@ -22,6 +22,7 @@ spec:
         alicloud.service.tag: gray
         app: "spring-cloud-a"
         sidecar.istio.io/inject: 'false'
+        aliyun.com/agent-version: "4.2.5-proxyless"
     spec:
       containers:
         - name: spring-cloud-a
