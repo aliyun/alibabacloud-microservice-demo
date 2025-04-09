@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-certifi==2018.11.29       # via geventhttpclient-wheels, requests
+certifi==2023.7.22       # via geventhttpclient-wheels, requests
 chardet==3.0.4            # via requests
 click==7.0                # via flask
 flask==1.0.2              # via locustio
