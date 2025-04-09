@@ -21,6 +21,7 @@ spec:
         mseNamespace: "{{ .Values.mse.namespace }}"
         app: "spring-cloud-d"
         sidecar.istio.io/inject: 'false'
+        aliyun.com/agent-version: "4.2.5-proxyless"
     spec:
       containers:
         - name: spring-cloud-d
