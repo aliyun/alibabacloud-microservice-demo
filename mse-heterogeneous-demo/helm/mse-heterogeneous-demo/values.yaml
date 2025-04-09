@@ -1,5 +1,5 @@
 # 镜像地址的前缀
-registry: zyx-heterogeneous-demo-registry.cn-hangzhou.cr.aliyuncs.com/mse-demo/
+registry: registry.cn-hangzhou.aliyuncs.com/mse-governance-demo/
 
 images:
   version: 3.1.0-heterogeneous
