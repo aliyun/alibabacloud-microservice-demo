@@ -28,6 +28,12 @@ public class AApplication {
         return new RestTemplate();
     }
 
+    @Bean
+    @LoadBalanced
+    RestTemplate loadBalancedRestTemplate() {
+        return new RestTemplate();
+    }
+
     @Bean(name = "serviceTag")
     String serviceTag() {
         String tag = parseServiceTag("/etc/podinfo/labels");

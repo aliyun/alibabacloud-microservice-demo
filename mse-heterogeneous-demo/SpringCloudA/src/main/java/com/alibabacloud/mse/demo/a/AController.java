@@ -23,10 +23,29 @@ public class AController {
     private RestTemplate restTemplate;
 
     @Autowired
+    private RestTemplate loadBalancedRestTemplate;
+
+    @Autowired
     InetUtils inetUtils;
 
     @Autowired
     String serviceTag;
+
+    @RequestMapping(value = "/d")
+    public String d(HttpServletRequest request) throws UnknownHostException {
+
+        StringBuilder sb = new StringBuilder();
+        Enumeration<String> headers =  request.getHeaderNames();
+        if (headers.hasMoreElements()) {
+            String headerKey = headers.nextElement();
+            String value = request.getHeader(headerKey);
+            sb.append(headerKey).append(":").append(value).append(", ");
+        }
+
+        log.info("/A/d request headers info: " + sb.toString());
+        String resp = loadBalancedRestTemplate.getForObject("http://spring-cloud-d/D/d", String.class);
+        return "A:" + InetAddress.getLocalHost().getHostAddress() + ":" + serviceTag + " - " + resp;
+    }
 
     @RequestMapping(value = "/a")
     public String a(@RequestParam(name = "call_type", required = false) String callType,

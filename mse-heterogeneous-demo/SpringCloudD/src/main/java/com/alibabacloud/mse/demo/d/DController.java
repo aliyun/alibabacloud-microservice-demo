@@ -27,7 +27,7 @@ public class DController {
             String value = request.getHeader(headerKey);
             sb.append(headerKey).append(":").append(value).append(", ");
         }
-        log.info("/A/a request headers info: " + sb.toString());
+        log.info("/D/d request headers info: " + sb.toString());
 
         return "D:" + InetAddress.getLocalHost().getHostAddress() + ":" + serviceTag;
     }
