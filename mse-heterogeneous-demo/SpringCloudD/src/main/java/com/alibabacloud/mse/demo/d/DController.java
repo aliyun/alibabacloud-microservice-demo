@@ -1,6 +1,5 @@
 package com.alibabacloud.mse.demo.d;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/D")
@@ -19,15 +18,12 @@ public class DController {
     String serviceTag;
 
     @RequestMapping(value = "/d")
-    public String d(HttpServletRequest request) throws UnknownHostException {
+    public String d(@RequestHeader Map<String, String> headers) throws UnknownHostException {
         StringBuilder sb = new StringBuilder();
-        Enumeration<String> headers =  request.getHeaderNames();
-        if (headers.hasMoreElements()) {
-            String headerKey = headers.nextElement();
-            String value = request.getHeader(headerKey);
-            sb.append(headerKey).append(":").append(value).append(", ");
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            sb.append(entry.getKey()).append(":").append(entry.getValue()).append(", ");
         }
-        log.info("/D/d request headers info: " + sb.toString());
+        log.info("/D/d request headers info: " + sb);
 
         return "D:" + InetAddress.getLocalHost().getHostAddress() + ":" + serviceTag;
     }

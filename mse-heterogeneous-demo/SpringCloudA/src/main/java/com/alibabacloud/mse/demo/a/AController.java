@@ -1,7 +1,5 @@
 package com.alibabacloud.mse.demo.a;
 
-
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/A")
@@ -32,34 +30,25 @@ public class AController {
     String serviceTag;
 
     @RequestMapping(value = "/d")
-    public String d(HttpServletRequest request) throws UnknownHostException {
-
+    public String d(@RequestHeader Map<String, String> headers) throws UnknownHostException {
         StringBuilder sb = new StringBuilder();
-        Enumeration<String> headers =  request.getHeaderNames();
-        if (headers.hasMoreElements()) {
-            String headerKey = headers.nextElement();
-            String value = request.getHeader(headerKey);
-            sb.append(headerKey).append(":").append(value).append(", ");
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            sb.append(entry.getKey()).append(":").append(entry.getValue()).append(", ");
         }
-
-        log.info("/A/d request headers info: " + sb.toString());
+        log.info("/A/d request headers info: " + sb);
         String resp = loadBalancedRestTemplate.getForObject("http://spring-cloud-d/D/d", String.class);
         return "A:" + InetAddress.getLocalHost().getHostAddress() + ":" + serviceTag + " - " + resp;
     }
 
     @RequestMapping(value = "/a")
     public String a(@RequestParam(name = "call_type", required = false) String callType,
-                    HttpServletRequest request) throws UnknownHostException {
+                    @RequestHeader Map<String, String> headers) throws UnknownHostException {
 
         StringBuilder sb = new StringBuilder();
-        Enumeration<String> headers =  request.getHeaderNames();
-        if (headers.hasMoreElements()) {
-            String headerKey = headers.nextElement();
-            String value = request.getHeader(headerKey);
-            sb.append(headerKey).append(":").append(value).append(", ");
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            sb.append(entry.getKey()).append(":").append(entry.getValue()).append(", ");
         }
-
-        log.info("/A/a request headers info: " + sb.toString());
+        log.info("/A/a request headers info: " + sb);
         if (callType == null || !callType.equalsIgnoreCase("golang")) {
             return callSpringBoot();
         }

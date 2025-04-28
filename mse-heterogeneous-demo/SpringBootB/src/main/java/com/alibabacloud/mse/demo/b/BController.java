@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/B")
@@ -26,16 +27,12 @@ public class BController {
     private WebClient webClient;
 
     @RequestMapping(value = "/b")
-    public String b(HttpServletRequest request) throws UnknownHostException {
+    public String b(@RequestHeader Map<String, String> headers) throws UnknownHostException {
         StringBuilder sb = new StringBuilder();
-        Enumeration<String> headers =  request.getHeaderNames();
-        if (headers.hasMoreElements()) {
-            String headerKey = headers.nextElement();
-            String value = request.getHeader(headerKey);
-            sb.append(headerKey).append(":").append(value).append(", ");
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            sb.append(entry.getKey()).append(":").append(entry.getValue()).append(", ");
         }
-
-        log.info("/B/b request headers info: " + sb.toString());
+        log.info("/B/b request headers info: " + sb);
 
         if (webClient == null) {
             webClient = webClientBuilder.baseUrl("http://spring-cloud-d:20004").build();
